@@ -1,19 +1,20 @@
 <odoo>
   <data>
     <!-- explicit list view definition -->
-<!--
-    <record model="ir.ui.view" id="school.list">
+
+    <record model="ir.ui.view" id="school.qualification_list">
       <field name="name">school list</field>
-      <field name="model">school.school</field>
+      <field name="model">school.qualification</field>
       <field name="arch" type="xml">
         <tree>
-          <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
+          <field name="student"/>
+          <field name="topic"/>
+          <field name="qualification"/>
+          <field name="passes"/>
         </tree>
       </field>
     </record>
--->
+
 
     <!-- actions opening views on models -->
 

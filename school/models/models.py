@@ -47,4 +47,18 @@ class qualification(models.Model):
     student = fields.Many2one('school.student')
     topic = fields.Many2one('school.topic')
     qualification = fields.Float()
-    passes = fields.Boolean()
+    passes = fields.Boolean(compute='_get_passes')
+
+    def _get_date(self):
+        return fields.datetime.now()
+
+    date = fields.Datetime(default = _get_date)
+
+    @api.depends('qualification')
+    def _get_passes(self):
+        for q in self:
+            print(q,self)
+            if q.qualification >= 5:
+                q.passes = True
+            else:
+                q.passes = False
