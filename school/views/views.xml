@@ -1,0 +1,56 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="school.list">
+      <field name="name">school list</field>
+      <field name="model">school.school</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="school.action_window_students">
+      <field name="name">school Students</field>
+      <field name="res_model">school.student</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    <record model="ir.actions.act_window" id="school.action_window_topics">
+      <field name="name">school Topics</field>
+      <field name="res_model">school.topic</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    <record model="ir.actions.act_window" id="school.action_window_teachers">
+      <field name="name">school Teachers</field>
+      <field name="res_model">school.teacher</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    <record model="ir.actions.act_window" id="school.action_window_qualifications">
+      <field name="name">school Qualification</field>
+      <field name="res_model">school.qualification</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Top menu item -->
+    <menuitem name="School" id="school.menu_root"/>
+    <!-- menu categories -->
+    <menuitem name="Management" id="school.menu_management" parent="school.menu_root"/>
+    <!-- actions -->
+    <menuitem name="Students" id="school.menu_students" parent="school.menu_management"
+              action="school.action_window_students"/>
+    <menuitem name="Topics" id="school.menu_topics" parent="school.menu_management"
+              action="school.action_window_topics"/>
+    <menuitem name="Teachers" id="school.menu_teachers" parent="school.menu_management"
+              action="school.action_window_teachers"/>
+     <menuitem name="Qualifications" id="school.menu_qualifications" parent="school.menu_management"
+              action="school.action_window_qualifications"/>
+
+  </data>
+</odoo>

@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_roma_player,roma.player,model_roma_player,base.group_user,1,1,1,1
+access_roma_city,roma.city,model_roma_city,base.group_user,1,1,1,1
+access_roma_citicen,roma.citicen,model_roma_citicen,base.group_user,1,1,1,1
+access_roma_building_type,roma.building_type,model_roma_building_type,base.group_user,1,1,1,1
+access_roma_building,roma.building,model_roma_building,base.group_user,1,1,1,1
+access_roma_unit,roma.unit,model_roma_unit,base.group_user,1,1,1,1
+

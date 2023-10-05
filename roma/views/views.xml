@@ -1,0 +1,77 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <!--
+        <record model="ir.ui.view" id="roma.list">
+          <field name="name">roma list</field>
+          <field name="model">roma.roma</field>
+          <field name="arch" type="xml">
+            <tree>
+              <field name="name"/>
+              <field name="value"/>
+              <field name="value2"/>
+            </tree>
+          </field>
+        </record>
+    -->
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="roma.action_window_player">
+      <field name="name">roma player</field>
+      <field name="res_model">roma.player</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    <record model="ir.actions.act_window" id="roma.action_window_city">
+      <field name="name">roma city</field>
+      <field name="res_model">roma.city</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    <record model="ir.actions.act_window" id="roma.action_window_citicen">
+      <field name="name">roma citicen</field>
+      <field name="res_model">roma.citicen</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    <record model="ir.actions.act_window" id="roma.action_window_building_type">
+      <field name="name">roma building type</field>
+      <field name="res_model">roma.building_type</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    <record model="ir.actions.act_window" id="roma.action_window_building">
+      <field name="name">roma building</field>
+      <field name="res_model">roma.building</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    <record model="ir.actions.act_window" id="roma.action_window_unit">
+      <field name="name">roma unit</field>
+      <field name="res_model">roma.unit</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Top menu item -->
+
+    <menuitem name="Roma Aeterna" id="roma.menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Game Elements" id="roma.menu_elements" parent="roma.menu_root"/>
+
+    <!-- actions -->
+
+    <menuitem name="Players" id="roma.menu_player" parent="roma.menu_elements"
+              action="roma.action_window_player"/>
+    <menuitem name="Citys" id="roma.menu_city" parent="roma.menu_elements"
+              action="roma.action_window_city"/>
+    <menuitem name="Citicens" id="roma.menu_citicen" parent="roma.menu_elements"
+              action="roma.action_window_citicen"/>
+    <menuitem name="Building Types" id="roma.menu_building_type" parent="roma.menu_elements"
+              action="roma.action_window_building_type"/>
+    <menuitem name="Buildings" id="roma.menu_building" parent="roma.menu_elements"
+              action="roma.action_window_building"/>
+    <menuitem name="Units" id="roma.menu_unit" parent="roma.menu_elements"
+              action="roma.action_window_unit"/>
+
+
+
+  </data>
+</odoo>
