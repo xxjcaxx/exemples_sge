@@ -48,6 +48,7 @@ Step into the sandals of a Roman citizen and embark on a journey through the pol
         'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        'demo/buildings.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

@@ -58,6 +58,7 @@ class building_type(models.Model):
     soldiers_production = fields.Float()
     gold_production = fields.Float()
     metal_production = fields.Float()
+    icon = fields.Image(max_width=200, max_height=200)
 
 class building(models.Model):
     _name = 'roma.building'

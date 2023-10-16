@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-
+from odoo.exceptions import ValidationError
 
 class student(models.Model):
      _name = 'school.student'
@@ -32,6 +32,9 @@ class topic(models.Model):
                                       column2='student_id')
     qualifications = fields.One2many('school.qualification','topic')
 
+    _sql_constraints = [
+        ('name_uniq', 'unique(name)', 'Custom Warning Message'),
+    ]
 class teacher(models.Model):
     _name = 'school.teacher'
     _description = 'The Teachers'
@@ -62,3 +65,12 @@ class qualification(models.Model):
                 q.passes = True
             else:
                 q.passes = False
+
+    @api.constrains('qualification')
+    def _check_qualification(self):
+        for q in self:
+            if q.qualification > 10:
+                raise ValidationError("The qualification is too high: %s" % q.qualification)
+            if q.qualification < 0:
+                raise ValidationError("The qualification is too low: %s" % q.qualification)
+
