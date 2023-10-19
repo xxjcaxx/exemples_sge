@@ -1,30 +1,33 @@
 <odoo>
     <data>
-<!--
-          <record id="object0" model="roma.roma">
-            <field name="name">Object 0</field>
-            <field name="value">0</field>
-          </record>
 
-          <record id="object1" model="roma.roma">
-            <field name="name">Object 1</field>
-            <field name="value">10</field>
-          </record>
+        <record id="roma.player_demo" model="roma.player">
+            <field name="name">Ron Swanson</field>
+        </record>
 
-          <record id="object2" model="roma.roma">
-            <field name="name">Object 2</field>
-            <field name="value">20</field>
-          </record>
+        <record id="roma.city_demo" model="roma.city">
+            <field name="name">Saetabis</field>
+            <field name="level">2</field>
+            <field name="forum_level">1</field>
+            <field name="thermae_level">2</field>
+            <field name="circus_level">1</field>
+            <field name="temple_level">0</field>
+            <field name="health">50</field>
+            <field name="loyalty">60</field>
+            <field name="gods">0</field>
+        </record>
 
-          <record id="object3" model="roma.roma">
-            <field name="name">Object 3</field>
-            <field name="value">30</field>
-          </record>
+        <record id="roma.citicen_demo" model="roma.citicen">
+            <field name="name">Tito Libio</field>
+            <field name="player" ref="roma.player_demo"></field>
+            <field name="hierarchy">1</field>
+            <field name="city" ref="roma.city_demo"></field>
+        </record>
 
-          <record id="object4" model="roma.roma">
-            <field name="name">Object 4</field>
-            <field name="value">40</field>
-          </record>
--->
+        <record id="roma.building_field_demo" model="roma.building">
+            <field name="type" ref="roma.building_type_field"></field>
+            <field name="city" ref="roma.city_demo"></field>
+        </record>
+
     </data>
 </odoo>

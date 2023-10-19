@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api
 import math
+from odoo.exceptions import ValidationError
 
 class player(models.Model):
      _name = 'roma.player'
@@ -35,6 +36,16 @@ class city(models.Model):
     buildings = fields.One2many('roma.building','city')
     units = fields.One2many('roma.unit','city')
 
+    @api.constrains('gods')
+    def _check_gods(self):
+        for c in self:
+            if c.gods > c.temple_level:
+                raise ValidationError("You cannot have more than %s gods" % c.temple_level)
+            if c.gods < 0:
+                raise ValidationError("You cannot have less than 0 gods")
+
+
+
 class citicen(models.Model):
     _name = 'roma.citicen'
     _description = 'Important Citicen'
@@ -48,6 +59,11 @@ class citicen(models.Model):
     # A partir de consul pots tindre dictador i més d'una legio
     # Tindre dictador millora molt el rendiment en batalles però es perd en lealtat, salut i producció
     city = fields.Many2one('roma.city',required=True)
+
+    @api.constrains('hierarchy')
+    def _check_hierarchy(self):
+        for c in self:
+           print('a')
 
 class building_type(models.Model):
     _name = 'roma.building_type'
