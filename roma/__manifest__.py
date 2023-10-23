@@ -46,6 +46,7 @@ Step into the sandals of a Roman citizen and embark on a journey through the pol
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+         'views/battle.xml', 'views/buildings.xml', 'views/citicens.xml', 'views/citys.xml', 'views/players.xml',
         'views/views.xml',
         'views/templates.xml',
         'demo/buildings.xml',

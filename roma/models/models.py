@@ -34,6 +34,7 @@ class city(models.Model):
     food = fields.Float(default=10000)
 
     buildings = fields.One2many('roma.building','city')
+    citicens = fields.One2many('roma.citicen','city')
     units = fields.One2many('roma.unit','city')
 
     @api.constrains('gods')
@@ -51,6 +52,7 @@ class citicen(models.Model):
     _description = 'Important Citicen'
 
     name = fields.Char(required=True)
+    avatar = fields.Image(max_width=200, max_height=200)
     player = fields.Many2one('roma.player', required=True)
     hierarchy = fields.Selection([('1','Equites'),('2','Patricius'),('3','Magister'),('4','Potestas'),('5','Consul'),('6','Dictator')],required=True)
     # Sols pot haver un cónsul o un Dictador. Sols hi ha dictador en situació de guerra. Sols hi ha un potestas, que tria als magister
@@ -88,7 +90,7 @@ class building(models.Model):
     soldiers_production = fields.Float(compute='_get_productions')
     gold_production = fields.Float(compute='_get_productions')
     metal_production = fields.Float(compute='_get_productions')
-
+    icon = fields.Image(related='type.icon')
     @api.depends('type','level')
     def _get_productions(self):
         for b in self:

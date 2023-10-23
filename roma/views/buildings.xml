@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+ <record model="ir.ui.view" id="roma.buildings_list_view">
+      <field name="name">Roma buildings List</field>
+      <field name="model">roma.building</field>
+      <field name="arch" type="xml">
+        <tree  decoration-info="food_production > 0" decoration-danger="food_production &lt; 2000">
+          <field name="name"/>
+          <field name="food_production"/>
+          <field name="soldiers_production"/>
+          <field name="gold_production"/>
+          <field name="metal_production" sum="Total Metal"/>
+        </tree>
+      </field>
+    </record>
+
+     <record model="ir.ui.view" id="roma.buildings_form_view">
+      <field name="name">Roma buildings List</field>
+      <field name="model">roma.building</field>
+      <field name="arch" type="xml">
+        <form > <sheet>
+            <group>
+               <field name="icon" widget="image" class="oe_avatar"/>
+          <field name="name"/>
+              <field name="city" />
+          <field name="food_production"/>
+          <field name="soldiers_production"/>
+          <field name="gold_production"/>
+          <field name="metal_production"/>
+           </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="roma.buildings_type_form_view">
+      <field name="name">Roma buildings form</field>
+      <field name="model">roma.building_type</field>
+      <field name="arch" type="xml">
+        <form >
+          <sheet>
+            <group>
+              <group>
+                <field name="icon" widget="image"/>
+                <field name="name"/>
+                <field name="food_production"/>
+                <field name="soldiers_production"/>
+              </group>
+              <group>
+                <field name="gold_production"/>
+                <field name="metal_production"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+  </data>
+</odoo>

@@ -1,0 +1,15 @@
+<odoo>
+  <data>
+ <record model="ir.ui.view" id="roma.players_list_view">
+      <field name="name">Roma Players List</field>
+      <field name="model">roma.player</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="citicens"/>
+        </tree>
+      </field>
+    </record>
+
+  </data>
+</odoo>
