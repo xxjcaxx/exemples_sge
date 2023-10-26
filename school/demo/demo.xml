@@ -21,7 +21,7 @@
              <record id="school.student_pepe" model="school.student">
             <field name="name">Pepe</field>
                  <field name="topics" eval="[(4,[ref('school.topic_di'),
-                 ref('school.topic_diw')],0)]"></field>
+                 ref('school.topic_diw')],0) ]"></field>
           </record>
 
 

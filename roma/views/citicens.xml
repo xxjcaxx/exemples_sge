@@ -14,7 +14,7 @@
     </record>
 
      <record model="ir.ui.view" id="roma.citicen_form_view">
-      <field name="name">Roma citicens List</field>
+      <field name="name">Roma citicens form</field>
       <field name="model">roma.citicen</field>
       <field name="arch" type="xml">
         <form > <sheet>
@@ -30,24 +30,18 @@
       </field>
     </record>
 
-    <record model="ir.ui.view" id="roma.buildings_type_form_view">
-      <field name="name">Roma buildings form</field>
-      <field name="model">roma.building_type</field>
+     <record model="ir.ui.view" id="roma.template_form_view">
+      <field name="name">Roma tamplate form</field>
+      <field name="model">roma.template</field>
       <field name="arch" type="xml">
-        <form >
-          <sheet>
+        <form > <sheet>
             <group>
-              <group>
-                <field name="icon" widget="image"/>
-                <field name="name"/>
-                <field name="food_production"/>
-                <field name="soldiers_production"/>
-              </group>
-              <group>
-                <field name="gold_production"/>
-                <field name="metal_production"/>
-              </group>
-            </group>
+               <field name="image" widget="image" />
+                 <field name="image_small" widget="image" />
+                 <field name="image_thumb" widget="image" />
+          <field name="name"/>
+           <field name="type"/>
+           </group>
           </sheet>
         </form>
       </field>

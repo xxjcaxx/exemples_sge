@@ -21,6 +21,7 @@
             <field name="name">Tito Libio</field>
             <field name="player" ref="roma.player_demo"></field>
             <field name="hierarchy">1</field>
+            <field name="avatar" model="roma.template" eval="obj().env.ref('roma.template_romano1').image" ></field>
             <field name="city" ref="roma.city_demo"></field>
         </record>
 

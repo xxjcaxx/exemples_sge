@@ -11,5 +11,17 @@
       </field>
     </record>
 
+       <record model="ir.ui.view" id="roma.players_form_view">
+      <field name="name">Roma Players Form</field>
+      <field name="model">roma.player</field>
+      <field name="arch" type="xml">
+        <form>
+          <field name="name"/>
+          <field name="citicens"/>
+            <button name="generate_citicen" type="object" string="Create Citicen" class="oe_highlight" />
+        </form>
+      </field>
+    </record>
+
   </data>
 </odoo>

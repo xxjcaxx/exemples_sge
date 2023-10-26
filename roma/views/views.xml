@@ -31,6 +31,11 @@
       <field name="res_model">roma.unit</field>
       <field name="view_mode">tree,form</field>
     </record>
+        <record model="ir.actions.act_window" id="roma.action_window_template">
+      <field name="name">roma template</field>
+      <field name="res_model">roma.template</field>
+      <field name="view_mode">tree,form</field>
+    </record>
 
     <!-- Top menu item -->
 
@@ -39,7 +44,7 @@
     <!-- menu categories -->
 
     <menuitem name="Game Elements" id="roma.menu_elements" parent="roma.menu_root"/>
-
+    <menuitem name="Game Aux" id="roma.menu_aux" parent="roma.menu_root"/>
     <!-- actions -->
 
     <menuitem name="Players" id="roma.menu_player" parent="roma.menu_elements"
@@ -54,6 +59,7 @@
               action="roma.action_window_building"/>
     <menuitem name="Units" id="roma.menu_unit" parent="roma.menu_elements"
               action="roma.action_window_unit"/>
-
+    <menuitem name="Templates" id="roma.menu_template" parent="roma.menu_aux"
+              action="roma.action_window_template"/>
   </data>
 </odoo>
