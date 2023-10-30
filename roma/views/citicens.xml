@@ -13,6 +13,44 @@
       </field>
     </record>
 
+
+       <record model="ir.ui.view" id="roma.citicens_kanban_view">
+      <field name="name">Roma citicens kanban</field>
+      <field name="model">roma.citicen</field>
+      <field name="arch" type="xml">
+        <kanban default_group_by="player">
+          <field name="name"/>
+            <field name="id"/>
+          <field name="player"/>
+          <field name="city"/>
+          <field name="hierarchy"/>
+              <templates>
+            <t t-name="kanban-box">
+              <div  t-attf-class=" oe_kanban_card o_kanban_record_has_image_fill oe_kanban_color_{{kanban_getcolor(record.hierarchy.raw_value)}}">
+                      <div class="o_kanban_image_fill_left o_kanban_image_full d-none d-md-block "
+                                     t-attf-style="background-image:url('#{kanban_image('roma.citicen', 'avatar', record.id.value, placeholder)}')">
+                                </div>
+                <div class="oe_kanban_details d-flex flex-column">
+
+                  <h4>
+                    <a type="edit">
+                      <field name="name"></field>
+                    </a>
+                  </h4>
+                  <ul>
+                    <li>city: <field name="city"></field></li>
+                    <li>hierarchy: <field name="hierarchy"></field></li>
+
+                  </ul>
+                </div>
+              </div>
+            </t>
+          </templates>
+
+        </kanban>
+      </field>
+    </record>
+
      <record model="ir.ui.view" id="roma.citicen_form_view">
       <field name="name">Roma citicens form</field>
       <field name="model">roma.citicen</field>

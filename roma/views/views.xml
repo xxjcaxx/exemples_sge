@@ -9,12 +9,12 @@
     <record model="ir.actions.act_window" id="roma.action_window_city">
       <field name="name">roma city</field>
       <field name="res_model">roma.city</field>
-      <field name="view_mode">tree,form</field>
+      <field name="view_mode">tree,form,kanban</field>
     </record>
     <record model="ir.actions.act_window" id="roma.action_window_citicen">
       <field name="name">roma citicen</field>
       <field name="res_model">roma.citicen</field>
-      <field name="view_mode">tree,form</field>
+      <field name="view_mode">tree,form,kanban</field>
     </record>
     <record model="ir.actions.act_window" id="roma.action_window_building_type">
       <field name="name">roma building type</field>

@@ -1,18 +1,24 @@
 <odoo>
   <data>
-     <record model="ir.ui.view" id="roma.cities_list_view">
+    <record model="ir.ui.view" id="roma.cities_list_view">
       <field name="name">Roma cities List</field>
       <field name="model">roma.city</field>
       <field name="arch" type="xml">
         <tree>
-           <field name="name"/>
-           <field name="level"/>
+          <field name="name"/>
+          <field name="level"/>
+          <field name="health"/>
+          <field name="loyalty"/>
+          <field name="gods"/>
+          <field name="metal"/>
+          <field name="gold"/>
+          <field name="food"/>
         </tree>
       </field>
     </record>
 
 
- <record model="ir.ui.view" id="roma.city_form_view">
+    <record model="ir.ui.view" id="roma.city_form_view">
       <field name="name">Roma city form</field>
       <field name="model">roma.city</field>
       <field name="arch" type="xml">
@@ -62,6 +68,47 @@
       </field>
     </record>
 
+
+    <record model="ir.ui.view" id="roma.cities_kanban_view">
+      <field name="name">Roma cities kanban</field>
+      <field name="model">roma.city</field>
+      <field name="arch" type="xml">
+        <kanban>
+          <field name="name"/>
+          <field name="level"/>
+          <field name="health"/>
+          <field name="loyalty"/>
+          <field name="gods"/>
+          <field name="metal"/>
+          <field name="gold"/>
+          <field name="food"/>
+
+          <templates>
+            <t t-name="kanban-box">
+              <div  t-attf-class="oe_kanban_color_{{kanban_getcolor(record.level.raw_value)}}">
+                <div t-attf-class="oe_kanban_content">
+                  <h4>
+                    <a type="edit">
+                      <field name="name"></field>
+                    </a>
+                  </h4>
+                  <ul>
+                    <li>Level: <field name="level"></field></li>
+                    <li>Health: <field name="health"></field></li>
+                    <li>Loyalty: <field name="loyalty"></field></li>
+                    <li>Gods: <field name="gods"></field></li>
+                    <li>Metal: <field name="metal"></field></li>
+                    <li>Gold: <field name="gold"></field></li>
+                    <li>Food: <field name="food"></field></li>
+                  </ul>
+                </div>
+              </div>
+            </t>
+          </templates>
+
+        </kanban>
+      </field>
+    </record>
 
   </data>
 </odoo>
