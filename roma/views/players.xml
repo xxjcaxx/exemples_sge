@@ -16,10 +16,47 @@
       <field name="model">roma.player</field>
       <field name="arch" type="xml">
         <form>
-          <field name="name"/>
+            <sheet><group>
+                  <field name="name"/>
+            <field name="avatar" widget="image" />
           <field name="citicens"/>
             <button name="generate_citicen" type="object" string="Create Citicen" class="oe_highlight" />
-        </form>
+            </group></sheet>
+           </form>
+      </field>
+    </record>
+
+
+       <record model="ir.ui.view" id="roma.players_kanban_view">
+      <field name="name">Roma Players Kanban</field>
+      <field name="model">roma.player</field>
+      <field name="arch" type="xml">
+        <kanban>
+          <field name="name"/>
+          <field name="citicens"/>
+            <field name="id"/>
+
+               <templates>
+                    <t t-name="kanban-box">
+                            <div class="oe_product_vignette">
+                                <a type="open">
+                                    <img class="oe_kanban_image"
+                                        t-att-alt="record.name.value"
+                                        t-att-src="kanban_image('roma.player', 'avatar', record.id.value)" />
+                                </a>
+                                <div class="oe_product_desc">
+                                    <h4>
+                                        <a type="edit">
+                                            <field name="name"></field>
+                                        </a>
+                                    </h4>
+                                    <field name="citicens" widget="many2many_tags"></field>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+
+        </kanban>
       </field>
     </record>
 

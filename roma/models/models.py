@@ -18,6 +18,7 @@ class player(models.Model):
      _description = 'Players of Roma Aeterna Game'
 
      name = fields.Char(required=True)
+     avatar = fields.Image(max_width=200, max_height=200)
      citicens = fields.One2many('roma.citicen','player')
 
      def generate_citicen(self):
