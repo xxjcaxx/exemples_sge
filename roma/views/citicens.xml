@@ -68,6 +68,24 @@
       </field>
     </record>
 
+       <record model="ir.ui.view" id="roma.citicens_search_view">
+      <field name="name">Roma citicens List</field>
+      <field name="model">roma.citicen</field>
+      <field name="arch" type="xml">
+        <search>
+          <field name="name"/>
+            <field name="name" string="Name and City"
+                   filter_domain="['|', ('name', 'ilike', self), ('city', 'ilike', self)]"/>
+          <field name="player"/>
+          <field name="city"/>
+          <field name="hierarchy"/>
+            <filter name="magister" string="Magister or more" domain="[('hierarchy','>=', '3')]"/>
+            <filter name="group_by_city" string="City" context="{'group_by': 'city'}"/>
+             <filter name="group_by_hierarchy" string="Hierarchy" context="{'group_by': 'hierarchy'}"/>
+        </search>
+      </field>
+    </record>
+
      <record model="ir.ui.view" id="roma.template_form_view">
       <field name="name">Roma tamplate form</field>
       <field name="model">roma.template</field>

@@ -1,6 +1,54 @@
 <odoo>
   <data>
 
+ <record model="ir.ui.view" id="roma.battle_calendar_view">
+      <field name="name">Roma battle calendar</field>
+      <field name="model">roma.battle</field>
+      <field name="arch" type="xml">
+        <calendar string="Battles" date_start="start" date_stop="end" color="city1">
+          <field name="name"/>
+        </calendar>
+      </field>
+    </record>
+
+
+       <record model="ir.ui.view" id="roma.battle_form_view">
+      <field name="name">Roma battle form</field>
+      <field name="model">roma.battle</field>
+      <field name="arch" type="xml">
+        <form>
+            <sheet><group>
+                <field name="name"/>
+                 <field name="city1" />
+                <field name="city2"/>
+                <field name="start"/>
+                <field name="end"/>
+                 <field name="units1"/>
+            </group></sheet>
+
+        </form>
+      </field>
+    </record>
+
+
+        <record model="ir.ui.view" id="roma.units_list_view">
+      <field name="name">Roma units List</field>
+      <field name="model">roma.unit</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="city"/>
+          <field name="type"/>
+          <field name="legionaries"/>
+          <field name="equites"/>
+          <field name="training"/>
+          <field name="total_soldiers"/>
+            <field name="time_to_train"/>
+          <field name="parent_unit"/>
+        </tree>
+      </field>
+    </record>
+
 
   </data>
 </odoo>

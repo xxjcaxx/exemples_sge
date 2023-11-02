@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+import builtins
 
+import bs4.builder
 from odoo import models, fields, api
 import math
 from odoo.exceptions import ValidationError
@@ -61,6 +63,20 @@ class city(models.Model):
     buildings = fields.One2many('roma.building','city')
     citicens = fields.One2many('roma.citicen','city')
     units = fields.One2many('roma.unit','city')
+
+    def generate_unit(self):
+        for c in self:
+            if len(c.buildings.filtered(lambda b: b.soldiers_production > 0)) > 0:
+                time_to_train = 80/sum(c.buildings.mapped('soldiers_production'))
+                self.env['roma.unit'].create({
+                    "name" : "Generated Saeculum",
+                    "city" : c.id,
+                    "type": "1",
+                    "legionaries" : 60,
+                    "equites" : 20,
+                    "training" : 0,
+                    "time_to_train": time_to_train
+                })
 
     @api.constrains('gods')
     def _check_gods(self):
@@ -131,6 +147,7 @@ class building(models.Model):
             if b.type and b.city:
                 b.name = b.type.name +" "+ b.city.name +" "+ str(b.id)
 
+
 class unit(models.Model):
     _name = 'roma.unit'
     _description = 'Group of soldiers'
@@ -146,6 +163,7 @@ class unit(models.Model):
     parent_unit = fields.Many2one('roma.unit')
     units = fields.One2many('roma.unit','parent_unit')
     training = fields.Float(default=1)
+    time_to_train = fields.Float(default=0)
     total_soldiers = fields.Integer(compute='_get_total_soldiers')
 
     @api.depends('legionaries','equites','units')
@@ -155,7 +173,7 @@ class unit(models.Model):
             total = unit.legionaries + unit.equites
             for subunit in unit.units:
                 total = total + subunit.total_soldiers
-        unit.total_soldiers = total
+            unit.total_soldiers = total
 
 class template(models.Model):
     _name = 'roma.template'
@@ -166,3 +184,30 @@ class template(models.Model):
     image = fields.Image(max_width=400, max_height=400)
     image_small = fields.Image(related="image", string="ismall", max_width=200, max_height=200)
     image_thumb = fields.Image(related="image", string="ithumb", max_width=100, max_height=100)
+
+
+class battle(models.Model):
+    _name = 'roma.battle'
+    _description = 'Battles'
+
+    name = fields.Char()
+    start = fields.Datetime()
+    end = fields.Datetime()
+    city1 = fields.Many2one('roma.city', domain="[('id','!=',city2)]")
+    city2 = fields.Many2one('roma.city', domain="[('id','!=',city1)]")
+    units1 = fields.Many2many('roma.unit', domain="[('city','=',city1),('training','>',0)]")
+
+    @api.constrains('city1','city2')
+    def _check_cities(self):
+        for b in self:
+            if b.city1.id == b.city2.id:
+                raise ValidationError("One city can attack itself")
+
+    @api.constrains('city1', 'units1')
+    def _check_units(self):
+        for b in self:
+            for u in b.units:
+                if u.city.id != b.city1.id:
+                    raise ValidationError("All units have to be from city 1")
+                if u.training < 1:
+                    raise ValidationError("All units have to be trained")

@@ -61,6 +61,7 @@
               </page>
               <page string="Units">
                 <field name="units"/>
+                <button type="object" name="generate_unit" string="Generate Unit"></button>
               </page>
             </notebook>
           </sheet>

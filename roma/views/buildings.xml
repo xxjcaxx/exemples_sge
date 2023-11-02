@@ -15,12 +15,13 @@
     </record>
 
      <record model="ir.ui.view" id="roma.buildings_form_view">
-      <field name="name">Roma buildings List</field>
+      <field name="name">Roma buildings form</field>
       <field name="model">roma.building</field>
       <field name="arch" type="xml">
         <form > <sheet>
             <group>
                <field name="icon" widget="image" class="oe_avatar"/>
+                <field name="type" />
           <field name="name"/>
               <field name="city" />
           <field name="food_production"/>

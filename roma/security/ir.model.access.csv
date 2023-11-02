@@ -6,3 +6,4 @@ access_roma_building_type,roma.building_type,model_roma_building_type,base.group
 access_roma_building,roma.building,model_roma_building,base.group_user,1,1,1,1
 access_roma_unit,roma.unit,model_roma_unit,base.group_user,1,1,1,1
 access_roma_template,roma.template,model_roma_template,base.group_user,1,1,1,1
+access_roma_battle,roma.battle,model_roma_battle,base.group_user,1,1,1,1
