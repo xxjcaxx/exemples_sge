@@ -1,0 +1,26 @@
+       <odoo><data>
+        <record model="ir.cron" forcecreate="True" id="roma.cron_update_battle">
+            <field name="name">Roma: Cron Battles</field>
+            <field name="model_id" ref="model_roma_battle"/>
+            <field name="state">code</field>
+            <field name="code">model.update_battles()</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="activity_user_type">specific</field>
+            <field name="doall" eval="False" />
+        </record>
+           <record model="ir.cron" forcecreate="True" id="roma.cron_update_resources">
+            <field name="name">Roma: Cron City resources</field>
+            <field name="model_id" ref="model_roma_city"/>
+            <field name="state">code</field>
+            <field name="code">model.update_resources()</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="activity_user_type">specific</field>
+            <field name="doall" eval="False" />
+        </record>
+       </data></odoo>

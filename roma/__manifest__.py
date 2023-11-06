@@ -41,7 +41,7 @@ Step into the sandals of a Roman citizen and embark on a journey through the pol
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base','mail'],
 
     # always loaded
     'data': [
@@ -50,6 +50,7 @@ Step into the sandals of a Roman citizen and embark on a journey through the pol
         'views/views.xml',
         'views/templates.xml',
         'demo/buildings.xml', 'demo/templates.xml',
+        'crons/cron_game.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

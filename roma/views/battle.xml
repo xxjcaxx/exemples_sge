@@ -23,6 +23,9 @@
                 <field name="city2"/>
                 <field name="start"/>
                 <field name="end"/>
+                <field name="total_time"/>
+                <field name="remaining_time"/>
+                <field name="progress" widget="progressbar"/>
                  <field name="units1"/>
             </group></sheet>
 
