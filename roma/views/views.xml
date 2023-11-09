@@ -15,7 +15,7 @@
       <field name="name">roma citicen</field>
       <field name="res_model">roma.citicen</field>
       <field name="context">{'search_default_group_by_city': 1}</field>
-      <field name="view_mode">tree,form,kanban</field>
+      <field name="view_mode">kanban,tree,form</field>
     </record>
     <record model="ir.actions.act_window" id="roma.action_window_building_type">
       <field name="name">roma building type</field>

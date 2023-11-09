@@ -7,6 +7,7 @@
             <field name="soldiers_production">0</field>
             <field name="gold_production">0</field>
             <field name="metal_production">0</field>
+            <field name="gold_price">100</field>
             <field name="icon">/9j/4AAQSkZJRgABAQEAYABgAAD//gATQ3JlYXRlZCB3aXRoIEdJTVD/4gKwSUNDX1BST0ZJTEUA
 AQEAAAKgbGNtcwQwAABtbnRyUkdCIFhZWiAH5wAKABMADQAfADlhY3NwQVBQTAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLWxjbXMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -105,6 +106,7 @@ oWXTbo/35mDjEs03jdxB3cbgEw3/AH+1ChO6Ll02m6/TU//Z</field>
             <field name="soldiers_production">0</field>
             <field name="gold_production">0</field>
             <field name="metal_production">0</field>
+            <field name="gold_price">1000</field>
              <field name="icon">/9j/4AAQSkZJRgABAQEASABIAAD//gATQ3JlYXRlZCB3aXRoIEdJTVD/4gKwSUNDX1BST0ZJTEUA
 AQEAAAKgbGNtcwQwAABtbnRyUkdCIFhZWiAH5wAKABAAEQAqADthY3NwQVBQTAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLWxjbXMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -301,6 +303,7 @@ DTqzeL/UYaW5LxP/2Q==
             <field name="soldiers_production">1</field>
             <field name="gold_production">-100</field>
             <field name="metal_production">-1000</field>
+            <field name="gold_price">10000</field>
             <field name="icon">/9j/4AAQSkZJRgABAQEBLAEsAAD//gATQ3JlYXRlZCB3aXRoIEdJTVD/4gKwSUNDX1BST0ZJTEUA
 AQEAAAKgbGNtcwQwAABtbnRyUkdCIFhZWiAH5wAKABMADQAfADlhY3NwQVBQTAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLWxjbXMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -409,6 +412,7 @@ zX435NzxM8U8E8TPI+pT0/ghlAcq7ZVDfYuWbV+WA5z6BbKH8GjongPqeB9SjQSnUpKOv/R//9k=</fi
             <field name="soldiers_production">0</field>
             <field name="gold_production">100</field>
             <field name="metal_production">1000</field>
+            <field name="gold_price">10000</field>
             <field name="icon">/9j/4AAQSkZJRgABAQEBLAEsAAD//gATQ3JlYXRlZCB3aXRoIEdJTVD/4gKwSUNDX1BST0ZJTEUA
 AQEAAAKgbGNtcwQwAABtbnRyUkdCIFhZWiAH5wAKABMADQAfADlhY3NwQVBQTAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLWxjbXMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -512,6 +516,7 @@ QJarYPcAeWCek8kQSl+JsoWyhSE7xfDLs0wjXAGsYn//2Q==</field>
             <field name="soldiers_production">0</field>
             <field name="gold_production">10</field>
             <field name="metal_production">100</field>
+            <field name="gold_price">5000</field>
             <field name="icon">/9j/4AAQSkZJRgABAQEBLAEsAAD//gATQ3JlYXRlZCB3aXRoIEdJTVD/4gKwSUNDX1BST0ZJTEUA
 AQEAAAKgbGNtcwQwAABtbnRyUkdCIFhZWiAH5wAKABMADQAfADlhY3NwQVBQTAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLWxjbXMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA

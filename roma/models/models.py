@@ -24,6 +24,7 @@ class player(models.Model):
      name = fields.Char(required=True)
      avatar = fields.Image(max_width=200, max_height=200)
      citicens = fields.One2many('roma.citicen','player')
+     cities = fields.Many2many('roma.city', compute='_get_cities')
 
      def generate_citicen(self):
          for p in self:
@@ -38,6 +39,10 @@ class player(models.Model):
                  "hierarchy": "1",
                  "city": cities[0]
              })
+
+     def _get_cities(self):
+         for p in self:
+             p.cities = p.citicens.city
 
 
 class city(models.Model):
@@ -63,6 +68,7 @@ class city(models.Model):
     food = fields.Float(default=10000)
 
     buildings = fields.One2many('roma.building','city')
+    available_buildings = fields.Many2many('roma.building_type',compute='_get_available_buildings')
     citicens = fields.One2many('roma.citicen','city')
     units = fields.One2many('roma.unit','city')
 
@@ -93,12 +99,15 @@ class city(models.Model):
             metal = c.metal
             gold = c.gold
             food = c.food
-            for b in c.buildings:
+            for b in c.buildings.filtered(lambda b: b.is_active and b.level >=1):
                 metal += b.metal_production
                 gold += b.gold_production
                 food += b.food_production
             c.write({"metal": metal,"gold": gold,"food": food})
 
+    def _get_available_buildings(self):
+        for c in self:
+            c.available_buildings = self.env['roma.building_type'].search([]).filtered(lambda b: b.gold_price <= c.gold).ids
 
 class citicen(models.Model):
     _name = 'roma.citicen'
@@ -129,6 +138,7 @@ class building_type(models.Model):
     soldiers_production = fields.Float()
     gold_production = fields.Float()
     metal_production = fields.Float()
+    gold_price = fields.Float()
     icon = fields.Image(max_width=200, max_height=200)
 
 class building(models.Model):
@@ -138,19 +148,23 @@ class building(models.Model):
     name = fields.Char(compute='_get_name')
     type = fields.Many2one('roma.building_type',required=True)
     city = fields.Many2one('roma.city',required=True)
-    level = fields.Integer(default=1)
+    level = fields.Integer(default=0)
+    update_percent = fields.Float(default=0)
     food_production = fields.Float(compute='_get_productions')
     soldiers_production = fields.Float(compute='_get_productions')
     gold_production = fields.Float(compute='_get_productions')
     metal_production = fields.Float(compute='_get_productions')
+    gold_price = fields.Float(compute='_get_productions')
     icon = fields.Image(related='type.icon')
+    is_active = fields.Boolean(compute='_get_is_active')
     @api.depends('type','level')
     def _get_productions(self):
         for b in self:
             b.food_production = b.type.food_production+ b.type.food_production * math.log(b.level)
-            b.soldiers_production =  b.type.soldiers_production+b.type.soldiers_production * math.log(b.level)
+            b.soldiers_production = b.type.soldiers_production+b.type.soldiers_production * math.log(b.level)
             b.gold_production =  b.type.gold_production+b.type.gold_production * math.log(b.level)
             b.metal_production = b.type.metal_production+b.type.metal_production * math.log(b.level)
+            b.gold_price = b.type.gold_price * b.level
 
     @api.depends('type','city')
     def _get_name(self):
@@ -159,6 +173,35 @@ class building(models.Model):
             if b.type and b.city:
                 b.name = b.type.name +" "+ b.city.name +" "+ str(b.id)
 
+    @api.depends('city')
+    def _get_is_active(self):
+        for b in self:
+            b.is_active = True
+            if b.food_production < 0 and b.city.food <= abs(b.food_production):
+                b.is_active = False
+            if b.gold_production < 0 and b.city.gold <= abs(b.gold_production):
+                b.is_active = False
+            if b.metal_production < 0 and b.city.metal <= abs(b.metal_production):
+                b.is_active = False
+
+    def update_level(self):
+        for b in self.search([('update_percent','<',100)]):
+            b.update_percent += 1/(b.level+1)
+            if(b.update_percent >= 100):
+                b.update_percent = 100
+                b.level += 1
+            print(b.name,b.update_percent)
+
+    def update_building(self):
+        for b in self:
+            if b.update_percent == 100:
+                b.update_percent = 0
+
+    @api.constrains('level')
+    def _check_level(self):
+        for b in self:
+            if b.update_percent != 100:
+                raise ValidationError("You can't update while updating")
 
 class unit(models.Model):
     _name = 'roma.unit'

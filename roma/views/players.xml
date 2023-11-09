@@ -1,48 +1,58 @@
 <odoo>
-  <data>
- <record model="ir.ui.view" id="roma.players_list_view">
-      <field name="name">Roma Players List</field>
-      <field name="model">roma.player</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="name"/>
-          <field name="citicens"/>
-        </tree>
-      </field>
-    </record>
+    <data>
+        <record model="ir.ui.view" id="roma.players_list_view">
+            <field name="name">Roma Players List</field>
+            <field name="model">roma.player</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="citicens"/>
+                </tree>
+            </field>
+        </record>
 
-       <record model="ir.ui.view" id="roma.players_form_view">
-      <field name="name">Roma Players Form</field>
-      <field name="model">roma.player</field>
-      <field name="arch" type="xml">
-        <form>
-            <sheet><group>
-                  <field name="name"/>
-            <field name="avatar" widget="image" />
-          <field name="citicens"/>
-            <button name="generate_citicen" type="object" string="Create Citicen" class="oe_highlight" />
-            </group></sheet>
-           </form>
-      </field>
-    </record>
+        <record model="ir.ui.view" id="roma.players_form_view">
+            <field name="name">Roma Players Form</field>
+            <field name="model">roma.player</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet><group>
+                        <h2><field name="name"/></h2>
+                        <field name="avatar" widget="image" />
+                    </group>
+                        <notebook>
+                            <page string="Citicens">
+                            <group>
+                                <field name="citicens" mode="kanban"/>
+                                <button name="generate_citicen" type="object" string="Create Citicen" class="oe_highlight" />
+                            </group>
+                        </page>
+                            <page string="cities">
+                                <field name="cities" mode="kanban"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
 
-       <record model="ir.ui.view" id="roma.players_kanban_view">
-      <field name="name">Roma Players Kanban</field>
-      <field name="model">roma.player</field>
-      <field name="arch" type="xml">
-        <kanban>
-          <field name="name"/>
-          <field name="citicens"/>
-            <field name="id"/>
+        <record model="ir.ui.view" id="roma.players_kanban_view">
+            <field name="name">Roma Players Kanban</field>
+            <field name="model">roma.player</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="name"/>
+                    <field name="citicens"/>
+                    <field name="id"/>
 
-               <templates>
-                    <t t-name="kanban-box">
+                    <templates>
+                        <t t-name="kanban-box">
                             <div class="oe_product_vignette">
                                 <a type="open">
                                     <img class="oe_kanban_image"
-                                        t-att-alt="record.name.value"
-                                        t-att-src="kanban_image('roma.player', 'avatar', record.id.value)" />
+                                         t-att-alt="record.name.value"
+                                         t-att-src="kanban_image('roma.player', 'avatar', record.id.value)" />
                                 </a>
                                 <div class="oe_product_desc">
                                     <h4>
@@ -56,9 +66,9 @@
                         </t>
                     </templates>
 
-        </kanban>
-      </field>
-    </record>
+                </kanban>
+            </field>
+        </record>
 
-  </data>
+    </data>
 </odoo>

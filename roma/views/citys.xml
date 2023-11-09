@@ -48,13 +48,25 @@
             </group>
             <notebook>
               <page string="Buildings">
+                  <separator string="Buildings"></separator>
                 <field name="buildings">
                   <tree>
-                    <field name="name"/>
+                    <field name="type"/>
+
                     <field name="food_production"/>
+                    <field name="gold_production"/>
+                    <field name="metal_production"/>
                     <field name="soldiers_production"/>
+                      <field name="level"/>
+                    <button name="update_building" type="object" string="Update" class="oe_highlight"
+                            attrs="{'invisible': [('update_percent', '!=', 100)] }"
+                    />
+                    <field name="update_percent" widget="progressbar"
+                           attrs="{'invisible': [('update_percent', '==', 100)] }" />
                   </tree>
                 </field>
+                  <separator string="Available Buildings"></separator>
+                <field name="available_buildings"/>
               </page>
               <page string="Citicens">
                 <field name="citicens"/>

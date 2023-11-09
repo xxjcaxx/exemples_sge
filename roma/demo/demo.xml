@@ -5,6 +5,7 @@
             <field name="name">Ron Swanson</field>
         </record>
 
+        <!-- <delete  id="roma.city_demo" model="roma.city"/>  -->
         <record id="roma.city_demo" model="roma.city">
             <field name="name">Saetabis</field>
             <field name="level">2</field>
