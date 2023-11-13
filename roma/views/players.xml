@@ -46,6 +46,7 @@
                     <field name="citicens"/>
                     <field name="id"/>
 
+
                     <templates>
                         <t t-name="kanban-box">
                             <div class="oe_product_vignette">

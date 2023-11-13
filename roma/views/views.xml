@@ -69,5 +69,25 @@
               action="roma.action_window_battle"/>
     <menuitem name="Templates" id="roma.menu_template" parent="roma.menu_aux"
               action="roma.action_window_template"/>
+
+
+     <record id="roma.res_config_settings_view_form_inherit" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.Roma</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="25" />
+            <field name="inherit_id" ref="base.res_config_settings_view_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    <div class="app_settings_block" data-string="Roma Settings" string="Roma Settings" data-key="roma">
+                        <div id="players">
+                            <h2>Roma</h2>
+                            <button type="object" name="reset_republic" string="Reset Republic"  class="btn-primary"/>
+                        </div>
+
+                    </div>
+                </xpath>
+
+            </field>
+        </record>
   </data>
 </odoo>

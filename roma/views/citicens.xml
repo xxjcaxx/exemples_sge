@@ -38,7 +38,9 @@
                     </a>
                   </h4>
                   <ul>
-                    <li>city: <field name="city"></field></li>
+                    <li>city: <field name="city" attrs="{'invisible':[('city', '==', False)]}"></field>
+                        <button attrs="{'invisible':[('city', '!=', False)]}" name="assign_random_city" type="object" string="Assign City" class="oe_highlight"/>
+                    </li>
                     <li>hierarchy: <field name="hierarchy"></field></li>
 
                   </ul>
@@ -62,6 +64,9 @@
               <field name="player" />
           <field name="city"/>
           <field name="hierarchy"/>
+                <field name="health"/>
+                <field name="experience"/>
+                <field name="vita"/>
            </group>
           </sheet>
         </form>
@@ -79,7 +84,11 @@
           <field name="player"/>
           <field name="city"/>
           <field name="hierarchy"/>
+                    <field name="health"/>
+                <field name="experience"/>
+                <field name="vita"/>
             <filter name="magister" string="Magister or more" domain="[('hierarchy','>=', '3')]"/>
+             <filter name="dead" string="Dead citicens" domain="[('health','<=', 0)]"/>
             <filter name="group_by_city" string="City" context="{'group_by': 'city'}"/>
              <filter name="group_by_hierarchy" string="Hierarchy" context="{'group_by': 'hierarchy'}"/>
         </search>
