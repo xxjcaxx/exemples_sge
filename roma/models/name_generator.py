@@ -6,4 +6,6 @@ cognoms_romans = ["Abercius", "Abito", "Absens", "Abundantius", "Abundius", "Abu
 
 
 def name_generator():
-    return random.shuffle(noms_romans)[0]+" "+random.shuffle(noms_romans)[0]
+    random.shuffle(noms_romans)
+    random.shuffle(cognoms_romans)
+    return noms_romans[0]+" "+cognoms_romans[0]

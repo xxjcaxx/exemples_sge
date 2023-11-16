@@ -88,7 +88,7 @@
                 <field name="experience"/>
                 <field name="vita"/>
             <filter name="magister" string="Magister or more" domain="[('hierarchy','>=', '3')]"/>
-             <filter name="dead" string="Dead citicens" domain="[('health','<=', 0)]"/>
+             <filter name="dead" string="Dead citicens" domain="[('health','%lt;=', 0)]"/>
             <filter name="group_by_city" string="City" context="{'group_by': 'city'}"/>
              <filter name="group_by_hierarchy" string="Hierarchy" context="{'group_by': 'hierarchy'}"/>
         </search>
