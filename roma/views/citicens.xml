@@ -1,116 +1,142 @@
 <odoo>
-  <data>
- <record model="ir.ui.view" id="roma.citicens_list_view">
-      <field name="name">Roma citicens List</field>
-      <field name="model">roma.citicen</field>
-      <field name="arch" type="xml">
-        <tree >
-          <field name="name"/>
-          <field name="player"/>
-          <field name="city"/>
-          <field name="hierarchy"/>
-        </tree>
-      </field>
-    </record>
+    <data>
+        <record model="ir.ui.view" id="roma.citicens_list_view">
+            <field name="name">Roma citicens List</field>
+            <field name="model">roma.citicen</field>
+            <field name="arch" type="xml">
+                <tree >
+                    <field name="name"/>
+                    <field name="player"/>
+                    <field name="city"/>
+                    <field name="hierarchy"/>
+                </tree>
+            </field>
+        </record>
 
 
-       <record model="ir.ui.view" id="roma.citicens_kanban_view">
-      <field name="name">Roma citicens kanban</field>
-      <field name="model">roma.citicen</field>
-      <field name="arch" type="xml">
-        <kanban default_group_by="player">
-          <field name="name"/>
-            <field name="id"/>
-          <field name="player"/>
-          <field name="city"/>
-          <field name="hierarchy"/>
-              <templates>
-            <t t-name="kanban-box">
-              <div  t-attf-class=" oe_kanban_card o_kanban_record_has_image_fill oe_kanban_color_{{kanban_getcolor(record.hierarchy.raw_value)}}">
-                      <div class="o_kanban_image_fill_left o_kanban_image_full d-none d-md-block "
+        <record model="ir.ui.view" id="roma.citicens_kanban_view">
+            <field name="name">Roma citicens kanban</field>
+            <field name="model">roma.citicen</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="player">
+                    <field name="name"/>
+                    <field name="id"/>
+                    <field name="player"/>
+                    <field name="city"/>
+                    <field name="hierarchy"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div  t-attf-class=" oe_kanban_card o_kanban_record_has_image_fill oe_kanban_color_{{kanban_getcolor(record.hierarchy.raw_value)}}">
+                                <div class="o_kanban_image_fill_left o_kanban_image_full d-none d-md-block "
                                      t-attf-style="background-image:url('#{kanban_image('roma.citicen', 'avatar', record.id.value, placeholder)}')">
                                 </div>
-                <div class="oe_kanban_details d-flex flex-column">
+                                <div class="oe_kanban_details d-flex flex-column">
 
-                  <h4>
-                    <a type="edit">
-                      <field name="name"></field>
-                    </a>
-                  </h4>
-                  <ul>
-                    <li>city: <field name="city" attrs="{'invisible':[('city', '==', False)]}"></field>
-                        <button attrs="{'invisible':[('city', '!=', False)]}" name="assign_random_city" type="object" string="Assign City" class="oe_highlight"/>
-                    </li>
-                    <li>hierarchy: <field name="hierarchy"></field></li>
+                                    <h4>
+                                        <a type="edit">
+                                            <field name="name"></field>
+                                        </a>
+                                    </h4>
+                                    <ul>
+                                        <li>city: <field name="city" attrs="{'invisible':[('city', '==', False)]}"></field>
+                                            <button attrs="{'invisible':[('city', '!=', False)]}" name="assign_random_city" type="object" string="Assign City" class="oe_highlight"/>
+                                        </li>
+                                        <li>hierarchy: <field name="hierarchy"></field></li>
 
-                  </ul>
-                </div>
-              </div>
-            </t>
-          </templates>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
 
-        </kanban>
-      </field>
-    </record>
+                </kanban>
+            </field>
+        </record>
 
-     <record model="ir.ui.view" id="roma.citicen_form_view">
-      <field name="name">Roma citicens form</field>
-      <field name="model">roma.citicen</field>
-      <field name="arch" type="xml">
-        <form > <sheet>
-            <group>
-               <field name="avatar" widget="image" class="oe_avatar"/>
-          <field name="name"/>
-              <field name="player" />
-          <field name="city"/>
-          <field name="hierarchy"/>
-                <field name="health"/>
-                <field name="experience"/>
-                <field name="vita"/>
-           </group>
-          </sheet>
-        </form>
-      </field>
-    </record>
+        <record model="ir.ui.view" id="roma.citicen_form_view">
+            <field name="name">Roma citicens form</field>
+            <field name="model">roma.citicen</field>
+            <field name="arch" type="xml">
+                <form > <sheet>
+                    <group>
+                        <field name="avatar" widget="image" class="oe_avatar"/>
+                        <field name="name"/>
+                        <field name="player" />
+                        <field name="city"/>
+                        <field name="hierarchy"/>
+                        <field name="health"/>
+                        <field name="experience"/>
+                        <field name="vita"/>
+                    </group>
+                    <notebook>
+                        <page string="Equites" attrs="{'invisible':[('hierarchy', '!=', '1')]}">
+                        <group>
+                           <field name="battles"/>
+                        </group>
+                    </page>
+                        <page string="Patricius" attrs="{'invisible':[('hierarchy', '!=', '2')]}">
+                        <group>
+                           <field name="battles"/>
+                            <field name="elections"/>
+                        </group>
+                    </page>
+                        <page string="Magister" attrs="{'invisible':[('hierarchy', '!=', '3')]}">
+                        <group>
+                           <field name="battles"/>
+                               <field name="city_buildings"/>
+                               <field name="available_buildings"/>
+                            <field name="legios"/>
+                        </group>
+                    </page>
+                        <page string="Potestas" attrs="{'invisible':[('hierarchy', '!=', '4')]}">
+                        <group>
 
-       <record model="ir.ui.view" id="roma.citicens_search_view">
-      <field name="name">Roma citicens List</field>
-      <field name="model">roma.citicen</field>
-      <field name="arch" type="xml">
-        <search>
-          <field name="name"/>
-            <field name="name" string="Name and City"
-                   filter_domain="['|', ('name', 'ilike', self), ('city', 'ilike', self)]"/>
-          <field name="player"/>
-          <field name="city"/>
-          <field name="hierarchy"/>
+                        </group>
+                    </page>
+                    </notebook>
+                </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="roma.citicens_search_view">
+            <field name="name">Roma citicens List</field>
+            <field name="model">roma.citicen</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="name" string="Name and City"
+                           filter_domain="['|', ('name', 'ilike', self), ('city', 'ilike', self)]"/>
+                    <field name="player"/>
+                    <field name="city"/>
+                    <field name="hierarchy"/>
                     <field name="health"/>
-                <field name="experience"/>
-                <field name="vita"/>
-            <filter name="magister" string="Magister or more" domain="[('hierarchy','>=', '3')]"/>
-             <filter name="dead" string="Dead citicens" domain="[('health','%lt;=', 0)]"/>
-            <filter name="group_by_city" string="City" context="{'group_by': 'city'}"/>
-             <filter name="group_by_hierarchy" string="Hierarchy" context="{'group_by': 'hierarchy'}"/>
-        </search>
-      </field>
-    </record>
+                    <field name="experience"/>
+                    <field name="vita"/>
+                    <filter name="magister" string="Magister or more" domain="[('hierarchy','>=', '3')]"/>
+                    <filter name="dead" string="Dead citicens" domain="[('health','%lt;=', 0)]"/>
+                    <filter name="group_by_city" string="City" context="{'group_by': 'city'}"/>
+                    <filter name="group_by_hierarchy" string="Hierarchy" context="{'group_by': 'hierarchy'}"/>
+                </search>
+            </field>
+        </record>
 
-     <record model="ir.ui.view" id="roma.template_form_view">
-      <field name="name">Roma tamplate form</field>
-      <field name="model">roma.template</field>
-      <field name="arch" type="xml">
-        <form > <sheet>
-            <group>
-               <field name="image" widget="image" />
-                 <field name="image_small" widget="image" />
-                 <field name="image_thumb" widget="image" />
-          <field name="name"/>
-           <field name="type"/>
-           </group>
-          </sheet>
-        </form>
-      </field>
-    </record>
+        <record model="ir.ui.view" id="roma.template_form_view">
+            <field name="name">Roma tamplate form</field>
+            <field name="model">roma.template</field>
+            <field name="arch" type="xml">
+                <form > <sheet>
+                    <group>
+                        <field name="image" widget="image" />
+                        <field name="image_small" widget="image" />
+                        <field name="image_thumb" widget="image" />
+                        <field name="name"/>
+                        <field name="type"/>
+                    </group>
+                </sheet>
+                </form>
+            </field>
+        </record>
 
-  </data>
+    </data>
 </odoo>

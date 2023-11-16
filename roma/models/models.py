@@ -64,6 +64,9 @@ class city(models.Model):
     buildings = fields.One2many('roma.building','city')
     available_buildings = fields.Many2many('roma.building_type',compute='_get_available_buildings')
     citicens = fields.One2many('roma.citicen','city')
+    senate = fields.Many2many('roma.citicen',compute='_get_senate')
+    laws = fields.One2many('roma.law','city')
+
     units = fields.One2many('roma.unit','city')
 
     def generate_unit(self):
@@ -103,6 +106,11 @@ class city(models.Model):
         for c in self:
             c.available_buildings = self.env['roma.building_type'].search([]).filtered(lambda b: b.gold_price <= c.gold).ids
 
+    def _get_senate(self):
+        for city in self:
+            city.senate = city.citicens.filtered(lambda c: c.hierarchy == '4')
+            print('************',city.senate)
+
 class citicen(models.Model):
     _name = 'roma.citicen'
     _description = 'Important Citicen'
@@ -111,15 +119,28 @@ class citicen(models.Model):
     avatar = fields.Image(max_width=200, max_height=200)
     player = fields.Many2one('roma.player', required=True)
     hierarchy = fields.Selection([('1','Equites'),('2','Patricius'),('3','Magister'),('4','Potestas'),('5','Consul'),('6','Dictator')],required=True)
-    # Sols pot haver un cónsul o un Dictador. Sols hi ha dictador en situació de guerra. Sols hi ha un potestas, que tria als magister
+    # Sols pot haver un cónsul o un Dictador per ciutat. Sols hi ha dictador en situació de guerra. Sols hi ha un potestas, que tria als magister
+    # Un equites no pot passar a patricio si no el nombra un potestas o té un "triumphus" en una batalla .
+    # Un patricio pot ser magister si es guanya Eleccions o amb mèrits militars com un "triumphus" en una batalla o si el nombra un Potestas
     # A partir de magister pots tindre legios
-    # A partir de potestas pots controlar el senat
+    # Els magister tenen el poder de constriur o llevar edificis i millorar la ciutat
+    # Els magister poden arribar a ser potestas si queda un lloc en el senado i és triat pel propi senado a proposta del consul o per molts mèrits militars o de la ciutat
+    # A partir de potestas pots participar en el senat i votar lleis
     # A partir de consul pots tindre dictador i més d'una legio
     # Tindre dictador millora molt el rendiment en batalles però es perd en lealtat, salut i producció
+    # El senat tria al consul o al dictador entre els potestas, declara guerres a proposta del consul (el dicatdor també pot), canvia lleis
+    # El consul proposa entrar en guerra, proposa un candidat a dictador (pot ser ell) i proposa les noves lleis. Un consul declara eleccions per als magisters
+    # Tots voten per igual en les eleccions
     city = fields.Many2one('roma.city')
     health = fields.Float(default=100)
-    vita = fields.Text(default="")
+    vita = fields.Text(default="") # Historia del personatge
     experience = fields.Float(default=0)
+    battles = fields.Many2many('roma.battle')
+    elections = fields.One2many('roma.election_candidate', 'candidate')
+    # Sols per als magisters:
+    city_buildings = fields.One2many('roma.building',related="city.buildings")
+    available_buildings = fields.Many2many('roma.building_type',related="city.available_buildings")
+    legios = fields.One2many('roma.unit','magister')
 
 
     @api.constrains('hierarchy')
@@ -306,3 +327,45 @@ class battle(models.Model):
                     raise ValidationError("All units have to be from city 1")
                 if u.training < 1:
                     raise ValidationError("All units have to be trained")
+
+class election(models.Model):
+    _name = 'roma.election'
+    _description = 'election'
+
+    name = fields.Char()
+    candidates = fields.One2many('roma.election_candidate', 'election')
+    date_end = fields.Datetime()
+
+class election_candidate(models.Model):
+    _name = 'roma.election_candidate'
+    _description = 'election candidate'
+
+    name = fields.Char()
+    candidate = fields.Many2one('roma.citicen')
+    election = fields.Many2one('roma.election')
+    votes = fields.Integer()
+
+class law(models.Model):
+    _name = 'roma.law'
+    _description = 'law'
+
+    name = fields.Char()
+    city = fields.Many2one('roma.city')
+    # Les lleis modifiquen qualsevol norma de les ciutats
+    model_condition = fields.Many2one('ir.model', domain= "[('model','like','roma.%')]")
+    field_condition = fields.Many2one('ir.model.fields', domain= "[('model_id','=',model_condition)]")
+    domain_comparator = fields.Selection([('=','='),('>','>'),('like','like')])
+    comparation_condition = fields.Char()
+
+    model_result = fields.Many2one('ir.model', domain= "[('model','like','roma.%')]")
+    field_result = fields.Many2one('ir.model.fields', domain="[('model_id','=',model_result)]")
+    field_modification = fields.Selection([('add','Add'),('assign','Assign'),('addm2m','Add Many2many')])
+    #result = fields.Char()
+
+    def apply_laws(self):
+        for l in self.search([]):
+            city = l.city
+            print(l.domain_comparator,city[l.field_condition.name],l.comparation_condition)
+            if l.domain_comparator == '=':
+                if str(city[l.field_condition.name]) == str(l.comparation_condition):
+                    print(l)

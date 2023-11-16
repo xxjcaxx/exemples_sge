@@ -48,7 +48,7 @@
             </group>
             <notebook>
               <page string="Buildings">
-                  <separator string="Buildings"></separator>
+                <separator string="Buildings"></separator>
                 <field name="buildings">
                   <tree>
                     <field name="type"/>
@@ -57,7 +57,7 @@
                     <field name="gold_production"/>
                     <field name="metal_production"/>
                     <field name="soldiers_production"/>
-                      <field name="level"/>
+                    <field name="level"/>
                     <button name="update_building" type="object" string="Update" class="oe_highlight"
                             attrs="{'invisible': [('update_percent', '!=', 100)] }"
                     />
@@ -65,15 +65,32 @@
                            attrs="{'invisible': [('update_percent', '==', 100)] }" />
                   </tree>
                 </field>
-                  <separator string="Available Buildings"></separator>
+                <separator string="Available Buildings"></separator>
                 <field name="available_buildings"/>
               </page>
               <page string="Citicens">
-                <field name="citicens"/>
+                <separator string="All Citicens"></separator>
+                <field name="citicens">
+                  <tree  decoration-bf="hierarchy=='2'" decoration-info="hierarchy=='3'" decoration-primary="hierarchy=='4'" decoration-success="hierarchy=='5'" decoration-warning="hierarchy=='6'">
+                    <field name="name"/>
+                    <field name="player"/>
+                    <field name="hierarchy"/>
+                  </tree>
+                </field>
+                <separator string="Senate"></separator>
+                <field name="senate">
+                  <tree>
+                    <field name="name"/>
+                    <field name="player"/>
+                  </tree>
+                </field>
               </page>
               <page string="Units">
                 <field name="units"/>
                 <button type="object" name="generate_unit" string="Generate Unit"></button>
+              </page>
+              <page string="laws">
+                <field name="laws"/>
               </page>
             </notebook>
           </sheet>
