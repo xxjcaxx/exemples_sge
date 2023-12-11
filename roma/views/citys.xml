@@ -66,7 +66,14 @@
                   </tree>
                 </field>
                 <separator string="Available Buildings"></separator>
-                <field name="available_buildings"/>
+                <field name="available_buildings">
+                  <tree>
+                     <field name="name"/>
+                      <button name="build" type="object" string="Built it!" class="oe_highlight"
+                      context="{'city_id':parent.id}"
+                      />
+                  </tree>
+                </field>
               </page>
               <page string="Citicens">
                 <separator string="All Citicens"></separator>

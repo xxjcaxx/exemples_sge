@@ -167,6 +167,17 @@ class building_type(models.Model):
     gold_price = fields.Float()
     icon = fields.Image(max_width=200, max_height=200)
 
+    def build(self):
+        for b in self:
+            city_id = self._context.get('city_id')
+            building = self.env['roma.building'].create({
+                "type": b.id,
+                "city": city_id,
+                "update_percent": 0,
+                "level": 0
+            })
+            building.city.gold -= building.gold_price
+
 class building(models.Model):
     _name = 'roma.building'
     _description = 'Buildings of the cities'
@@ -186,10 +197,10 @@ class building(models.Model):
     @api.depends('type','level')
     def _get_productions(self):
         for b in self:
-            b.food_production = b.type.food_production+ b.type.food_production * math.log(b.level)
-            b.soldiers_production = b.type.soldiers_production+b.type.soldiers_production * math.log(b.level)
-            b.gold_production =  b.type.gold_production+b.type.gold_production * math.log(b.level)
-            b.metal_production = b.type.metal_production+b.type.metal_production * math.log(b.level)
+            b.food_production = b.type.food_production+ b.type.food_production * math.log(b.level+1)
+            b.soldiers_production = b.type.soldiers_production+b.type.soldiers_production * math.log(b.level+1)
+            b.gold_production =  b.type.gold_production+b.type.gold_production * math.log(b.level+1)
+            b.metal_production = b.type.metal_production+b.type.metal_production * math.log(b.level+1)
             b.gold_price = b.type.gold_price * b.level
 
     @api.depends('type','city')
@@ -226,7 +237,7 @@ class building(models.Model):
     @api.constrains('level')
     def _check_level(self):
         for b in self:
-            if b.update_percent != 100:
+            if b.update_percent != 100 and b.level > 0:
                 raise ValidationError("You can't update while updating")
 
 class unit(models.Model):
