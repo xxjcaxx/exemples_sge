@@ -1,6 +1,47 @@
 <odoo>
   <data>
     <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="school.students_tree_view">
+      <field name="name">school students list</field>
+      <field name="model">res.partner</field>
+       <field name="priority" eval="16"/>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="birth_date"/>
+<field name="is_student"/>
+        </tree>
+      </field>
+    </record>
+
+         <record model="ir.ui.view" id="school.students_search_view">
+      <field name="name">school students search</field>
+      <field name="model">res.partner</field>
+       <field name="priority" eval="16"/>
+      <field name="arch" type="xml">
+        <search>
+<filter name="is_student_filter" string="Is Student" domain="[('is_student','=',True)]" />
+        </search>
+      </field>
+    </record>
+
+        <record model="ir.ui.view" id="school.students_form_view">
+      <field name="name">school students form</field>
+      <field name="model">res.partner</field>
+      <field name="arch" type="xml">
+        <form><sheet><group>
+
+            <field name="name"/>
+          <field name="birth_date"/>
+          <field name="is_student"/>
+ <field name="topics"/>  <field name="passed_topics"/>  <field name="qualifications"/>
+        </group></sheet>
+
+        </form>
+      </field>
+    </record>
+
+
 
     <record model="ir.ui.view" id="school.qualification_list">
       <field name="name">school list</field>
@@ -20,8 +61,15 @@
 
     <record model="ir.actions.act_window" id="school.action_window_students">
       <field name="name">school Students</field>
-      <field name="res_model">school.student</field>
+      <field name="res_model">res.partner</field>
       <field name="view_mode">tree,form</field>
+        <field name="domain"></field>
+        <field name="context">{'default_is_student': True, 'search_default_is_student_filter': 1}</field>
+        <field name="search_view_id" ref="school.students_search_view"/>
+
+      <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('school.students_tree_view')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('school.students_form_view')}),]" />
     </record>
     <record model="ir.actions.act_window" id="school.action_window_topics">
       <field name="name">school Topics</field>

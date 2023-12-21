@@ -4,12 +4,14 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
 class student(models.Model):
-     _name = 'school.student'
+     _name = 'res.partner'
+     _inherit = 'res.partner'
      _description = 'The Students'
 
-     name = fields.Char()
+     #name = fields.Char()
      birth_date = fields.Date()
-     photo = fields.Image(max_width=200, max_height=200)
+     is_student = fields.Boolean(default=False)
+    # photo = fields.Image(max_width=200, max_height=200)
      topics = fields.Many2many('school.topic')
      passed_topics = fields.Many2many(comodel_name='school.topic',
                                       relation='passed_topics_students',
@@ -25,8 +27,8 @@ class topic(models.Model):
     course = fields.Selection([('1','First'),('2','Second')])
     teacher = fields.Many2one('school.teacher')
     teacher_phone = fields.Char(related='teacher.phone')
-    students = fields.Many2many('school.student')
-    passed_students = fields.Many2many(comodel_name='school.student',
+    students = fields.Many2many('res.partner')
+    passed_students = fields.Many2many(comodel_name='res.partner',
                                       relation='passed_topics_students',
                                       column1='topic_id',
                                       column2='student_id')
@@ -35,19 +37,32 @@ class topic(models.Model):
     _sql_constraints = [
         ('name_uniq', 'unique(name)', 'Custom Warning Message'),
     ]
-class teacher(models.Model):
-    _name = 'school.teacher'
-    _description = 'The Teachers'
+
+class project(models.Model):
+    _name = 'school.project'
+    _inherit = 'school.topic'
+    _description = 'The Projects'
 
     name = fields.Char()
-    phone = fields.Char()
-    topics = fields.One2many('school.topic','teacher')
+    period = fields.Char()
+    passed_students = fields.Many2many(comodel_name='res.partner',
+                                      relation='passed_projects_students',
+                                      column1='project_id',
+                                      column2='student_id')
+class teacher(models.Model):
+    _name = 'school.teacher'
+    _inherits = {'res.partner' : 'partner_id'}
+    _description = 'The Teachers'
+
+    #name = fields.Char()
+    #phone = fields.Char()
+    teacher_topics = fields.One2many('school.topic','teacher')
 
 class qualification(models.Model):
     _name = 'school.qualification'
     _description = 'Student Qualifications'
 
-    student = fields.Many2one('school.student')
+    student = fields.Many2one('res.partner')
     topic = fields.Many2one('school.topic')
     qualification = fields.Float()
     passes = fields.Boolean(compute='_get_passes')
