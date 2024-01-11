@@ -34,7 +34,7 @@
                         <field name="gold_production"/>
 
                         <field name="metal_production"/>
-                          <field name="gold_price"/>
+                        <field name="gold_price"/>
                     </group>
                 </sheet>
                 </form>
@@ -57,7 +57,7 @@
                             <group>
                                 <field name="gold_production"/>
                                 <field name="metal_production"/>
-                                  <field name="gold_price"/>
+                                <field name="gold_price"/>
                             </group>
                         </group>
                     </sheet>
@@ -65,5 +65,35 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="roma.buildings_wizard_view">
+            <field name="name">Roma buildings wizard</field>
+            <field name="model">roma.building_wizard</field>
+            <field name="arch" type="xml">
+                <form > <sheet>
+                    <group>
+                        <field name="icon" widget="image" class="oe_avatar"/>
+                        <field name="type" />
+                        <field name="name"/>
+                        <field name="city" />
+                        <footer>
+                            <button name="create_building" type="object"
+                                    string="Create Building" class="oe_highlight"/>
+                            or
+                            <button special="cancel" string="Cancel"/>
+                        </footer>
+                    </group>
+                </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="roma.launch_building_wizard" model="ir.actions.act_window">
+            <field name="name">Launch building</field>
+            <field name="res_model">roma.building_wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="model_roma_building"/>
+        </record>
     </data>
 </odoo>

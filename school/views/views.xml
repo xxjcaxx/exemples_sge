@@ -17,7 +17,6 @@
         <record model="ir.ui.view" id="school.students_search_view">
             <field name="name">school students search</field>
             <field name="model">res.partner</field>
-            <field name="priority" eval="16"/>
             <field name="arch" type="xml">
                 <search>
                     <filter name="is_student_filter" string="Is Student" domain="[('is_student','=',True)]" />
@@ -47,9 +46,11 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
+
                <xpath expr="//field[@name='vat']" position="after">
                 <field name="is_student"/>
                </xpath>
+
                 <notebook position="inside">
                     <page string="Student">
                         <group>
@@ -89,7 +90,6 @@
             <field name="domain"></field>
             <field name="context">{'default_is_student': True, 'search_default_is_student_filter': 1}</field>
             <field name="search_view_id" ref="school.students_search_view"/>
-
             <field name="view_ids" eval="[(5, 0, 0),
             (0, 0, {'view_mode': 'tree', 'view_id': ref('school.students_tree_view')}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('school.students_form_view')}),]" />

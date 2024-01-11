@@ -48,6 +48,12 @@
             </group>
             <notebook>
               <page string="Buildings">
+                 <button name="%(roma.launch_building_wizard)d"
+                         type="action" string="New Building" class="oe_highlight"
+                         context="{'city_context': active_id}"
+                 />
+                 <button name="new_building" type="object" string="New building python" class="oe_highlight"   />
+
                 <separator string="Buildings"></separator>
                 <field name="buildings">
                   <tree>

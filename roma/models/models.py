@@ -111,6 +111,14 @@ class city(models.Model):
             city.senate = city.citicens.filtered(lambda c: c.hierarchy == '4')
             print('************',city.senate)
 
+    def new_building(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'roma.building_wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'city_context': self.id}
+        }
 class citicen(models.Model):
     _name = 'roma.citicen'
     _description = 'Important Citicen'
@@ -380,3 +388,28 @@ class law(models.Model):
             if l.domain_comparator == '=':
                 if str(city[l.field_condition.name]) == str(l.comparation_condition):
                     print(l)
+
+
+class building_wizard(models.TransientModel):
+    _name = 'roma.building_wizard'
+
+    def _get_default_city(self):
+        return self._context.get('city_context')
+
+    name = fields.Char(compute='_get_name')
+    type = fields.Many2one('roma.building_type', required=True)
+    city = fields.Many2one('roma.city', required=True, default=_get_default_city)
+    icon = fields.Image(related='type.icon')
+
+    @api.depends('type','city')
+    def _get_name(self):
+        for b in self:
+            b.name = 'undefined'
+            if b.type and b.city:
+                b.name = b.type.name +" "+ b.city.name +" "+ str(b.id)
+
+    def create_building(self):
+        self.env['roma.building'].create({
+            "type": self.type.id,
+            "city": self.city.id
+        })
