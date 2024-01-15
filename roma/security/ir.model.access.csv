@@ -11,3 +11,4 @@ access_roma_election,roma.election,model_roma_election,base.group_user,1,1,1,1
 access_roma_election_candidate,roma.election_candidate,model_roma_election_candidate,base.group_user,1,1,1,1
 access_roma_law,roma.law,model_roma_law,base.group_user,1,1,1,1
 access_roma_building_wizard,roma.building_wizard,model_roma_building_wizard,base.group_user,1,1,1,1
+access_roma_battle_wizard,roma.battle_wizard,model_roma_battle_wizard,base.group_user,1,1,1,1

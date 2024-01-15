@@ -68,6 +68,9 @@ class city(models.Model):
     laws = fields.One2many('roma.law','city')
 
     units = fields.One2many('roma.unit','city')
+    battles_attack = fields.One2many('roma.battle','city1')
+    battles_defense = fields.One2many('roma.battle', 'city2')
+    battles = fields.Many2many('roma.battle', compute='_get_battles')
 
     def generate_unit(self):
         for c in self:
@@ -110,6 +113,10 @@ class city(models.Model):
         for city in self:
             city.senate = city.citicens.filtered(lambda c: c.hierarchy == '4')
             print('************',city.senate)
+
+    def _get_battles(self):
+        for city in self:
+            city.battles = city.battles_attack + city.battles_defense
 
     def new_building(self):
         return {
@@ -281,7 +288,8 @@ class unit(models.Model):
             if u.time_to_train <= 0:
                 u.training += 1
 
-
+    def assign_to_battle(self):
+        print(self)
 
 class template(models.Model):
     _name = 'roma.template'
@@ -301,9 +309,9 @@ class battle(models.Model):
     name = fields.Char()
     start = fields.Datetime(default = lambda self: fields.Datetime.now())
     end = fields.Datetime(compute = '_get_data_end')
-    total_time = fields.Integer(compute = '_get_date_end')
-    remaining_time = fields.Char(compute = '_get_date_end')
-    progress = fields.Float(compute='_get_date_end')
+    total_time = fields.Integer(compute = '_get_data_end')
+    remaining_time = fields.Char(compute = '_get_data_end')
+    progress = fields.Float(compute='_get_data_end')
     city1 = fields.Many2one('roma.city', domain="[('id','!=',city2)]")
     city2 = fields.Many2one('roma.city', domain="[('id','!=',city1)]")
     units1 = fields.Many2many('roma.unit', domain="[('city','=',city1),('training','>',0)]")
@@ -413,3 +421,77 @@ class building_wizard(models.TransientModel):
             "type": self.type.id,
             "city": self.city.id
         })
+
+class battle_wizard(models.TransientModel):
+    _name = 'roma.battle_wizard'
+
+    def _get_default_city(self):
+        return self._context.get('city_context')
+
+    state = fields.Selection([
+        ('cities', "Cities Selection"),
+        ('units', "Units Selection"),
+        ('dates', "Dates Selection"),
+    ], default='cities')
+
+    name = fields.Char()
+    start = fields.Datetime(default=lambda self: fields.Datetime.now())
+
+    city1 = fields.Many2one('roma.city', readonly=True, default=_get_default_city, domain="[('id','!=',city2)]")
+    city2 = fields.Many2one('roma.city', domain="[('id','!=',city1)]")
+    available_units = fields.One2many('roma.unit', related="city1.units")
+    units1 = fields.Many2many('roma.unit', domain="[('city','=',city1),('training','>',0)]")
+    #equites1 = fields.Many2many('roma.citicen', domain="[('city','=',city1),('hierarchy','=','1')]")
+
+    def create_battle(self):
+        min_date = fields.Datetime.from_string(fields.Datetime.now()) - timedelta(minutes=5)
+        if (self.start < min_date):
+            self.start = fields.Datetime.now()
+        self.env['roma.battle'].create({
+            "name": self.name,
+            "start": self.start,
+            "city1": self.city1.id,
+            "city2": self.city2.id
+        })
+
+    def action_previous(self):
+        if (self.state == 'units'):
+            self.state = 'cities'
+        elif (self.state == 'dates'):
+            self.state = 'units'
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Launch battle wizard',
+            'res_model': self._name,
+            'view_mode': 'form',
+            'target': 'new',
+            'res_id': self.id,
+            'context': self._context
+        }
+
+    def action_next(self):
+        if(self.state == 'cities'):
+            self.state = 'units'
+        elif (self.state == 'units'):
+            self.state = 'dates'
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Launch battle wizard',
+            'res_model': self._name,
+            'view_mode': 'form',
+            'target': 'new',
+            'res_id': self.id,
+            'context': self._context
+        }
+
+    @api.onchange('start')
+    def _onchange_start(self):
+        min_date = fields.Datetime.from_string(fields.Datetime.now())-timedelta(minutes=5)
+        print(min_date,fields.Datetime.now())
+        if(self.start < min_date):
+            self.start = fields.Datetime.now()
+            return {
+                'warning': {'title': "Warning", 'message': "Min date", 'type': 'notification'},
+            }
+
+

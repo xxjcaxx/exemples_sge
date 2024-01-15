@@ -1,57 +1,115 @@
 <odoo>
-  <data>
+    <data>
 
- <record model="ir.ui.view" id="roma.battle_calendar_view">
-      <field name="name">Roma battle calendar</field>
-      <field name="model">roma.battle</field>
-      <field name="arch" type="xml">
-        <calendar string="Battles" date_start="start" date_stop="end" color="city1">
-          <field name="name"/>
-        </calendar>
-      </field>
-    </record>
+        <record model="ir.ui.view" id="roma.battle_calendar_view">
+            <field name="name">Roma battle calendar</field>
+            <field name="model">roma.battle</field>
+            <field name="arch" type="xml">
+                <calendar string="Battles" date_start="start" date_stop="end" color="city1">
+                    <field name="name"/>
+                </calendar>
+            </field>
+        </record>
 
 
-       <record model="ir.ui.view" id="roma.battle_form_view">
-      <field name="name">Roma battle form</field>
-      <field name="model">roma.battle</field>
-      <field name="arch" type="xml">
-        <form>
-            <sheet><group>
-                <field name="name"/>
-                 <field name="city1" />
-                <field name="city2"/>
-                <field name="start"/>
-                <field name="end"/>
-                <field name="total_time"/>
-                <field name="remaining_time"/>
-                <field name="progress" widget="progressbar"/>
-                 <field name="units1"/>
-            </group></sheet>
+        <record model="ir.ui.view" id="roma.battle_form_view">
+            <field name="name">Roma battle form</field>
+            <field name="model">roma.battle</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet><group>
+                        <field name="name"/>
+                        <field name="city1" />
+                        <field name="city2"/>
+                        <field name="start"/>
+                        <field name="end"/>
+                        <field name="total_time"/>
+                        <field name="remaining_time"/>
+                        <field name="progress" widget="progressbar"/>
+                        <field name="units1"/>
+                    </group></sheet>
 
-        </form>
-      </field>
-    </record>
+                </form>
+            </field>
+        </record>
 
 
         <record model="ir.ui.view" id="roma.units_list_view">
-      <field name="name">Roma units List</field>
-      <field name="model">roma.unit</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="name"/>
-          <field name="city"/>
-          <field name="type"/>
-          <field name="legionaries"/>
-          <field name="equites"/>
-          <field name="training"/>
-          <field name="total_soldiers"/>
-            <field name="time_to_train"/>
-          <field name="parent_unit"/>
-        </tree>
-      </field>
-    </record>
+            <field name="name">Roma units List</field>
+            <field name="model">roma.unit</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="city"/>
+                    <field name="type"/>
+                    <field name="legionaries"/>
+                    <field name="equites"/>
+                    <field name="training"/>
+                    <field name="total_soldiers"/>
+                    <field name="time_to_train"/>
+                    <field name="parent_unit"/>
+                </tree>
+            </field>
+        </record>
 
 
-  </data>
+        <record model="ir.ui.view" id="roma.battle_wizard_view">
+            <field name="name">Roma battle wizard</field>
+            <field name="model">roma.battle_wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_previous" type="object"
+                                string="Previous" states="units,dates"
+                        />
+                        <button name="action_next" type="object"
+                                string="Next"
+                                states="cities,units"
+                                class="oe_highlight"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group states="cities">
+                            <field name="name"/>
+                            <field name="city1" />
+                            <field name="city2"/>
+                        </group>
+                        <group states="units">
+                            <field name="available_units">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="type"/>
+                                    <field name="legionaries"/>
+                                    <field name="equites"/>
+                                    <field name="total_soldiers"/>
+                                    <field name="parent_unit"/>
+                                    <button name="assign_to_battle" type="object" string="Assign To battle" class="oe_highlight"   />
+                                </tree>
+                            </field>
+                            <field name="units1"/>
+                        </group>
+                        <group states="dates">
+                            <field name="start"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button states="dates" name="create_battle" type="object"
+                                string="Create Battle" class="oe_highlight"/>
+                        or
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+
+
+        <record id="roma.launch_battle_wizard" model="ir.actions.act_window">
+            <field name="name">Launch battle wizard</field>
+            <field name="res_model">roma.battle_wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
 </odoo>
