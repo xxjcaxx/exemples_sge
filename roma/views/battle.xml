@@ -59,14 +59,25 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
+                        <field name="state" widget="statusbar"/>
                         <button name="action_previous" type="object"
                                 string="Previous" states="units,dates"
+                        />
+                        <button name="action_previous" type="object"
+                                string="Previous" states="cities"
+                                 class="oe_highlight disabled"
                         />
                         <button name="action_next" type="object"
                                 string="Next"
                                 states="cities,units"
-                                class="oe_highlight"/>
-                        <field name="state" widget="statusbar"/>
+                                class="oe_highlight"
+                        context="{'wizard_available_units': available_units}"
+                        />
+                        <button name="action_next" type="object"
+                                string="Next"
+                                states="dates"
+                                class="oe_highlight  disabled"/>
+
                     </header>
                     <sheet>
                         <group states="cities">
@@ -83,10 +94,18 @@
                                     <field name="equites"/>
                                     <field name="total_soldiers"/>
                                     <field name="parent_unit"/>
-                                    <button name="assign_to_battle" type="object" string="Assign To battle" class="oe_highlight"   />
+                                    <button name="assign_to_battle"
+                                            type="object"
+                                            string="Assign To battle"
+                                            class="oe_highlight"
+                                            context="{'battle_wizard_context': parent.id}"   />
+                                    <field name="selected" widget="boolean_toggle"/>
                                 </tree>
                             </field>
-                            <field name="units1"/>
+                         <!--     <button name="assign_multiple" type="object"
+                                string="Assign Multiple" class="oe_highlight" context="{'wizard_available_units': available_units}"/>
+                            <separator string="units"></separator>
+                            <field name="units1"/>  -->
                         </group>
                         <group states="dates">
                             <field name="start"/>
@@ -95,7 +114,8 @@
                     <footer>
                         <button states="dates" name="create_battle" type="object"
                                 string="Create Battle" class="oe_highlight"/>
-                        or
+                        <button states="cities,units" name="create_battle" type="object"
+                                string="Create Battle" class="oe_highlight disabled"/>
                         <button special="cancel" string="Cancel"/>
                     </footer>
 

@@ -12,31 +12,31 @@ from . import name_generator
 
 
 class player(models.Model):
-     _name = 'roma.player'
-     _description = 'Players of Roma Aeterna Game'
+    _name = 'roma.player'
+    _description = 'Players of Roma Aeterna Game'
 
-     name = fields.Char(required=True)
-     avatar = fields.Image(max_width=200, max_height=200)
-     citicens = fields.One2many('roma.citicen','player')
-     cities = fields.Many2many('roma.city', compute='_get_cities')
+    name = fields.Char(required=True)
+    avatar = fields.Image(max_width=200, max_height=200)
+    citicens = fields.One2many('roma.citicen', 'player')
+    cities = fields.Many2many('roma.city', compute='_get_cities')
 
-     def generate_citicen(self):
-         for p in self:
-             templates = self.env['roma.template'].search([]).ids
-             random.shuffle(templates)
-             cities = self.env['roma.city'].search([]).ids
-             random.shuffle(cities)
-             citicen = p.citicens.create({
-                 "name": name_generator.name_generator(),
-                 "avatar": self.env['roma.template'].browse(templates[0]).image_small,
-                 "player": p.id,
-                 "hierarchy": "1",
-                 "city": cities[0]
-             })
+    def generate_citicen(self):
+        for p in self:
+            templates = self.env['roma.template'].search([]).ids
+            random.shuffle(templates)
+            cities = self.env['roma.city'].search([]).ids
+            random.shuffle(cities)
+            citicen = p.citicens.create({
+                "name": name_generator.name_generator(),
+                "avatar": self.env['roma.template'].browse(templates[0]).image_small,
+                "player": p.id,
+                "hierarchy": "1",
+                "city": cities[0]
+            })
 
-     def _get_cities(self):
-         for p in self:
-             p.cities = p.citicens.city
+    def _get_cities(self):
+        for p in self:
+            p.cities = p.citicens.city
 
 
 class city(models.Model):
@@ -44,7 +44,7 @@ class city(models.Model):
     _description = 'Cities'
 
     name = fields.Char(required=True)
-    level = fields.Selection([('1','Villa'),('2','Oppidum'),('3','Urbs')], required=True, default='1')
+    level = fields.Selection([('1', 'Villa'), ('2', 'Oppidum'), ('3', 'Urbs')], required=True, default='1')
     forum_level = fields.Integer()
     # Desbloca la capacitat de tindre magisters, consul o dictador
     thermae_level = fields.Integer()
@@ -61,28 +61,28 @@ class city(models.Model):
     gold = fields.Float(default=100)
     food = fields.Float(default=10000)
 
-    buildings = fields.One2many('roma.building','city')
-    available_buildings = fields.Many2many('roma.building_type',compute='_get_available_buildings')
-    citicens = fields.One2many('roma.citicen','city')
-    senate = fields.Many2many('roma.citicen',compute='_get_senate')
-    laws = fields.One2many('roma.law','city')
+    buildings = fields.One2many('roma.building', 'city')
+    available_buildings = fields.Many2many('roma.building_type', compute='_get_available_buildings')
+    citicens = fields.One2many('roma.citicen', 'city')
+    senate = fields.Many2many('roma.citicen', compute='_get_senate')
+    laws = fields.One2many('roma.law', 'city')
 
-    units = fields.One2many('roma.unit','city')
-    battles_attack = fields.One2many('roma.battle','city1')
+    units = fields.One2many('roma.unit', 'city')
+    battles_attack = fields.One2many('roma.battle', 'city1')
     battles_defense = fields.One2many('roma.battle', 'city2')
     battles = fields.Many2many('roma.battle', compute='_get_battles')
 
     def generate_unit(self):
         for c in self:
             if len(c.buildings.filtered(lambda b: b.soldiers_production > 0)) > 0:
-                time_to_train = 80/sum(c.buildings.mapped('soldiers_production'))
+                time_to_train = 80 / sum(c.buildings.mapped('soldiers_production'))
                 self.env['roma.unit'].create({
-                    "name" : "Generated Saeculum",
-                    "city" : c.id,
+                    "name": "Generated Saeculum",
+                    "city": c.id,
                     "type": "1",
-                    "legionaries" : 60,
-                    "equites" : 20,
-                    "training" : 0,
+                    "legionaries": 60,
+                    "equites": 20,
+                    "training": 0,
                     "time_to_train": time_to_train
                 })
 
@@ -99,20 +99,21 @@ class city(models.Model):
             metal = c.metal
             gold = c.gold
             food = c.food
-            for b in c.buildings.filtered(lambda b: b.is_active and b.level >=1):
+            for b in c.buildings.filtered(lambda b: b.is_active and b.level >= 1):
                 metal += b.metal_production
                 gold += b.gold_production
                 food += b.food_production
-            c.write({"metal": metal,"gold": gold,"food": food})
+            c.write({"metal": metal, "gold": gold, "food": food})
 
     def _get_available_buildings(self):
         for c in self:
-            c.available_buildings = self.env['roma.building_type'].search([]).filtered(lambda b: b.gold_price <= c.gold).ids
+            c.available_buildings = self.env['roma.building_type'].search([]).filtered(
+                lambda b: b.gold_price <= c.gold).ids
 
     def _get_senate(self):
         for city in self:
             city.senate = city.citicens.filtered(lambda c: c.hierarchy == '4')
-            print('************',city.senate)
+            print('************', city.senate)
 
     def _get_battles(self):
         for city in self:
@@ -126,6 +127,8 @@ class city(models.Model):
             'target': 'new',
             'context': {'city_context': self.id}
         }
+
+
 class citicen(models.Model):
     _name = 'roma.citicen'
     _description = 'Important Citicen'
@@ -133,7 +136,9 @@ class citicen(models.Model):
     name = fields.Char(required=True)
     avatar = fields.Image(max_width=200, max_height=200)
     player = fields.Many2one('roma.player', required=True)
-    hierarchy = fields.Selection([('1','Equites'),('2','Patricius'),('3','Magister'),('4','Potestas'),('5','Consul'),('6','Dictator')],required=True)
+    hierarchy = fields.Selection(
+        [('1', 'Equites'), ('2', 'Patricius'), ('3', 'Magister'), ('4', 'Potestas'), ('5', 'Consul'),
+         ('6', 'Dictator')], required=True)
     # Sols pot haver un cónsul o un Dictador per ciutat. Sols hi ha dictador en situació de guerra. Sols hi ha un potestas, que tria als magister
     # Un equites no pot passar a patricio si no el nombra un potestas o té un "triumphus" en una batalla .
     # Un patricio pot ser magister si es guanya Eleccions o amb mèrits militars com un "triumphus" en una batalla o si el nombra un Potestas
@@ -148,28 +153,29 @@ class citicen(models.Model):
     # Tots voten per igual en les eleccions
     city = fields.Many2one('roma.city')
     health = fields.Float(default=100)
-    vita = fields.Text(default="") # Historia del personatge
+    vita = fields.Text(default="")  # Historia del personatge
     experience = fields.Float(default=0)
     battles = fields.Many2many('roma.battle')
     elections = fields.One2many('roma.election_candidate', 'candidate')
     # Sols per als magisters:
-    city_buildings = fields.One2many('roma.building',related="city.buildings")
-    available_buildings = fields.Many2many('roma.building_type',related="city.available_buildings")
-    legios = fields.One2many('roma.unit','magister')
-
+    city_buildings = fields.One2many('roma.building', related="city.buildings")
+    available_buildings = fields.Many2many('roma.building_type', related="city.available_buildings")
+    legios = fields.One2many('roma.unit', 'magister')
 
     @api.constrains('hierarchy')
     def _check_hierarchy(self):
         for c in self:
-           print('a')
+            print('a')
 
     def assign_random_city(self):
         for c in self:
             cities = self.env['roma.city'].search([]).ids
             random.shuffle(cities)
             c.city = cities[0]
-            print(c.vita,str(fields.Datetime.now()),str(c.city.name))
+            print(c.vita, str(fields.Datetime.now()), str(c.city.name))
             c.vita = str(c.vita) + str(fields.Datetime.now()) + " Is assigned to " + str(c.city.name)
+
+
 class building_type(models.Model):
     _name = 'roma.building_type'
     _description = 'Type of buildings'
@@ -193,13 +199,14 @@ class building_type(models.Model):
             })
             building.city.gold -= building.gold_price
 
+
 class building(models.Model):
     _name = 'roma.building'
     _description = 'Buildings of the cities'
 
     name = fields.Char(compute='_get_name')
-    type = fields.Many2one('roma.building_type',required=True)
-    city = fields.Many2one('roma.city',required=True, ondelete="cascade")
+    type = fields.Many2one('roma.building_type', required=True)
+    city = fields.Many2one('roma.city', required=True, ondelete="cascade")
     level = fields.Integer(default=0)
     update_percent = fields.Float(default=0)
     food_production = fields.Float(compute='_get_productions')
@@ -209,21 +216,22 @@ class building(models.Model):
     gold_price = fields.Float(compute='_get_productions')
     icon = fields.Image(related='type.icon')
     is_active = fields.Boolean(compute='_get_is_active')
-    @api.depends('type','level')
+
+    @api.depends('type', 'level')
     def _get_productions(self):
         for b in self:
-            b.food_production = b.type.food_production+ b.type.food_production * math.log(b.level+1)
-            b.soldiers_production = b.type.soldiers_production+b.type.soldiers_production * math.log(b.level+1)
-            b.gold_production =  b.type.gold_production+b.type.gold_production * math.log(b.level+1)
-            b.metal_production = b.type.metal_production+b.type.metal_production * math.log(b.level+1)
+            b.food_production = b.type.food_production + b.type.food_production * math.log(b.level + 1)
+            b.soldiers_production = b.type.soldiers_production + b.type.soldiers_production * math.log(b.level + 1)
+            b.gold_production = b.type.gold_production + b.type.gold_production * math.log(b.level + 1)
+            b.metal_production = b.type.metal_production + b.type.metal_production * math.log(b.level + 1)
             b.gold_price = b.type.gold_price * b.level
 
-    @api.depends('type','city')
+    @api.depends('type', 'city')
     def _get_name(self):
         for b in self:
             b.name = 'undefined'
             if b.type and b.city:
-                b.name = b.type.name +" "+ b.city.name +" "+ str(b.id)
+                b.name = b.type.name + " " + b.city.name + " " + str(b.id)
 
     @api.depends('city')
     def _get_is_active(self):
@@ -237,12 +245,12 @@ class building(models.Model):
                 b.is_active = False
 
     def update_level(self):
-        for b in self.search([('update_percent','<',100)]):
-            b.update_percent += 1/(b.level+1)
-            if(b.update_percent >= 100):
+        for b in self.search([('update_percent', '<', 100)]):
+            b.update_percent += 1 / (b.level + 1)
+            if (b.update_percent >= 100):
                 b.update_percent = 100
                 b.level += 1
-            print(b.name,b.update_percent)
+            print(b.name, b.update_percent)
 
     def update_building(self):
         for b in self:
@@ -255,26 +263,27 @@ class building(models.Model):
             if b.update_percent != 100 and b.level > 0:
                 raise ValidationError("You can't update while updating")
 
+
 class unit(models.Model):
     _name = 'roma.unit'
     _description = 'Group of soldiers'
 
     name = fields.Char()
     city = fields.Many2one('roma.city')
-    magister = fields.Many2one('roma.citicen', domain=[('hierarchy','>=', '3')])
-    type = fields.Selection([('1','Saeculum'),('2','Cohortis'),('3','Legio')])
+    magister = fields.Many2one('roma.citicen', domain=[('hierarchy', '>=', '3')])
+    type = fields.Selection([('1', 'Saeculum'), ('2', 'Cohortis'), ('3', 'Legio')])
     #  1 Centuria 80 soldats
     # 2 Cohortis 6 centuries
     # 3 Legio 10 cohortes
     legionaries = fields.Integer()
     equites = fields.Integer()
     parent_unit = fields.Many2one('roma.unit')
-    units = fields.One2many('roma.unit','parent_unit')
+    units = fields.One2many('roma.unit', 'parent_unit')
     training = fields.Float(default=1)
     time_to_train = fields.Float(default=0)
     total_soldiers = fields.Integer(compute='_get_total_soldiers')
 
-    @api.depends('legionaries','equites','units')
+    @api.depends('legionaries', 'equites', 'units')
     def _get_total_soldiers(self):
         print(self)
         for unit in self:
@@ -282,14 +291,13 @@ class unit(models.Model):
             for subunit in unit.units:
                 total = total + subunit.total_soldiers
             unit.total_soldiers = total
+
     def update_train(self):
-        for u in self.search([('time_to_train','>',0)]):
+        for u in self.search([('time_to_train', '>', 0)]):
             u.time_to_train = u.time_to_train - 1
             if u.time_to_train <= 0:
                 u.training += 1
 
-    def assign_to_battle(self):
-        print(self)
 
 class template(models.Model):
     _name = 'roma.template'
@@ -307,40 +315,37 @@ class battle(models.Model):
     _description = 'Battles'
 
     name = fields.Char()
-    start = fields.Datetime(default = lambda self: fields.Datetime.now())
-    end = fields.Datetime(compute = '_get_data_end')
-    total_time = fields.Integer(compute = '_get_data_end')
-    remaining_time = fields.Char(compute = '_get_data_end')
+    start = fields.Datetime(default=lambda self: fields.Datetime.now())
+    end = fields.Datetime(compute='_get_data_end')
+    total_time = fields.Integer(compute='_get_data_end')
+    remaining_time = fields.Char(compute='_get_data_end')
     progress = fields.Float(compute='_get_data_end')
     city1 = fields.Many2one('roma.city', domain="[('id','!=',city2)]")
     city2 = fields.Many2one('roma.city', domain="[('id','!=',city1)]")
     units1 = fields.Many2many('roma.unit', domain="[('city','=',city1),('training','>',0)]")
     equites1 = fields.Many2many('roma.citicen', domain="[('city','=',city1),('hierarchy','=','1')]")
 
-
     def update_battles(self):
         for b in self.search([]):
             if fields.Datetime.now() > b.end:
                 print(b.name)
 
-
     @api.depends('start')
     def _get_data_end(self):
         for b in self:
             date_start = fields.Datetime.from_string(b.start)
-            date_end = date_start + timedelta(hours = 2)
+            date_end = date_start + timedelta(hours=2)
             b.end = fields.Datetime.to_string(date_end)
-            b.total_time = (date_end - date_start).total_seconds()/60
-            remaining = relativedelta(date_end,datetime.now())
-            b.remaining_time = str(remaining.hours)+":"+str(remaining.minutes)+":"+str(remaining.seconds)
-            passed_time = (datetime.now()-date_start).total_seconds()
-            b.progress = (passed_time*100)/(b.total_time*60)
+            b.total_time = (date_end - date_start).total_seconds() / 60
+            remaining = relativedelta(date_end, datetime.now())
+            b.remaining_time = str(remaining.hours) + ":" + str(remaining.minutes) + ":" + str(remaining.seconds)
+            passed_time = (datetime.now() - date_start).total_seconds()
+            b.progress = (passed_time * 100) / (b.total_time * 60)
             if b.progress > 100:
                 b.progress = 100
                 b.remaining_time = '00:00:00'
 
-
-    @api.constrains('city1','city2')
+    @api.constrains('city1', 'city2')
     def _check_cities(self):
         for b in self:
             if b.city1.id == b.city2.id:
@@ -355,6 +360,7 @@ class battle(models.Model):
                 if u.training < 1:
                     raise ValidationError("All units have to be trained")
 
+
 class election(models.Model):
     _name = 'roma.election'
     _description = 'election'
@@ -362,6 +368,7 @@ class election(models.Model):
     name = fields.Char()
     candidates = fields.One2many('roma.election_candidate', 'election')
     date_end = fields.Datetime()
+
 
 class election_candidate(models.Model):
     _name = 'roma.election_candidate'
@@ -372,6 +379,7 @@ class election_candidate(models.Model):
     election = fields.Many2one('roma.election')
     votes = fields.Integer()
 
+
 class law(models.Model):
     _name = 'roma.law'
     _description = 'law'
@@ -379,20 +387,21 @@ class law(models.Model):
     name = fields.Char()
     city = fields.Many2one('roma.city')
     # Les lleis modifiquen qualsevol norma de les ciutats
-    model_condition = fields.Many2one('ir.model', domain= "[('model','like','roma.%')]")
-    field_condition = fields.Many2one('ir.model.fields', domain= "[('model_id','=',model_condition)]")
-    domain_comparator = fields.Selection([('=','='),('>','>'),('like','like')])
+    model_condition = fields.Many2one('ir.model', domain="[('model','like','roma.%')]")
+    field_condition = fields.Many2one('ir.model.fields', domain="[('model_id','=',model_condition)]")
+    domain_comparator = fields.Selection([('=', '='), ('>', '>'), ('like', 'like')])
     comparation_condition = fields.Char()
 
-    model_result = fields.Many2one('ir.model', domain= "[('model','like','roma.%')]")
+    model_result = fields.Many2one('ir.model', domain="[('model','like','roma.%')]")
     field_result = fields.Many2one('ir.model.fields', domain="[('model_id','=',model_result)]")
-    field_modification = fields.Selection([('add','Add'),('assign','Assign'),('addm2m','Add Many2many')])
-    #result = fields.Char()
+    field_modification = fields.Selection([('add', 'Add'), ('assign', 'Assign'), ('addm2m', 'Add Many2many')])
+
+    # result = fields.Char()
 
     def apply_laws(self):
         for l in self.search([]):
             city = l.city
-            print(l.domain_comparator,city[l.field_condition.name],l.comparation_condition)
+            print(l.domain_comparator, city[l.field_condition.name], l.comparation_condition)
             if l.domain_comparator == '=':
                 if str(city[l.field_condition.name]) == str(l.comparation_condition):
                     print(l)
@@ -409,18 +418,19 @@ class building_wizard(models.TransientModel):
     city = fields.Many2one('roma.city', required=True, default=_get_default_city)
     icon = fields.Image(related='type.icon')
 
-    @api.depends('type','city')
+    @api.depends('type', 'city')
     def _get_name(self):
         for b in self:
             b.name = 'undefined'
             if b.type and b.city:
-                b.name = b.type.name +" "+ b.city.name +" "+ str(b.id)
+                b.name = b.type.name + " " + b.city.name + " " + str(b.id)
 
     def create_building(self):
         self.env['roma.building'].create({
             "type": self.type.id,
             "city": self.city.id
         })
+
 
 class battle_wizard(models.TransientModel):
     _name = 'roma.battle_wizard'
@@ -439,9 +449,24 @@ class battle_wizard(models.TransientModel):
 
     city1 = fields.Many2one('roma.city', readonly=True, default=_get_default_city, domain="[('id','!=',city2)]")
     city2 = fields.Many2one('roma.city', domain="[('id','!=',city1)]")
-    available_units = fields.One2many('roma.unit', related="city1.units")
-    units1 = fields.Many2many('roma.unit', domain="[('city','=',city1),('training','>',0)]")
-    #equites1 = fields.Many2many('roma.citicen', domain="[('city','=',city1),('hierarchy','=','1')]")
+    available_units = fields.Many2many('roma.battle_wizard_unit', compute='_get_units')
+    units1 = fields.Many2many('roma.battle_wizard_unit', readonly=True)
+
+    # equites1 = fields.Many2many('roma.citicen', domain="[('city','=',city1),('hierarchy','=','1')]")
+
+    @api.depends('city1')
+    def _get_units(self):
+        available_units = self.env['roma.battle_wizard_unit']
+
+        if len(self.city1) > 0:
+            city_available_units = self.city1.units;
+            for a_unit in city_available_units:
+                selected = False
+                if (len(self.units1.filtered(lambda u: u.unit.id == a_unit.id)) > 0):
+                    selected = True
+                available_units = available_units + self.env['roma.battle_wizard_unit']\
+                    .create({"unit": a_unit.id, "selected": selected})
+            self.available_units = available_units
 
     def create_battle(self):
         min_date = fields.Datetime.from_string(fields.Datetime.now()) - timedelta(minutes=5)
@@ -470,10 +495,40 @@ class battle_wizard(models.TransientModel):
         }
 
     def action_next(self):
-        if(self.state == 'cities'):
-            self.state = 'units'
+        if (self.state == 'cities'):
+            if(len(self.city2)>0):
+                self.state = 'units'
+            else:
+                return {
+                    'type': 'ir.actions.client',
+                    'tag': 'display_notification',
+                    'params': {
+                        'message': 'City 2 not selected',
+                        'type': 'info',  # types: success,warning,danger,info
+                        'sticky': False,
+                    }
+                }
         elif (self.state == 'units'):
+            self.assign_multiple()
             self.state = 'dates'
+        print(self)
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Launch battle wizard',
+            'res_model': self._name,
+            'view_mode': 'form',
+            'target': 'new',
+            'res_id': self.id,
+            'context': self._context
+        }
+
+    def assign_multiple(self):
+       # selected = self.available_units.filtered(lambda u: u.selected == True)
+       # print("SELECTED", selected, self._origin.available_units.mapped('selected'))
+        context_available_units = self._context.get('wizard_available_units')[0][2]
+        selected = self.env['roma.battle_wizard_unit'].browse(context_available_units).filtered(lambda u: u.selected == True)
+        print("context selecte", selected)
+        self.units1 = selected.ids
         return {
             'type': 'ir.actions.act_window',
             'name': 'Launch battle wizard',
@@ -486,12 +541,42 @@ class battle_wizard(models.TransientModel):
 
     @api.onchange('start')
     def _onchange_start(self):
-        min_date = fields.Datetime.from_string(fields.Datetime.now())-timedelta(minutes=5)
-        print(min_date,fields.Datetime.now())
-        if(self.start < min_date):
+        min_date = fields.Datetime.from_string(fields.Datetime.now()) - timedelta(minutes=5)
+        print(min_date, fields.Datetime.now())
+        if (self.start < min_date):
             self.start = fields.Datetime.now()
             return {
                 'warning': {'title': "Warning", 'message': "Min date", 'type': 'notification'},
             }
 
 
+class battle_wizard_unit(models.TransientModel):
+    _name = 'roma.battle_wizard_unit'
+
+    unit = fields.Many2one('roma.unit')
+
+    name = fields.Char(related='unit.name')
+    city = fields.Many2one('roma.city', related='unit.city')
+    type = fields.Selection(related='unit.type')
+    legionaries = fields.Integer(related='unit.legionaries')
+    equites = fields.Integer(related='unit.equites')
+    parent_unit = fields.Many2one('roma.unit', related='unit.parent_unit')
+    total_soldiers = fields.Integer(related='unit.total_soldiers')
+
+    selected = fields.Boolean()
+
+    def assign_to_battle(self):
+        wizard = self._context.get('battle_wizard_context')
+
+        wizard = self.env['roma.battle_wizard'].browse(wizard)
+        wizard.write({"units1": [(4, self.id)]})
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Launch battle wizard',
+            'res_model': wizard._name,
+            'view_mode': 'form',
+            'target': 'new',
+            'res_id': wizard.id,
+            'context': wizard._context
+        }
