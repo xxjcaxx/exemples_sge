@@ -1,0 +1,50 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="lol.list">
+      <field name="name">lol list</field>
+      <field name="model">lol.lol</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="lol.action_characters_window">
+      <field name="name">lol character window</field>
+      <field name="res_model">lol.character</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="lol.action_server">
+      <field name="name">lol server</field>
+      <field name="model_id" ref="model_lol_lol"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+
+    <!-- actions -->
+
+    <menuitem name="Characters" id="lol.menu_characters" parent="lol.menu_management"
+              action="lol.action_characters_window"/>
+
+  </data>
+</odoo>
