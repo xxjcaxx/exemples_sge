@@ -26,6 +26,7 @@ Long description of module's purpose
         'views/views.xml',
         'views/players.xml',
         'views/characters.xml',
+'views/objects.xml',
         'views/templates.xml',
     ],
     # only loaded in demonstration mode

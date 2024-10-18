@@ -1,3 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_lol_player,lol.player,model_lol_player,base.group_user,1,1,1,1
 access_lol_character,lol.character,model_lol_character,base.group_user,1,1,1,1
+access_lol_character_type,lol.character_type,model_lol_character_type,base.group_user,1,1,1,1
+access_lol_object_type,lol.object_type,model_lol_object_type,base.group_user,1,1,1,1
+access_lol_object,lol.object,model_lol_object,base.group_user,1,1,1,1

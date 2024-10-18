@@ -1,0 +1,55 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="lol.list">
+      <field name="name">lol list</field>
+      <field name="model">lol.lol</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="lol.action_objects_window">
+      <field name="name">lol object window</field>
+      <field name="res_model">lol.object</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    <record model="ir.actions.act_window" id="lol.action_object_types_window">
+      <field name="name">lol object type window</field>
+      <field name="res_model">lol.object_type</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="lol.action_server">
+      <field name="name">lol server</field>
+      <field name="model_id" ref="model_lol_lol"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+
+    <!-- actions -->
+
+    <menuitem name="Objects" id="lol.menu_objects" parent="lol.menu_management"
+              action="lol.action_objects_window"/>
+    <menuitem name="Object Types" id="lol.menu_object_types" parent="lol.menu_management"
+              action="lol.action_object_types_window"/>
+  </data>
+</odoo>

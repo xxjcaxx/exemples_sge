@@ -1,19 +1,64 @@
 <odoo>
   <data>
     <!-- explicit list view definition -->
-<!--
-    <record model="ir.ui.view" id="lol.list">
+
+    <record model="ir.ui.view" id="lol.character_type_form">
       <field name="name">lol list</field>
-      <field name="model">lol.lol</field>
+      <field name="model">lol.character_type</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet><group>
+            <field name="name"/>
+            <field name="image" widget="image"/>
+          </group></sheet>
+
+        </form>
+      </field>
+    </record>
+
+
+        <record model="ir.ui.view" id="lol.character_form">
+      <field name="name">lol list</field>
+      <field name="model">lol.character</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet><group>
+            <field name="name"/>
+             <field name="type"/>
+             <field name="image" widget="image"/>
+              <field name="player"/>
+              <field name="level"/>
+
+              <field name="objects"/>
+             <field name="objects_qty"/>
+              <field name="inventory"/>
+          </group></sheet>
+
+        </form>
+      </field>
+    </record>
+
+
+      <record model="ir.ui.view" id="lol.character_list">
+      <field name="name">lol list</field>
+      <field name="model">lol.character</field>
       <field name="arch" type="xml">
         <tree>
-          <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
+
+            <field name="name"/>
+             <field name="type"/>
+
+              <field name="player"/>
+              <field name="level"/>
+
+              <field name="objects"/>
+             <field name="objects_qty"/>
+              <field name="inventory"/>
+
+
         </tree>
       </field>
     </record>
--->
 
     <!-- actions opening views on models -->
 
@@ -22,7 +67,11 @@
       <field name="res_model">lol.character</field>
       <field name="view_mode">tree,form</field>
     </record>
-
+    <record model="ir.actions.act_window" id="lol.action_character_types_window">
+      <field name="name">lol character type window</field>
+      <field name="res_model">lol.character_type</field>
+      <field name="view_mode">tree,form</field>
+    </record>
 
     <!-- server action to the one above -->
 <!--
@@ -45,6 +94,7 @@
 
     <menuitem name="Characters" id="lol.menu_characters" parent="lol.menu_management"
               action="lol.action_characters_window"/>
-
+    <menuitem name="Character Types" id="lol.menu_character_types" parent="lol.menu_management"
+              action="lol.action_character_types_window"/>
   </data>
 </odoo>
