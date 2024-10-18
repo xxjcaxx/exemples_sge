@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-from . import models, players, characters
+from . import models, players, characters, objects

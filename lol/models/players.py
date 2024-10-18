@@ -8,3 +8,4 @@ class player(models.Model):
      _description = 'Players'
 
      name = fields.Char()
+     characters = fields.One2many('lol.character','player')
