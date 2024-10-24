@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 class object(models.Model):
     _name = 'lol.object'
@@ -12,6 +13,13 @@ class object(models.Model):
     level = fields.Integer()
     rust = fields.Float()
     characters = fields.Many2many('lol.character')
+
+    @api.constrains('level')
+    def _check_level(self):
+        for o in self:
+            if o.level > 10:
+                raise ValidationError("Your level is not valid: %s" % o.level)
+
 
 class object_type(models.Model):
     _name = 'lol.object_type'

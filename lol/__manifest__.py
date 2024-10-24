@@ -28,6 +28,8 @@ Long description of module's purpose
         'views/characters.xml',
 'views/objects.xml',
         'views/templates.xml',
+
+        'demo/object_types.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

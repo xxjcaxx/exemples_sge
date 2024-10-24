@@ -1,0 +1,10 @@
+<odoo>
+    <data>
+
+          <record id="lol.object_type_1" model="lol.object_type">
+            <field name="name">Espasa</field>
+            <field name="type">weapon</field>
+          </record>
+
+    </data>
+</odoo>
