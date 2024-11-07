@@ -1,100 +1,129 @@
 <odoo>
-  <data>
-    <!-- explicit list view definition -->
+    <data>
+        <!-- explicit list view definition -->
 
-    <record model="ir.ui.view" id="lol.character_type_form">
-      <field name="name">lol list</field>
-      <field name="model">lol.character_type</field>
-      <field name="arch" type="xml">
-        <form>
-          <sheet><group>
-            <field name="name"/>
-            <field name="image" widget="image"/>
-          </group></sheet>
+        <record model="ir.ui.view" id="lol.character_type_form">
+            <field name="name">lol list</field>
+            <field name="model">lol.character_type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet><group>
+                        <field name="name"/>
+                        <field name="image" widget="image"/>
+                    </group></sheet>
 
-        </form>
-      </field>
-    </record>
+                </form>
+            </field>
+        </record>
 
 
         <record model="ir.ui.view" id="lol.character_form">
-      <field name="name">lol list</field>
-      <field name="model">lol.character</field>
-      <field name="arch" type="xml">
-        <form>
-          <sheet><group>
-            <field name="name"/>
-             <field name="type"/>
-             <field name="image" widget="image"/>
-              <field name="player"/>
-              <field name="level"/>
+            <field name="name">lol list</field>
+            <field name="model">lol.character</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
 
-              <field name="objects"/>
-             <field name="objects_qty"/>
-              <field name="inventory"/>
-          </group></sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="type"/>
+                                <separator string="Imatge"/>
+                                <field name="image" widget="image"/>
+                            </group>
 
-        </form>
-      </field>
-    </record>
+                            <group>
+                                <field name="player"/>
+                                <field name="level" widget="progressbar"/>
+                            </group>
+                        </group>
 
+                        <notebook>
+                            <page string="Objects">
 
-      <record model="ir.ui.view" id="lol.character_list">
-      <field name="name">lol list</field>
-      <field name="model">lol.character</field>
-      <field name="arch" type="xml">
-        <tree>
+                                <field name="objects">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="type"/>
+                                        <field name="level"/>
+                                        <field name="rust"/>
+                                    </tree>
+                                </field>
 
-            <field name="name"/>
-             <field name="type"/>
+                                <field name="objects_qty"/>
 
-              <field name="player"/>
-              <field name="level"/>
-
-              <field name="objects"/>
-             <field name="objects_qty"/>
-              <field name="inventory"/>
-
-
-        </tree>
-      </field>
-    </record>
-
-    <!-- actions opening views on models -->
-
-    <record model="ir.actions.act_window" id="lol.action_characters_window">
-      <field name="name">lol character window</field>
-      <field name="res_model">lol.character</field>
-      <field name="view_mode">tree,form</field>
-    </record>
-    <record model="ir.actions.act_window" id="lol.action_character_types_window">
-      <field name="name">lol character type window</field>
-      <field name="res_model">lol.character_type</field>
-      <field name="view_mode">tree,form</field>
-    </record>
-
-    <!-- server action to the one above -->
-<!--
-    <record model="ir.actions.server" id="lol.action_server">
-      <field name="name">lol server</field>
-      <field name="model_id" ref="model_lol_lol"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": model._name,
-        }
-      </field>
-    </record>
--->
+                            </page>
+                            <page string="Inventory">
+                                <group>
+                                    <field name="inventory"/>
+                                </group>
+                            </page>
+                        </notebook>
 
 
-    <!-- actions -->
+                    </sheet>
 
-    <menuitem name="Characters" id="lol.menu_characters" parent="lol.menu_management"
-              action="lol.action_characters_window"/>
-    <menuitem name="Character Types" id="lol.menu_character_types" parent="lol.menu_management"
-              action="lol.action_character_types_window"/>
-  </data>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="lol.character_list">
+            <field name="name">lol list</field>
+            <field name="model">lol.character</field>
+            <field name="arch" type="xml">
+                <tree decoration-danger="player==False">
+
+                    <field name="name"/>
+                    <field name="type"/>
+
+                    <field name="player"/>
+                    <field name="level" sum="Total level"/>
+
+                    <field name="objects" widget="many2many_tags"/>
+                    <field name="objects_qty"/>
+                    <field name="inventory"/>
+
+
+                </tree>
+            </field>
+        </record>
+
+        <!-- actions opening views on models -->
+
+        <record model="ir.actions.act_window" id="lol.action_characters_window">
+            <field name="name">lol character window</field>
+            <field name="res_model">lol.character</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record model="ir.actions.act_window" id="lol.action_character_types_window">
+            <field name="name">lol character type window</field>
+            <field name="res_model">lol.character_type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- server action to the one above -->
+        <!--
+            <record model="ir.actions.server" id="lol.action_server">
+              <field name="name">lol server</field>
+              <field name="model_id" ref="model_lol_lol"/>
+              <field name="state">code</field>
+              <field name="code">
+                action = {
+                  "type": "ir.actions.act_window",
+                  "view_mode": "tree,form",
+                  "res_model": model._name,
+                }
+              </field>
+            </record>
+        -->
+
+
+        <!-- actions -->
+
+        <menuitem name="Characters" id="lol.menu_characters" parent="lol.menu_management"
+                  action="lol.action_characters_window"/>
+        <menuitem name="Character Types" id="lol.menu_character_types" parent="lol.menu_management"
+                  action="lol.action_character_types_window"/>
+    </data>
 </odoo>
