@@ -12,7 +12,7 @@ class character(models.Model):
      image = fields.Image(related='type.image', store=False)
      player = fields.Many2one('lol.player',  ondelete='cascade')
      armor = fields.Many2one('lol.object', domain="[('type.type','=','armor')]")
-     level = fields.Integer()
+     level = fields.Integer(default=1)
      objects = fields.Many2many('lol.object', domain="[('type.character_type','=',type)]")
      objects_qty = fields.Integer(compute='_get_objects_qty')
      inventory = fields.Many2many(comodel_name='lol.object', # El model en el que es relaciona
