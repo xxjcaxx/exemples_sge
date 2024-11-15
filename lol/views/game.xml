@@ -1,0 +1,31 @@
+<odoo>
+  <data>
+
+       <record model="ir.ui.view" id="lol.game_calendar_view">
+            <field name="name">Game Calendar</field>
+            <field name="model">lol.game</field>
+            <field name="arch" type="xml">
+                <calendar string="Games Calendar" date_start="init_date"
+                          date_delay="duration"
+                          color="name">
+                    <field name="name"/>
+                </calendar>
+            </field>
+        </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="lol.action_games_window">
+      <field name="name">lol games window</field>
+      <field name="res_model">lol.game</field>
+      <field name="view_mode">tree,form,calendar</field>
+    </record>
+
+
+
+    <menuitem name="Games" id="lol.menu_games" parent="lol.menu_management"
+              action="lol.action_games_window"/>
+
+  </data>
+</odoo>

@@ -16,6 +16,37 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="lol.character_type_kanban">
+            <field name="name">lol kanban</field>
+            <field name="model">lol.character_type</field>
+            <field name="arch" type="xml">
+             <kanban>
+               <field name="name"/>
+                 <field name="image"/>
+                  <field name="id"/>
+
+                    <templates>
+                    <t t-name="kanban-box">
+                            <div class="oe_product_vignette">
+                                <a type="open">
+                                    <img class="oe_kanban_image"
+                                        t-att-alt="record.name.value"
+                                        t-att-src="kanban_image('lol.character_type', 'image', record.id.value)" />
+                                </a>
+                                <div class="oe_product_desc">
+                                    <h4>
+                                        <a type="edit">
+                                            <field name="name"></field>
+                                        </a>
+                                    </h4>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
 
         <record model="ir.ui.view" id="lol.character_form">
             <field name="name">lol list</field>
@@ -99,7 +130,7 @@
         <record model="ir.actions.act_window" id="lol.action_character_types_window">
             <field name="name">lol character type window</field>
             <field name="res_model">lol.character_type</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">kanban,tree,form</field>
         </record>
 
         <!-- server action to the one above -->
