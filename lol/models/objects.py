@@ -13,12 +13,23 @@ class object(models.Model):
     level = fields.Integer()
     rust = fields.Float()
     characters = fields.Many2many('lol.character')
+    damage = fields.Float(compute='_get_damage')
 
     @api.constrains('level')
     def _check_level(self):
         for o in self:
             if o.level > 10:
                 raise ValidationError("Your level is not valid: %s" % o.level)
+
+    def increase_level(self):
+        for o in self:
+            o.level = o.level + 1
+
+    @api.depends('type','level','rust')
+    def _get_damage(self):
+        for o in self:
+            o.damage = o.type.damage * o.level - o.rust
+
 
 
 class object_type(models.Model):
@@ -31,4 +42,5 @@ class object_type(models.Model):
         ('weapon','Weapon'),
         ('spell','Spell') ])
     character_type = fields.Many2one('lol.character_type')
+    damage = fields.Float(default=1)
 

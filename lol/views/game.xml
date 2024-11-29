@@ -1,12 +1,54 @@
 <odoo>
-  <data>
+    <data>
+        <record model="ir.ui.view" id="lol.game_form_view">
+            <field name="name">Game Form</field>
+            <field name="model">lol.game</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <separator string="players"></separator>
+                                <field name="player1"/>
+                                <field name="player2"/>
+                            </group>
+                            <group>
+                                <separator string="Durations"></separator>
+                                <field name="start_date"/>
+                                <field name="step_duration"/>
+                                <field name="steps"/>
+                                <field name="total_duration"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Characters 1">
+                                <field name="characters1"/>
+                            </page>
+                            <page string="Characters 2">
+                                <field name="characters2"/>
+                            </page>
+                            <page string="Steps">
+                                    <button name="new_step" type="object" string="New Step" class="oe_highlight" />
 
-       <record model="ir.ui.view" id="lol.game_calendar_view">
+                                <field name="steps_list"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+
+
+                </form>
+            </field>
+        </record>
+
+
+
+        <record model="ir.ui.view" id="lol.game_calendar_view">
             <field name="name">Game Calendar</field>
             <field name="model">lol.game</field>
             <field name="arch" type="xml">
-                <calendar string="Games Calendar" date_start="init_date"
-                          date_delay="duration"
+                <calendar string="Games Calendar" date_start="start_date"
+                          date_delay="total_duration"
                           color="name">
                     <field name="name"/>
                 </calendar>
@@ -14,18 +56,18 @@
         </record>
 
 
-    <!-- actions opening views on models -->
+        <!-- actions opening views on models -->
 
-    <record model="ir.actions.act_window" id="lol.action_games_window">
-      <field name="name">lol games window</field>
-      <field name="res_model">lol.game</field>
-      <field name="view_mode">tree,form,calendar</field>
-    </record>
+        <record model="ir.actions.act_window" id="lol.action_games_window">
+            <field name="name">lol games window</field>
+            <field name="res_model">lol.game</field>
+            <field name="view_mode">tree,form,calendar</field>
+        </record>
 
 
 
-    <menuitem name="Games" id="lol.menu_games" parent="lol.menu_management"
-              action="lol.action_games_window"/>
+        <menuitem name="Games" id="lol.menu_games" parent="lol.menu_management"
+                  action="lol.action_games_window"/>
 
-  </data>
+    </data>
 </odoo>
