@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_furgona_furgona,furgona.furgona,model_furgona_furgona,base.group_user,1,1,1,1
+access_furgona_paquet,furgona.paquet,model_furgona_paquet,base.group_user,1,1,1,1
+access_furgona_travel,furgona.travel,model_furgona_travel,base.group_user,1,1,1,1

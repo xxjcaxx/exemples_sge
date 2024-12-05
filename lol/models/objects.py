@@ -14,7 +14,7 @@ class object(models.Model):
     rust = fields.Float()
     characters = fields.Many2many('lol.character')
     damage = fields.Float(compute='_get_damage')
-
+    #damage = fields.Float(related='type.damage')
     @api.constrains('level')
     def _check_level(self):
         for o in self:

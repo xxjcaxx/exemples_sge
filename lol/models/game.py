@@ -1,6 +1,17 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+import random
+
+def step_simulation(characters1,characters2):
+    print(characters1, characters2)
+    # Enfrontar aleatoriament dos characters
+    characters1_ids = characters1.mapped(lambda c: c.id)
+    random.shuffle(characters1_ids)
+    characters2_ids = characters2.mapped(lambda c: c.id)
+    random.shuffle(characters2_ids)
+    print(characters1_ids,characters2_ids,zip(characters1_ids,characters2_ids))
+
 
 
 class game(models.Model):
@@ -27,8 +38,11 @@ class game(models.Model):
         for g in self:
             if g.steps > len(g.steps_list):
                 step = self.env['lol.game_step'].create({
+                    'name': 'step_'+str(len(g.steps_list)),
                     'game': g.id
                 })
+                step_simulation(g.characters1, g.characters2)
+
 
 class game_step(models.Model):
     _name = 'lol.game_step'

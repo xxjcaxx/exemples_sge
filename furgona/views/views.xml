@@ -1,0 +1,71 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="furgona.furgona_form">
+      <field name="name">furgona form</field>
+      <field name="model">furgona.furgona</field>
+      <field name="arch" type="xml">
+        <form>
+          <field name="name"/>
+          <field name="capacity"/>
+          <field name="plate"/>
+           <field name="photo" widget="image"/>
+           <field name="historic_paquets"/>
+        </form>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="furgona.action_furgona_window">
+      <field name="name">furgona window</field>
+      <field name="res_model">furgona.furgona</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+        <record model="ir.actions.act_window" id="furgona.action_paquet_window">
+      <field name="name">furgona paquet window</field>
+      <field name="res_model">furgona.paquet</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+        <record model="ir.actions.act_window" id="furgona.action_travel_window">
+      <field name="name">furgona travel window</field>
+      <field name="res_model">furgona.travel</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="furgona.action_server">
+      <field name="name">furgona server</field>
+      <field name="model_id" ref="model_furgona_furgona"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+
+    <menuitem name="Furgona" id="furgona.menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Management" id="furgona.menu_1" parent="furgona.menu_root"/>
+
+    <!-- actions -->
+<menuitem name="Furgones" id="furgona.menu_1_list" parent="furgona.menu_1"
+              action="furgona.action_furgona_window"/>
+<menuitem name="Paquets" id="furgona.menu_2_list" parent="furgona.menu_1"
+              action="furgona.action_paquet_window"/>
+    <menuitem name="Travels" id="furgona.menu_3_list" parent="furgona.menu_1"
+              action="furgona.action_travel_window"/>
+  </data>
+</odoo>
