@@ -16,11 +16,9 @@ class furgona(models.Model):
      def _get_historic_paquets(self):
           print(self)
           for f in self:
-
                f.historic_paquets = (self.env['furgona.travel']
                                      .search([('furgona', '=', f.id)])
                                      .mapped(lambda t: t.paquets).ids)
-
 
 
 class paquet(models.Model):
@@ -30,6 +28,8 @@ class paquet(models.Model):
      name = fields.Char(string="Identificator")
      volume = fields.Float()
      viatge_id = fields.Many2one('furgona.travel')
+     clients = fields.Many2many('furgona.client', relation='paquet_clients')
+     veins = fields.Many2many('furgona.client',  relation='paquet_veins')
 
 class travel(models.Model):
      _name = 'furgona.travel'
@@ -40,6 +40,8 @@ class travel(models.Model):
      furgona = fields.Many2one('furgona.furgona')
      m3 = fields.Float(compute='_get_m3')
      paquets = fields.One2many('furgona.paquet','viatge_id')
+     delivery_date = fields.Datetime()
+     duration = fields.Integer()
 
      @api.depends('paquets')
      def _get_m3(self):
@@ -51,3 +53,11 @@ class travel(models.Model):
           for t in self:
                if t.m3 > t.furgona.capacity:
                     raise ValidationError("Your record is too old: %s" % t.m3)
+
+class client(models.Model):
+     _name = 'furgona.client'
+     _description = 'furgona.client'
+
+     name = fields.Char()
+     paquets = fields.Many2many('furgona.paquet', relation='paquet_clients')
+     paquets_veins = fields.Many2many('furgona.paquet',  relation='paquet_veins')

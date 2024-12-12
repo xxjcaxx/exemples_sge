@@ -1,0 +1,22 @@
+<odoo>
+  <data>
+
+          <record model="ir.ui.view" id="furgona.travel_calendar">
+      <field name="name">travel calendar</field>
+      <field name="model">furgona.travel</field>
+      <field name="arch" type="xml">
+        <calendar
+                string="Travel Calendar" date_start="delivery_date"
+                          date_delay="duration"
+                          color="driver"
+        >
+          <field name="name"/>
+          <field name="driver"/>
+          <field name="furgona"/>
+
+           <field name="m3"/>
+        </calendar>
+      </field>
+    </record>
+  </data>
+</odoo>
