@@ -1,0 +1,17 @@
+    <odoo>
+    <data>
+
+        <record model="ir.cron" forcecreate="True" id="lol.cron_update_experience">
+            <field name="name">Lol: Cron Update Experience</field>
+            <field name="model_id" ref="model_lol_character"/>
+            <field name="state">code</field>
+            <field name="code">model.increase_experience_cron()</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="activity_user_type">specific</field>
+            <field name="doall" eval="False" />
+        </record>
+
+    </data></odoo>

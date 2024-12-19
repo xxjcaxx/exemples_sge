@@ -66,6 +66,9 @@
                             <group>
                                 <field name="player"/>
                                 <field name="level" widget="progressbar"/>
+                                <field name="experience" widget="progressbar"/>
+                                 <field name="experience"/>
+                                <button name="increase_experience_button" type="object" string="Experience" class="oe_highlight" />
                             </group>
                         </group>
 

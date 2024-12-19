@@ -18,7 +18,7 @@ Long description of module's purpose
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base','mail'],
 
     # always loaded
     'data': [
@@ -30,7 +30,8 @@ Long description of module's purpose
         'views/templates.xml',
 
         'demo/object_types.xml',
-        'views/game.xml'
+        'views/game.xml',
+        'crons/cron_characters.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

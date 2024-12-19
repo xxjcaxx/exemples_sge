@@ -13,6 +13,7 @@ class character(models.Model):
      player = fields.Many2one('lol.player',  ondelete='cascade')
      armor = fields.Many2one('lol.object', domain="[('type.type','=','armor')]")
      level = fields.Integer(default=1)
+     experience = fields.Float(default=0)
      objects = fields.Many2many('lol.object', domain="[('type.character_type','=',type)]")
      objects_qty = fields.Integer(compute='_get_objects_qty')
      inventory = fields.Many2many(comodel_name='lol.object', # El model en el que es relaciona
@@ -27,6 +28,16 @@ class character(models.Model):
              character.objects_qty = len(character.objects)
 
 
+     def increase_experience(self,character):
+         character.experience = character.experience + 0.01
+     def increase_experience_cron(self):
+         tots = self.search([('experience','<',100)])
+         print(self,tots)
+         for character in tots:
+             self.increase_experience(character)
+     def increase_experience_button(self):
+        for character in self:
+            self.increase_experience(character)
 class character_type(models.Model):
     _name = 'lol.character_type'
     _description = 'Character types'
