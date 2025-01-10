@@ -10,7 +10,7 @@ class character(models.Model):
      name = fields.Char()
      type = fields.Many2one('lol.character_type',  ondelete='restrict')
      image = fields.Image(related='type.image', store=False)
-     player = fields.Many2one('lol.player',  ondelete='cascade')
+     player = fields.Many2one('res.partner',  ondelete='cascade')
      armor = fields.Many2one('lol.object', domain="[('type.type','=','armor')]")
      level = fields.Integer(default=1)
      experience = fields.Float(default=0)
