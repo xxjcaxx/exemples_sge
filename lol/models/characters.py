@@ -46,3 +46,63 @@ class character_type(models.Model):
     image = fields.Image(max_width=200, max_height=200)
 
 
+class character_wizard(models.TransientModel):
+    _name = 'lol.character_wizard'
+    _description = 'Character wizard'
+
+    def get_type(self):
+        print(self._context.get('type_name'))
+        return self.env['lol.character_type'].browse(self._context.get('active_id'))
+
+    name = fields.Char()
+    type = fields.Many2one('lol.character_type', ondelete='restrict', default=get_type)
+    image = fields.Image(related='type.image', store=False)
+    player = fields.Many2one('res.partner', ondelete='cascade')
+    armor = fields.Many2one('lol.object', domain="[('type.type','=','armor')]")
+    level = fields.Integer(default=1)
+    experience = fields.Float(default=0)
+    state = fields.Selection([
+        ('basic', "Basic Data"),
+        ('player', "Player Data"),
+        ('stats', "Stats Data"),
+    ], default='basic')
+
+    def create_character(self):
+        character = self.env['lol.character'].create(
+            {
+                'name': self.name,
+                'type': self.type.id,
+                'player': self.player.id,
+                'armor': self.armor.id,
+                'level': self.level,
+                'experience': self.experience
+            }
+        )
+
+    def next(self):
+        if(self.state == 'basic'):
+            self.state = 'player'
+        elif(self.state == 'player'):
+            self.state = 'stats'
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'res_id': self.id,
+            'view_mode': 'form',
+            'target': 'new',
+        }
+
+
+    def previous(self):
+        if(self.state == 'player'):
+            self.state = 'basic'
+        elif(self.state == 'stats'):
+            self.state = 'player'
+
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'res_id': self.id,
+            'view_mode': 'form',
+            'target': 'new',
+        }

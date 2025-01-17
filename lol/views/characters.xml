@@ -1,6 +1,14 @@
 <odoo>
     <data>
         <!-- explicit list view definition -->
+      <record model="ir.actions.act_window" id="lol.action_characters_wizard">
+            <field name="name">lol character window</field>
+            <field name="res_model">lol.character_wizard</field>
+            <field name="view_mode">form</field>
+           <field name="target">new</field>
+        </record>
+
+
 
         <record model="ir.ui.view" id="lol.character_type_form">
             <field name="name">lol list</field>
@@ -10,6 +18,10 @@
                     <sheet><group>
                         <field name="name"/>
                         <field name="image" widget="image"/>
+                        <button name="%(lol.action_characters_wizard)d"
+                                type="action" string="Create Character"
+                                context="{'type_name': name}"
+                                class="oe_highlight" />
                     </group></sheet>
 
                 </form>
@@ -159,5 +171,62 @@
                   action="lol.action_characters_window"/>
         <menuitem name="Character Types" id="lol.menu_character_types" parent="lol.menu_management"
                   action="lol.action_character_types_window"/>
+
+
+
+
+
+        <record model="ir.ui.view" id="lol.character_wizard_form">
+            <field name="name">lol character wizard</field>
+            <field name="model">lol.character_wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="next" type="object"
+                                string="Next" class="oe_highlight"/>
+                        <button name="previous" type="object"
+                                string="Previous" class="oe_highlight"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group invisible = "state in ['player', 'stats']">
+                                <field name="name"/>
+                                <field name="type"/>
+                                <separator string="Imatge"/>
+                                <field name="image" widget="image"/>
+                            </group>
+
+                            <group invisible = "state in ['basic', 'stats']">
+                                <field name="player"/>
+                            </group>
+                            <group invisible = "state in ['basic', 'player']">
+                                <field name="level"/>
+                                <field name="experience" />
+                                 <field name="experience"/>
+                                    </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="create_character" type="object"
+                                string="Create Character" class="oe_highlight"
+                        invisible = "state in ['basic', 'player']"
+                        />
+                        <button special="cancel" string="Cancel"/>
+
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+
+
+
+
+
+
+
+
     </data>
 </odoo>
