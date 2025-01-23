@@ -18,5 +18,72 @@
         </calendar>
       </field>
     </record>
+
+
+                 <record id="furgona.launch_travel_wizard" model="ir.actions.act_window">
+            <field name="name">Launch travel</field>
+            <field name="res_model">furgona.travel_furgona_wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+           </record>
+
+                  <record model="ir.ui.view" id="furgona.furgona_travel_form">
+            <field name="name">furgona form</field>
+            <field name="model">furgona.travel</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet><group>
+                           <field name="name"/>
+                           <field name="driver"/>
+     <field name="furgona"/>
+                         <button name="%(furgona.launch_travel_wizard)d"
+                                 type="action"
+                                 string="Change furgona"
+                                 class="oe_highlight"
+                                 context="{'travel_context': active_id, 'furgona_context': furgona}"
+                         />
+                    </group></sheet>
+                </form>
+            </field>
+        </record>
+
+
+              <record model="ir.ui.view" id="furgona.furgona_travel_wizard">
+            <field name="name">furgona form</field>
+            <field name="model">furgona.travel_furgona_wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_travel" type="object"
+                                string="Travel"
+                                invisible = "state in ['1']"/>
+                        <button name="action_furgona" type="object"
+                                string="Furgona" invisible = "state in ['2']"
+                                class="oe_highlight"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+
+                    <sheet><group invisible = "state in ['2']" >
+                           <field name="travel"/>
+                         </group>
+                        <group invisible = "state in ['1']" >
+                                   <field name="furgona"/>
+                        </group>
+
+
+                  </sheet>
+                      <footer>
+                        <button  invisible = "state in ['1']" name="save_travel" type="object"
+                                string="Save" class="oe_highlight"/>
+
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+
+
   </data>
 </odoo>

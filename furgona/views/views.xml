@@ -1,45 +1,99 @@
 <odoo>
-  <data>
-    <!-- explicit list view definition -->
+    <data>
+        <!-- explicit list view definition -->
 
-    <record model="ir.ui.view" id="furgona.furgona_form">
-      <field name="name">furgona form</field>
-      <field name="model">furgona.furgona</field>
-      <field name="arch" type="xml">
-        <form>
-          <field name="name"/>
-          <field name="capacity"/>
-          <field name="plate"/>
-           <field name="photo" widget="image"/>
-           <field name="historic_paquets"/>
-        </form>
-      </field>
-    </record>
+        <record model="ir.ui.view" id="furgona.furgona_form">
+            <field name="name">furgona form</field>
+            <field name="model">furgona.furgona</field>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="name"/>
+                    <field name="capacity"/>
+                    <field name="plate"/>
+                    <field name="photo" widget="image"/>
+                    <field name="historic_paquets"/>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="furgona.furgona_paquet_form">
+            <field name="name">furgona paquet form</field>
+            <field name="model">sale.order.line</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet><group>
+                    <field name="name"/>
+                    <field name="volume"/>
+                    <field name="viatge_id"/>
+                    <field name="is_paquet"/>
+                    </group></sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="furgona.furgona_paquet_search">
+            <field name="name">furgona paquet search</field>
+            <field name="model">sale.order.line</field>
+            <field name="arch" type="xml">
+                <search>
+
+                    <field name="name"/>
+                    <field name="volume"/>
+                    <filter name="is_paquet" string="Is Paquet" domain="[('is_paquet','=',True)]" />
+
+                </search>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="furgona.paquet_tree_inherit">
+            <field name="name">paquet tree inherit</field>
+            <field name="model">sale.order.line</field>
+            <field name="inherit_id" ref="sale.view_order_line_tree"></field>
+            <field name="arch" type="xml">
+                <field name="currency_id" position="after">
+                    <field name="volume"/>
+                    <field name="viatge_id"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="furgona.paquet_sale_order_inherit">
+            <field name="name">paquet tree inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"></field>
+            <field name="arch" type="xml">
+                <field name="product_template_id" position="after">
+                    <field name="volume"/>
+                    <field name="viatge_id"/>
+                </field>
+            </field>
+        </record>
 
         <record model="ir.ui.view" id="furgona.furgona_kanban">
-      <field name="name">furgona kanban</field>
-      <field name="model">furgona.furgona</field>
-      <field name="arch" type="xml">
-        <kanban>
-          <field name="id"/>
-          <field name="name"/>
-          <field name="capacity"/>
-          <field name="plate"/>
-           <field name="photo"/>
+            <field name="name">furgona kanban</field>
+            <field name="model">furgona.furgona</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="capacity"/>
+                    <field name="plate"/>
+                    <field name="photo"/>
 
-          <templates>
-                    <t t-name="kanban-box">
+                    <templates>
+                        <t t-name="kanban-box">
                             <div class="oe_product_vignette">
                                 <a type="open">
                                     <img class="oe_kanban_image"
-                                        t-att-alt="record.name.value"
-                                        t-att-src="kanban_image('furgona.furgona', 'photo', record.id.value)" />
+                                         t-att-alt="record.name.value"
+                                         t-att-src="kanban_image('furgona.furgona', 'photo', record.id.value)" />
                                 </a>
                                 <div class="oe_product_desc">
                                     <h4>
                                         <a type="edit">
                                             <field name="capacity"></field>
-                                          <field name="plate"></field>
+                                            <field name="plate"></field>
                                         </a>
                                     </h4>
 
@@ -47,60 +101,64 @@
                             </div>
                         </t>
                     </templates>
-        </kanban>
-      </field>
-    </record>
+                </kanban>
+            </field>
+        </record>
 
 
-    <!-- actions opening views on models -->
+        <!-- actions opening views on models -->
 
-    <record model="ir.actions.act_window" id="furgona.action_furgona_window">
-      <field name="name">furgona window</field>
-      <field name="res_model">furgona.furgona</field>
-      <field name="view_mode">kanban,tree,form</field>
-    </record>
+        <record model="ir.actions.act_window" id="furgona.action_furgona_window">
+            <field name="name">furgona window</field>
+            <field name="res_model">furgona.furgona</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
         <record model="ir.actions.act_window" id="furgona.action_paquet_window">
-      <field name="name">furgona paquet window</field>
-      <field name="res_model">furgona.paquet</field>
-      <field name="view_mode">tree,form</field>
-    </record>
+            <field name="name">furgona paquet window</field>
+            <field name="res_model">sale.order.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'default_is_paquet': True, 'search_default_is_paquet': 1}</field>
+               <field name="view_ids" eval="[(5, 0, 0),
+                     (0, 0, {'view_mode': 'tree', 'view_id': ref('sale.view_order_line_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('furgona.furgona_paquet_form')}),]" />
+        </record>
         <record model="ir.actions.act_window" id="furgona.action_travel_window">
-      <field name="name">furgona travel window</field>
-      <field name="res_model">furgona.travel</field>
-      <field name="view_mode">tree,form,calendar</field>
-    </record>
+            <field name="name">furgona travel window</field>
+            <field name="res_model">furgona.travel</field>
+            <field name="view_mode">tree,form,calendar</field>
+        </record>
 
 
-    <!-- server action to the one above -->
-<!--
-    <record model="ir.actions.server" id="furgona.action_server">
-      <field name="name">furgona server</field>
-      <field name="model_id" ref="model_furgona_furgona"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": model._name,
-        }
-      </field>
-    </record>
--->
+        <!-- server action to the one above -->
+        <!--
+            <record model="ir.actions.server" id="furgona.action_server">
+              <field name="name">furgona server</field>
+              <field name="model_id" ref="model_furgona_furgona"/>
+              <field name="state">code</field>
+              <field name="code">
+                action = {
+                  "type": "ir.actions.act_window",
+                  "view_mode": "tree,form",
+                  "res_model": model._name,
+                }
+              </field>
+            </record>
+        -->
 
-    <!-- Top menu item -->
+        <!-- Top menu item -->
 
-    <menuitem name="Furgona" id="furgona.menu_root"/>
+        <menuitem name="Furgona" id="furgona.menu_root"/>
 
-    <!-- menu categories -->
+        <!-- menu categories -->
 
-    <menuitem name="Management" id="furgona.menu_1" parent="furgona.menu_root"/>
+        <menuitem name="Management" id="furgona.menu_1" parent="furgona.menu_root"/>
 
-    <!-- actions -->
-<menuitem name="Furgones" id="furgona.menu_1_list" parent="furgona.menu_1"
-              action="furgona.action_furgona_window"/>
-<menuitem name="Paquets" id="furgona.menu_2_list" parent="furgona.menu_1"
-              action="furgona.action_paquet_window"/>
-    <menuitem name="Travels" id="furgona.menu_3_list" parent="furgona.menu_1"
-              action="furgona.action_travel_window"/>
-  </data>
+        <!-- actions -->
+        <menuitem name="Furgones" id="furgona.menu_1_list" parent="furgona.menu_1"
+                  action="furgona.action_furgona_window"/>
+        <menuitem name="Paquets" id="furgona.menu_2_list" parent="furgona.menu_1"
+                  action="furgona.action_paquet_window"/>
+        <menuitem name="Travels" id="furgona.menu_3_list" parent="furgona.menu_1"
+                  action="furgona.action_travel_window"/>
+    </data>
 </odoo>

@@ -148,22 +148,6 @@
             <field name="view_mode">kanban,tree,form</field>
         </record>
 
-        <!-- server action to the one above -->
-        <!--
-            <record model="ir.actions.server" id="lol.action_server">
-              <field name="name">lol server</field>
-              <field name="model_id" ref="model_lol_lol"/>
-              <field name="state">code</field>
-              <field name="code">
-                action = {
-                  "type": "ir.actions.act_window",
-                  "view_mode": "tree,form",
-                  "res_model": model._name,
-                }
-              </field>
-            </record>
-        -->
-
 
         <!-- actions -->
 
@@ -188,7 +172,7 @@
                                 string="Previous" class="oe_highlight"/>
                         <field name="state" widget="statusbar"/>
                     </header>
-                    <sheet>
+                    <div style="height: 400px;">
                         <group>
                             <group invisible = "state in ['player', 'stats']">
                                 <field name="name"/>
@@ -206,7 +190,7 @@
                                  <field name="experience"/>
                                     </group>
                         </group>
-                    </sheet>
+                    </div>
                     <footer>
                         <button name="create_character" type="object"
                                 string="Create Character" class="oe_highlight"
