@@ -31,13 +31,12 @@ capes](Odooarch.png " thumb|Arquitectura per capes"){width="400"}
 -   Dissenyadors d'informes.
 -   Facilitats de traducció de l'aplicació a diversos idiomes.
 
-El **servidor** Odoo proporciona un accés a la base de dades emb
+El **servidor** Odoo proporciona un accés a la base de dades amb
 **ORM**. El servidor necessita tindre instal·lats **mòduls**, ja que
 comença buit.
 
 Per altra banda, el **client** es comunica amb el servidor en
-**XML-RPC**, els clients web per
-**JSON-RPC**. El client sols té que mostrar el
+**XML-RPC**, els clients web per **JSON-RPC**. El client sols té que mostrar el
 que dona el servidor o demanar correctament les dades. Per tant, un
 client pot ser molt simple i fer-se en qualsevol llenguatge de
 programació. Odoo proporciona un client web encara que es pot fer un
@@ -56,12 +55,9 @@ L\'accés del client a les dades es fa fent ús d\'un servici. Aquest pot
 ser
 **[WSGI](http://en.wikipedia.org/wiki/Web_Server_Gateway_Interface)**.
 WSGI és una solució estàndard per a fer servidors i clients HTTP en
-Python. En el cas d\'Odoo, aquest té el OpenERP Web Project, que és el
-servidor web.
+Python. En el cas d\'Odoo, aquest té `Werkzeug`, que interpreta les peticions i les transforma en funcions que Odoo pot entendre.
 
-Un altre concepte dins d\'Odoo són els **Business Objects** quasi tot en
-Odoo és un Business Object, és persistent gràcies a ORM i es troba
-estructurat en el directori /modules.
+Un altre concepte dins d\'Odoo són els **Business Objects**. S'implementen amb `models` i implementen tant dades com lògica de negoci. 
 
 Odoo proporciona els anomenats **Wizards**, que es comporten com un
 assistent per introduir dades d\'una manera més fàcil per a l\'usuari.
@@ -70,12 +66,7 @@ El client web és fàcil de desenvolupar gràcies al **Widgets** o Window
 GaDGETS. Aquests proporcionen un comportament i visualització correctes
 per a cada tipus de dades. Per exemple: si el camp és per definir una
 data, mostrarà un calendari. Alguns tenen diferents visualitzacions en
-funció del tipus de vista i se\'n poden definir Widgets personalitzats.
-
-Tal com es pot observar, són molts els components d'OpenObject a
-conèixer per poder adequar l'Odoo a les necessitats de l'organització,
-en cas que les funcionalitats que aporta l'Odoo, tot i ser moltes, no
-siguin suficients.
+funció del tipus de vista i se\'n poden definir Widgets personalitzats. Els Widgets i demés interfície web funciona gràcies a `OWL`, un framework de client web desenvolupat al projecte `Odoo` i similar a `React`. 
 
 ## La base de dades d\'Odoo 
 
@@ -88,12 +79,7 @@ proporciona la persistència necessària per als objectes. Això és el
 En conseqüència, l'Odoo no facilita cap disseny entitat-relació sobre la
 base de dades d'una empresa ni tampoc cap diagrama del model relacional.
 
-Si sorgeix la necessitat de detectar la taula o les taules on resideix
-determinada informació, és perquè es coneix l'existència d'aquesta
-informació gestionada des de l'ERP i, per tant, es coneix algun
-formulari de l'ERP a través del qual s'introdueix la informació.
-
-L'Odoo possibilita, mitjançant el clients web recuperar el nom de la
+L'Odoo possibilita, mitjançant el clients web, recuperar el nom de la
 classe Python que defineix la informació que s'introdueix a través d'un
 formulari i el nom de la dada membre de la classe corresponent a cada
 camp del formulari. Aquesta informació permet arribar a la taula i
@@ -109,12 +95,14 @@ columna afectades, tenint en compte dues qüestions:
 
 -   Els noms dels atributs d'una classe Python sempre són en minúscula
     (s'utilitza el guió baix per fer llegible els mots compostos). Cada
-    dada membre d'una classe Python d'Odoo que sigui persistent (una
+    dada membre d'una classe Python d'Odoo que siga persistent (una
     classe pot tenir dades membres calculades no persistents) és mapat
     com un atribut en la corresponent taula de PostgreSQL amb el mateix
     nom.
 
-```{=mediawiki}
+```{admonition} Exemple
+:class: tip
+ 
 Per exemple: La classe Python sale.order d’Odoo està pensada per descriure la capçalera de les comandes de venda i la corresponent taula a PostgreSQL és sale_order. 
 ```
 D'aquesta manera, coneixent el nom de la classe i el nom de la dada
@@ -125,7 +113,7 @@ etiquetes dels camps dels formularis.
 
 ## Els mòduls 
 
-Tant el servidor com els clients són mòduls. Tots estàn guardats en una
+Tant el servidor com els clients són mòduls. Tots estan guardats en una
 base de dades. Tot els que es puga fer per modificar Odoo es fa en
 mòduls.
 
@@ -135,13 +123,13 @@ Els mòduls d\'Odoo amplien o modifiquen parts de
 Model-Vista-Controlador. D\'aquesta manera, un mòdul pot tindre:
 
 -   **Objectes de negoci**: Són la part del model, estan definits en
-    classes de [Python](Python "wikilink") segons una sintaxy pròpia de
-    l\'ORM d\'Odoo.
+    classes de Python segons una sintaxi pròpia de
+    l'ORM d'Odoo.
 -   **Fitxers de dades**: Són fitxers XML que poden definir dades,
     vistes o configuracions.
 -   **Controladors web**: Gestionen les peticions dels navegadors web.
 -   **Dades estàtiques**: Imatges, CSS, o javascript utilitzats per
-    l\'interficie web. És necessari que les dades estátiques es guarden
+    l\'interficie web. És necessari que les dades estatiques es guarden
     en el directori **static**. Per exemple, l\'icona del mòdul va en
     static/description/icon.png
 
@@ -156,7 +144,7 @@ Model-Vista-Controlador. D\'aquesta manera, un mòdul pot tindre:
     informació sobre el mòdul, el que fa el mòduls dels que depen i cóm
     s\'ha d\'instal·lar o actualitzar.
     [1](https://www.odoo.com/documentation/8.0/reference/module.html#reference-module-manifest)
--   Un mòdul és un paquet de [Python](Python "wikilink") que necessita
+-   Un mòdul és un paquet de Python que necessita
     un **\_\_init\_\_.py** per a instanciar tots els fitxers python.
 
 ### Creació de mòduls 
@@ -167,11 +155,12 @@ treballar:
 
      $ odoo scaffold <module name> <where to put it>
 
+
+```{note}
+:class: dropdown
+
 Més al voltant d\'Scaffold:
 
-```{=html}
-<div class="toccolours mw-collapsible mw-collapsed" style="overflow: hidden;">
-```
 [Manual oficial
 Scaffolding](https://www.odoo.com/documentation/8.0/reference/cmdline.html#scaffolding)
 
@@ -187,10 +176,9 @@ Podem fer un *template* copiant el directori default o theme i
 modificant els fitxers. Això pot ser útil si sempre fem mòduls amb la
 mateixa plantilla. Per exemple per ficar el nostre logo, copyright o
 demés.
-
-```{=html}
-</div>
 ```
+
+
 ## ORM
 
 Odoo mapeja els seus objectes en una base de dades amb **ORM**, evitant
@@ -199,23 +187,22 @@ desenvolupament dels mòduls és molt ràpid i evitem errades de
 programació.
 
 Els models són creats com classes de python que extenen la classe
-**[models.Model](https://www.odoo.com/documentation/8.0/reference/orm.html#openerp.models.Model)**
+**[models.Model](https://www.odoo.com/documentation/master/developer/reference/backend/orm.html)**
 que conté els camps i mètodes útils per a fer anar l\'ORM.
 
-Els models, al heretar de **models.Model**, necessiten donar valor a
+> Els models, al heretar de **models.Model**, necessiten donar valor a
 algunes variables, com ara **\_name**
 
 Odoo considera que un model és la referència a una o més taules en la
 base de dades. Un model no és una fila en la taula, és tota la taula.
 
-```{=mediawiki}
- En programació, el '''Model''' és una manera de relacionar el programa amb la base de dades. És de més alt nivell que les consultes directes en quant a base de dades i que les '''clases i objectes''' respecte a la programació orientada a objectes. El model junta en un únic concepte les '''estructures de dades''', les '''restriccions d'integritat''' i les opcions de '''manipulació''' de les dades. 
-```
+> En programació, el '''Model''' és una manera de relacionar el programa amb la base de dades. És de més alt nivell que les consultes directes en quant a base de dades i que les '''clases i objectes''' respecte a la programació orientada a objectes. El model junta en un únic concepte les '''estructures de dades''', les '''restriccions d'integritat''' i les opcions de '''manipulació''' de les dades. 
+
 Els models en Odoo poden heretar de **models.Model** i ser els normals
 mapejats i permanents en la base de dades. També poden ser
 **models.TransientModel** i són iguals, sols que no tenen permanència
 definitiva en la base de dades. Aquest són els recomanables per a fer
-[wizards](#Wizards "wikilink"). També poden ser **models.AbstractModel**
+`wizards`. També poden ser **models.AbstractModel**
 per a definir models abstractes per a després heretar.
 
 ### Inspeccionar el models 
@@ -250,14 +237,6 @@ Aquests són els més importants:
     que ja no es necessiten, per exemple.
 -   **sequence** Permet definir l\'ordre del records a mostrar en una
     llista.
--   **state** És de tipus selection i permet crear un cicle de vida
-    d\'un model. Amés es pot representar en el \'\'\'
-    ```{=html}
-    <head>
-    ```
-    **d\'un form amb un widget**statusbar**i els fields de les vistes
-    poden ocultar-se en funció d\'un camp state ficant
-    l\'atribut**states=\"\"\'\'\'.
 
 Els fields es declaren amb un constructor:
 
@@ -322,8 +301,6 @@ field.
  def a_fun(self):
    return self.do_something()
 ```
-
-Veure: [Valors per defecte](#Valors_per_defecte "wikilink")
 
 ### Fields normals 
 
@@ -425,7 +402,8 @@ manera queda disponible per a totes les possibles vistes.
 Un altre argument addicional és **ondelete** que permet definir el
 comportament al esborrar l\'element referenciat a **set null**,
 **restrict** o **cascade**.
-` ondelete cascade esborra els fills a nivel de PostgreSQL, però no elimina en External Id, això es fa en unlink(), però no executa unlink() dels fills. Per tant, si volem que s'eliminen per complet, cal heretar el unlink del pare i afegir la cridada al dels fills. Mirar l'[[#unlink.28.29|exemple]] `{=mediawiki}
+
+> ondelete cascade esborra els fills a nivel de PostgreSQL, però no elimina en External Id, això es fa en unlink(), però no executa unlink() dels fills. Per tant, si volem que s'eliminen per complet, cal heretar el unlink del pare i afegir la cridada al dels fills.
 
 #### One2many
 
@@ -450,10 +428,12 @@ class pais(models.Model):
     ciutats = fields.One2many('mon.ciutat', 'pais', string='Ciutats')
 ```
 
-```{=mediawiki}
+```{admonition} Important
+:class: danger
 És important entendre que el One2many no implica dades addicionals en la base de dades i sempre és calculat com un ''select'' en la base de dades on el id del model actual coincidisca amb el Many2one (clau aliena) de l'altre model. Això fa que no tinga sentit fer One2many computed o ficar un domain per restringit els que es poden afegir.
 ```
-```{=mediawiki}
+```{admonition} Domains
+:class: tip
 Els One2many poden tindre domain per no mostrar els que no compleixen una condició, això no significa que no existeixi aquesta relació.
 ```
 #### Many2many
