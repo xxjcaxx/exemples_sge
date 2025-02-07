@@ -1,21 +1,22 @@
-# Desarrollar para Odoo
+# Desenvolupar per a Odoo
 
 ## Arquitectura
 
 El *framework* d\'Odoo facilita diversos components que permeten
 construir l'aplicació:
 
-![Arquitectura MVC](MVCDiagram.png "Arquitectura MVC"){width="312"} ![
-thumb\|Cliente Servidor
-Odoo](Client_server.png " thumb|Cliente Servidor Odoo"){width="312"} ![
-thumb\|Arquitectura per
-capes](Odooarch.png " thumb|Arquitectura per capes"){width="400"}
-
 -   La capa **ORM** (Object Relational Mapping) entre els objectes
     Python i la base de dades **PostgreSQL**. El dissenyador-programador
     no efectua el disseny de la base de dades; únicament dissenya
     classes, per les quals la capa ORM d'Odoo n'efectuarà el mapat sobre
     el SGBD PostgreSQL
+
+    ```{figure} imgs/Odooarch.png
+    :scale: 100 %
+    :alt: Arquitectura per capes
+
+    Arquitectura per capes
+    ```
 -   Una arquitectura **MVC**
     ([model-vista-controlador](http://es.wikipedia.org/wiki/Modelo_Vista_Controlador))
     en la qual el model resideix en les dades de les classes dissenyades
@@ -23,6 +24,15 @@ capes](Odooarch.png " thumb|Arquitectura per capes"){width="400"}
     calendaris, gràfics... definits en fitxers XML i el controlador
     resideix en els mètodes definits en les classes que proporcionen la
     lògica de negoci.
+
+
+    ```{figure} imgs/MVCDiagram.png 
+    :scale: 100 %
+    :alt: Arquitectura MVC
+
+    Arquitectura MVC
+    ```
+
 -   Odoo és un ERP amb una arquitectura [de Tenencia
     Múltiple](http://es.wikipedia.org/wiki/Tenencia_M%C3%BAltiple). És A
     dir, té una base de dades i un servidor comú per a tots els clients.
@@ -485,9 +495,6 @@ Un camp related pot ser de qualsevol tipus. Per exemple, many2one:
 sala = fields.Many2one('cine.sala',related='sessio.sala',store=True,readonly=True)
 ```
 
-```{=mediawiki}
-Un camp related pot ser perillós, ja que si es modifica, pot modificar l'original. Per tant, quasi sempre és necessari afegir '''readonly''', com en l'exemple anterior.
-```
 #### Many2oneReference
 
 Un Many2one on es guardar també el model al qual fa referència amb el
@@ -516,9 +523,7 @@ funcionalitat podem utilitzar varies tècniques:
     funció inversa per al camp computed. Aquesta és una de les opcions
     més elegants. Exemple:
 
-```{=html}
-<div class="toccolours mw-collapsible mw-collapsed" style="overflow: hidden;">
-```
+
 ``` python
 class orderline(models.Model):
     _name = 'sale.order.line'
@@ -544,10 +549,6 @@ class bookings(models.Model):
     def _set_order_line(self):
         o = self.order_line.id
         self.env['sale.order.line'].search([('id','=',o)]).write({'booking':self.id})
-```
-
-```{=html}
-</div>
 ```
 -   Fer un Many2one i un One2many i restringir el màxim del One2many (
     [3](https://stackoverflow.com/questions/32801526/how-to-create-a-one2one-relationship-in-odoo-8)
@@ -592,8 +593,6 @@ raws = fields.One2many('game.raws','clan', domain= lambda s: [('quantity','>',0)
 
 Observem com hem fet un **domain amb lambda**, és a dir, aquest domain
 crida a una funció lambda al ser aplicat.
-
-[Millores_en_la_vista_en_Odoo#Operadors_per_als_domains:](Millores_en_la_vista_en_Odoo#Operadors_per_als_domains: "wikilink")
 
 ### Fields Computed 
 
