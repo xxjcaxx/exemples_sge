@@ -1,8 +1,5 @@
-## Accions i menús {#accions_i_menús}
+## Accions i menús
 
-```{=html}
-<div style="float:right; font-size:0.7em; margin:5px;">
-```
     Diagrama de cóm es comporta el client web quan carrega Odoo per primera 
     vegada i cóm crida a un action i carrega les vistes i les dades (records)
     +----------------------+                            +----------------------+
@@ -40,9 +37,6 @@
     |records               |                            |                      |
     +----------------------+                            +----------------------+
 
-```{=html}
-</div>
-```
 El client web de Odoo conté uns menús dalt i a l\'esquerra. Aquests
 menús, al ser accionats mostren altres menús i les pantalles del
 programa. Quant pulsem en un menú, canvia la pantalla perquè hem fet una
@@ -77,7 +71,7 @@ rep alguna d\'aquestes coses:
     en XML ni en la base de dades. En general, és la manera de cridar a
     un action al finalitzar una funció.
 
-### Accions tipus *window* {#accions_tipus_window}
+### Accions tipus *window*
 
 Les accions *window* són un record més (**ir.actions.act_window**). No
 obstant, els menús que les criden, tenen una manera més ràpida de ser
@@ -93,70 +87,17 @@ declarats amb una etiqueta **menuitem**:
           action="action_list_ideas"/>
 ```
 
-```{=mediawiki}
-{{nota | Les accions han de ser declarades al XML abans que els menús que les accionen. }}
-```
-```{=mediawiki}
-{{nota | A partir d'Odoo 12, cal donar permisos explícitament als usuaris per veure els menús. }}
-```
-Exemple:
-
-```{=html}
-<div class="toccolours mw-collapsible mw-collapsed" style="overflow: hidden;">
-```
-``` xml
-
-<?xml version="1.0" encoding="UTF-8"?>
-<openerp>
-    <data>
-        <!-- window action -->
-        <!--
-            The following tag is an action definition for a "window action",
-            that is an action opening a view or a set of views
-        -->
-        <record model="ir.actions.act_window" id="course_list_action">
-            <field name="name">Courses</field>
-            <field name="res_model">openacademy.course</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="help" type="html">
-                <p class="oe_view_nocontent_create">Create the first course
-                </p>
-            </field>
-        </record>
-
-        <!-- top level menu: no parent -->
-        <menuitem id="main_openacademy_menu" name="Open Academy"/>
-        <!-- A first level in the left side menu is needed
-             before using action= attribute -->
-        <menuitem id="openacademy_menu" name="Open Academy"
-                  parent="main_openacademy_menu"/>
-        <!-- the following menuitem should appear *after*
-             its parent openacademy_menu and *after* its
-             action course_list_action -->
-        <menuitem id="courses_menu" name="Courses" parent="openacademy_menu"
-                  action="course_list_action"/>
-        <!-- Full id location:
-             action="openacademy.course_list_action"
-             It is not required when it is the same module -->
-    </data>
-</openerp>
+```{tip}
+Les accions han de ser declarades al XML abans que els menús que les accionen. 
 ```
 
-```{=html}
-</div>
-```
-Sols el tercer nivell de menús pot tindre associada un action. El primer
-és el menú de dalt i el segon no es \'clicable\'.
 
-```{=mediawiki}
-{{nota|El que hem vist en esta secció és la definició d'una acció en un XML com a part de la vista, però una acció no és més que una forma còmoda d'escriure moltes coses que farà el client en javascript per demanar alguna cosa al servidor. Els actions separen i simplifiquen el desenvolupament de la interfície d'usuari que és el client web. Un menú o botó en html acciona una funció javascript que en principi no sap el que fer. Aquesta demana que es carregue la definició del seu action. Una vegada carregada la definició, queda clar tot el que ha de demanar (les vistes, context, dominis, vistes search, lloc on carregar-ho tot...) aleshores demana les vistes i amb ajuda de les vistes i els fields, demana els records que són les dades a mostrar. Per tant, un action és la definició sense programar javascript de coses que ha de fer el javascript. Odoo permet declarar actions com a resposta de funcions. Aquestes actions no estan en la base de dades, però són enviades igualment al client i el client fa en elles el mateix que en un action que ell ha demanat. Un exemple d'això són els actions que retornen els botons dels wizards. De fet, podem fer que un botó torne un action i, per tant, obrir una vista diferent. }}
+```{tip}
+El que hem vist en esta secció és la definició d'una acció en un XML com a part de la vista, però una acció no és més que una forma còmoda d'escriure moltes coses que farà el client en javascript per demanar alguna cosa al servidor. Els actions separen i simplifiquen el desenvolupament de la interfície d'usuari que és el client web. Un menú o botó en html acciona una funció javascript que en principi no sap el que fer. Aquesta demana que es carregue la definició del seu action. Una vegada carregada la definició, queda clar tot el que ha de demanar (les vistes, context, dominis, vistes search, lloc on carregar-ho tot...) aleshores demana les vistes i amb ajuda de les vistes i els fields, demana els records que són les dades a mostrar. Per tant, un action és la definició sense programar javascript de coses que ha de fer el javascript. Odoo permet declarar actions com a resposta de funcions. Aquestes actions no estan en la base de dades, però són enviades igualment al client i el client fa en elles el mateix que en un action que ell ha demanat. Un exemple d'això són els actions que retornen els botons dels wizards. De fet, podem fer que un botó torne un action i, per tant, obrir una vista diferent. 
 ```
 Aquest exemple és una funció cridada per un botó que retorna un action:
 
-```{=html}
-<div class="toccolours mw-collapsible mw-collapsed" style="overflow: hidden;">
-```
+
 ``` python
     @api.multi    # Molt important que siga multi.
     def create_comments(self):
@@ -203,9 +144,7 @@ Aquest és el json que rep el client després de cridar al botó:
 Ara el client pot demanar un formulari i el record corresponent al model
 *reserves.comments* i el id *20*.
 
-```{=html}
-</div>
-```
+
 Anem a veure en detall tots els fields que tenen aquestes accions:
 
 -   **res_model**: El model del que mostrarà les vistes.
@@ -214,7 +153,7 @@ Anem a veure en detall tots els fields que tenen aquestes accions:
     triarà o crearà una per defecte. Observem l\'exemple anterior, on en
     la declaració de l\'acció no s\'especifica aquest field, però el
     client si acaba rebent-lo amb
-    **\"views\":[false,\"form\"](false,"form" "wikilink")**. La llista
+    **\"views\":**. La llista
     de vistes la trau automàticament amb la funció
     **[fields_view_get()](https://www.odoo.com/documentation/12.0/reference/orm.html#odoo.models.Model.fields_view_get)**.
 -   **res_id**: (Opcional) Si es va a mostrar un form, indica la ID del
@@ -227,10 +166,8 @@ Anem a veure en detall tots els fields que tenen aquestes accions:
     cas de voler que es veja en la finestra actual sense les
     *breadcrumbs*, el que vol dir que elimina el rastre d\'on vé
     l\'acció.
--   **context**: (Opcional)Informació addicional. (veure
-    [context](Odoo#Context "wikilink"))
--   **domain**: (Opcional)(veure
-    [Domains](Odoo#Domains_en_les_actions "wikilink"))
+-   **context**: (Opcional)Informació addicional. 
+-   **domain**: (Opcional) Aplica un filtre als registres que es demanaran a la base de dades.
 -   **limit**: (Opcional) Per defecte 80, és la quantitat de records que
     mostrar en la vista tree.
 -   **auto-search**: (Opcional) En cas de que necessitem una búsqueda
@@ -275,25 +212,19 @@ Per tant, si volem definir les vistes que volem que mostre el action,
 podem omplir els camps anteriors. El servidor observa la llista de
 **view_ids** i afegeix el **view_id**. Si no ompli tot el definit en
 **view_mode**, acaba d\'omplir el field **views** (el que envía als
-clients) amb (False,`<tipus>`{=html}). Exemple de cóm especificar una
+clients) amb (False,`<tipus>`). Exemple de cóm especificar una
 vista en un action:
 
 ``` python
 <field name="view_ids" eval="[(5, 0, 0),(0, 0, {'view_mode': 'tree', 'view_id': ref('tree_external_id')}),(0, 0, {'view_mode': 'form', 'view_id': ref('form_external_id')}),]" />
 ```
-
-Com es pot veure en la secció
-d\'[expressions](Odoo#Expressions "wikilink") en els fitxers de dades,
-aquesta sintaxi és per a modificar fields Many2many. El **(5,0,0)** per
+En els fitxers de dades, aquesta sintaxi és per a modificar fields Many2many. El **(5,0,0)** per
 a desvincular les possibles vistes. El **(0,0,`<record>`{=html})** per
 crear un nou record i vincular-ho. En aquest cas, crea un record amb els
 dos fields necessaris, el tipus de vista i el External ID de la vista a
 vincular.
 
-Això també es pot fer insertant records en
-**ir.actions.act_window.view**, mireu la secció
-d\'[herencia](Odoo#Her.C3.A8ncia_en_la_vista "wikilink") en la vista per
-veure un exemple.
+Això també es pot fer més explícitament insertant records en **ir.actions.act_window.view**.
 
 ### Accions tipus URL {#accions_tipus_url}
 
@@ -496,7 +427,7 @@ Codi de la funció:
          }      
 ```
 
-### *Domains* en les *actions* {#domains_en_les_actions}
+### *Domains* en les *actions*
 
 En Odoo, el concepte de **domain** o domini està en varis llocs, encara
 que el seu funcionament sempre és el mateix. Es tracta d\'un criteri de
@@ -518,8 +449,7 @@ inversa](https://es.wikipedia.org/wiki/Notaci%C3%B3n_polaca_inversa).
 Un action en domain treu vistes per als elements del model que
 coincideixen en les condicions del domini. El domain és trauit per el
 model en un *where* més a la consulta SQL. Per tant, al client no li
-arriben mai els registres que no pasen el filtre. Els *domains* en les
-[vistes search](Odoo#Vistes_search "wikilink") el funcionament en la
+arriben mai els registres que no pasen el filtre. Els *domains* en les vistes search el funcionament en la
 part del model és igual, ja que no ejecuta un action, però fa la mateixa
 petició javascript.
 
@@ -535,14 +465,12 @@ Exemple de domain en action:
     </record>
 ```
 
-### Actions per a molts records {#actions_per_a_molts_records}
+### Actions per a molts records
 
 Quan estem observant un tree, podem veure dalt uns menús desplegables
 que mostren varies accions que es poden fer als records seleccionats del
 tree. Com ara eliminar o duplicar. Nosaltres podem crear noves accions
 que estaran ahí dalt.
-
-![](Dropdown.png "Dropdown.png")
 
 Fins ara hem vist accions que s\'executen al polsar un menú o un botó.
 El menú està declarat explícitament i el botó també. Les accions sols
@@ -556,9 +484,7 @@ búsqueda i uns menús desplagables **dropdown**. Aquest menú és generat
 pel client amb la llista d\'accions vinculades al model que està
 mostrant.
 
-En anteriors versions d\'Odoo, s\'havia de crear un *ir.values* amb
-*key2* i alguna cosa més. Però a partir de la versió 11 d\'Odoo, la
-manera més senzilla de vincular un action al menú de dalt és amb aquests
+Lamanera més senzilla de vincular un action al menú de dalt és amb aquests
 fields que ara tenen les actions:
 
 -   **binding_type**: Per defecte és de tipus **action**, però pot ser
@@ -596,4 +522,4 @@ Exemple per a accions tipus server:
 ```
 
 Per saber més de les actions, podem estudiar el codi:
-[1](https://github.com/odoo/odoo/blob/12.0/odoo/addons/base/models/ir_actions.py)
+[1](https://github.com/odoo/odoo/blob/18.0/odoo/addons/base/models/ir_actions.py)
