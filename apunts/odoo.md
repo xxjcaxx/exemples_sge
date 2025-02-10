@@ -475,8 +475,7 @@ El many2many pot ser ''computed'' i en el còmput es pot ordenar o filtrar. Un M
 ```
 #### Related
 
-Un camp d\'un altre model, necessita una relació Many2one. Encara que
-estiga Store=True, Odoo 8.0 l\'actualitza correctament. D\'aquesta
+Un camp d\'un altre model, necessita una relació Many2one. D\'aquesta
 manera es poden aprofitar les funcionalitats de guardar, com ara les
 búsquedes o referències en funcions. En termes de bases de dades, un
 camp related trenca la tercera forma normal. Això sol ser problemàtic,
@@ -497,8 +496,7 @@ sala = fields.Many2one('cine.sala',related='sessio.sala',store=True,readonly=Tru
 
 #### Many2oneReference
 
-Un Many2one on es guardar també el model al qual fa referència amb el
-atribut: **model_field**.
+Un Many2one on es guardar també el model al qual fa referència amb l'atribut: **model_field**.
 
 #### One2one
 
@@ -622,7 +620,7 @@ perquè recorre totes les instancies a les que fa referència el model.
 Aquesta funció sols s\'executarà una vegada encara que tinga que
 calcular tots els elements d\'una llista. Per això, la propia funció és
 la que té que iterar els elements de **self**. **self** és un
-[recordset](Odoo#API_de_l.27ORM "wikilink"), per tant, és com una llista
+`recordset`, per tant, és com una llista
 en la que cada element és un registre del model. Si el computed és
 cridat al entrar a un formulari, el recordset tindrà sols un element,
 però si el camp computed es veu en una llista (tree), pot ser que siguen
@@ -630,28 +628,8 @@ més d\'un registre. És important recordar fer el **for record in self:**
 encara que pensem que el camp computed sols l\'utilitzarem en un
 formulari.
 
-Un altre exemple:
-
-``` python
-class ComputedModel(models.Model):
-    _name = 'test.computed'
-
-    name = fields.Char(compute='_compute_name')
-    value = fields.Integer()
-
-    @api.depends('value')
-    def _compute_name(self):
-        for record in self:
-            self.name = "Record with value %s" % self.value
-```
-
-En aquest exemple, és el nom el que és calcular a partir del *value*.
-
 Exemples de **computed** de tots els tipus de fields:
 
-```{=html}
-<div class="toccolours mw-collapsible mw-collapsed" style="overflow: hidden;">
-```
 ``` python
 # -*- coding: utf-8 -*-
 
@@ -711,11 +689,8 @@ class proves_computed(models.Model):
 ([Codi
 complet](https://github.com/xxjcaxx/SGE-Odoo-2016-2017/tree/master/proves_computed))
 
-```{=html}
-</div>
-```
-En l\'apartat del [controlador](Odoo#El_controlador "wikilink")
-s\'expliquem més detalls de les funcions en python-odoo.
+
+> En l\'apartat del `controlador` s\'expliquem més detalls de les funcions en python-odoo.
 
 #### Buscar i escriure en camps computed 
 
@@ -742,9 +717,6 @@ funció i fer que estiga en l\'opció **inverse**.
 
 Exemple:
 
-```{=html}
-<div class="toccolours mw-collapsible mw-collapsed" style="overflow: hidden;">
-```
 ``` python
  preu = fields.Float('Price',compute="_get_price",search='_search_price',inverse='_set_price')
 
@@ -768,11 +740,7 @@ Exemple:
        self.pelicula.preu = self.preu  # Açò és un exemple, però està mal, ja que modifiques el preu de la peli en totes les sessions
 ```
 
-```{=html}
-</div>
-```
-Documentació oficial:
-<https://www.odoo.com/documentation/12.0/reference/orm.html#computed-fields>
+Documentació oficial: https://www.odoo.com/documentation/master/developer/reference/backend/orm.html
 
 ### Valors per defecte 
 
@@ -812,9 +780,6 @@ start_date = fields.Datetime(default=lambda self: fields.Datetime.now()) # CORRE
 El valor per defecte no pot dependre d\'un field que està creant-se en
 eixe moment. En eixe cas es pot utilitzar un **on_change**.
 
-```{=mediawiki}
-Veure també [[Millores_en_la_vista_en_Odoo#Millores_en_les_vistes_form | La part de valors per defecte en un One2Many]] 
-```
 En cas de tindre molts valors per defecte o que depenen del context, es
 pot utilitzar la funció **default_get** que ja tenen els models.
 
@@ -827,8 +792,7 @@ pot utilitzar la funció **default_get** que ja tenen els models.
         return result
 ```
 
-El que fa aquesta funció és un poc avançat de moment, ja que fa ús del [
-context](Odoo#Context "wikilink") i l\'herencia per afegir un valor per
+El que fa aquesta funció és un poc avançat de moment, ja que fa ús del `context` i l\'herencia per afegir un valor per
 defecte al diccionari que retorna aquesta funció en la classe *Model*
 
 ### Restriccions (constrains) 
@@ -870,8 +834,8 @@ Quan fem un mòdul d\'Odoo, es poden definir dades que es guardaran en la
 base de dades. Aquestes dades poden ser necessàries per al funcionament
 del mòdul, de demostració o inclús part de la vista.
 
-```{=mediawiki}
-{{nota | Alguns mòduls sols estan per clavar dades en Odoo}}
+```{tip}
+Alguns mòduls sols estan per clavar dades en Odoo
 ```
 Tots els fitxers de dades són en XML i tenen una estructura com esta:
 
@@ -883,8 +847,7 @@ Tots els fitxers de dades són en XML i tenen una estructura com esta:
 <odoo>
 ```
 
-Dins de les etiquetes **odoo** (o les etiquetes **openerp** i **data**
-en versions anteriors) poden trobar una etiqueta **record** per cada
+Dins de les etiquetes **odoo** poden trobar una etiqueta **record** per cada
 fila en la taula que volem introduir. Cal especificar el model i el id.
 El **id** és un identificador extern, que no te perquè coincidir amb la
 clau primària que l\'ORM utilitzarà després. Cada **field** tindrà un
@@ -917,10 +880,10 @@ cal utilitzar l\'atribut **ref**:
 <field name="product_id" ref="product.product1"/>
 ```
 
-```{=mediawiki}
+```{tip}
 Es recomana fer l'atribut '''id''' en el record, encara que no sobreescriu el id real, serveix per declarar el External Id i és més fàcil després fer referència a ell.
 ```
-Veure també la funció [**ref()**](Odoo#ref.28.29 "wikilink") de l\'ORM
+> Veure també la funció **ref()** de l\'ORM
 
 ### Expressions
 
@@ -964,25 +927,22 @@ amb el external ID o amb un search:
 <delete model="cine.sessio" id="sessio_cine1_1"></delete>
 ```
 
-```{=mediawiki}
-Si volem que sempre s'actualitzen les dades de demo (per exemple la data) podem esborrar i tornar a crear en el mateix fitxer de demo.
-```
-```{=mediawiki}
+```{danger}
 Si falla l'actualització amb dades de demo, és possible que Odoo 12 deshabilite la possibilitat de tornar-les a instal·lar. Això és el field demo de ir.module.module que és readonly, per tant, cal modificar-lo a ma en la base de dades:
-```
-`En postgresql:`\
+
 `update ir_module_module set demo = 't' where name='school';`
+```
+
 
 ## Accions i menús 
 
 Si vols conèixer en més detall cóm funcionen les accions en Odoo, llig
-l\'article [Accions i menús en
-Odoo](Accions_i_menús_en_Odoo "wikilink").
+l\'article **Accions i menús en Odoo**
 
 El client web de Odoo conté uns menús dalt i a l\'esquerra. Aquests
 menús, al ser accionats mostren altres menús i les pantalles del
 programa. Quant pulsem en un menú, canvia la pantalla perquè hem fet una
-[acció](https://www.odoo.com/documentation/12.0/reference/actions.html).
+[acció](https://www.odoo.com/documentation/master/developer/reference/backend/actions.html).
 
 Una acció bàsicament té:
 
@@ -1029,17 +989,12 @@ declarats amb una etiqueta **menuitem**:
           action="action_list_ideas"/>
 ```
 
-```{=mediawiki}
-{{nota | Les accions han de ser declarades al XML abans que els menús que les accionen. }}
+```{tip}
+ Les accions han de ser declarades al XML abans que els menús que les accionen. 
 ```
-```{=mediawiki}
-{{nota | A partir d'Odoo 12, cal donar permisos explícitament als usuaris per veure els menús. }}
-```
+
 Exemple:
 
-```{=html}
-<div class="toccolours mw-collapsible mw-collapsed" style="overflow: hidden;">
-```
 ``` xml
 
 <?xml version="1.0" encoding="UTF-8"?>
@@ -1078,25 +1033,17 @@ Exemple:
     </data>
 </openerp>
 ```
-
-```{=html}
-</div>
-```
 Sols el tercer nivell de menús pot tindre associada un action. El primer
 és el menú de dalt i el segon no es \'clicable\'.
 
-```{=mediawiki}
+```{tip}
 El que hem vist en esta secció és la definició d'una acció en un XML com a part de la vista, però una acció no és més que una forma còmoda d'escriure moltes coses que farà el client en javascript per demanar alguna cosa al servidor. Els actions separen i simplifiquen el desenvolupament de la interfície d'usuari que és el client web. Un menú o botó en html acciona una funció javascript que en principi no sap el que fer. Aquesta demana que es carregue la definició del seu action. Una vegada carregada la definició, queda clar tot el que ha de demanar (les vistes, context, dominis, vistes search, lloc on carregar-ho tot...) aleshores demana les vistes i amb ajuda de les vistes i els fields, demana els records que són les dades a mostrar. Per tant, un action és la definició sense programar javascript de coses que ha de fer el javascript. Odoo permet declarar actions com a resposta de funcions. Aquestes actions no estan en la base de dades, però són enviades igualment al client i el client fa en elles el mateix que en un action que ell ha demanat. Un exemple d'això són els actions que retornen els botons dels wizards. De fet, podem fer que un botó torne un action i, per tant, obrir una vista diferent. 
 ```
-Si vols conèixer en més detall cóm funcionen les accions en Odoo, llig
-l\'article [Accions i menús en
-Odoo](Accions_i_menús_en_Odoo "wikilink").
 
 ## La vista 
 
 Per saber més sobre les vistes i cómo millorar-les, consulta l\'article
-de [Millores en la vista en
-Odoo](Millores_en_la_vista_en_Odoo "wikilink").
+de **La vista en Odoo**
 
 Les vistes són la manera en la que es representen els models. En cas de
 que no declarem les vistes, es poden referenciar per el seu tipus i Odoo
@@ -1118,14 +1065,11 @@ de la que volem mostrar, es mostrarà la que més prioritat tinga.
 </record>
 ```
 
-```{=mediawiki}
+```{tip}
 Les vistes es guarden en el model '''ir.ui.view'''. Tots els elements de interficie tenen en el seu nom ir.ui (Information Repository, User Interface). Els menús a ir.ui.menu o les accions a '''ir.actions.window'''
 ```
 Exemple de vista form:
 
-```{=html}
-<div class="toccolours mw-collapsible mw-collapsed" style="overflow: hidden;">
-```
 ``` xml
 
   <record model="ir.ui.view" id="course_form_view">
@@ -1144,22 +1088,11 @@ Exemple de vista form:
         </record>
 ```
 
-```{=html}
-</div>
-```
 Encara que Odoo ja proporciona un tree i un form per defecte, la vista
 cal millorar-la quasi sempre. Totes les vistes tenen fields que poden
 tindre widgets diferents. En les vistes form, podem adaptar molt
 l\'aspecte amb grups de fields, pestanyes, camps ocults
 condicionalment\...
-
-Per saber més sobre les vistes i cómo millorar-les, consulta l\'article
-de [Millores en la vista en
-Odoo](Millores_en_la_vista_en_Odoo "wikilink").
-
-## Els reports 
-
-[Odoo reports](Odoo_reports "wikilink")
 
 ## Herència
 
@@ -1275,15 +1208,16 @@ l'herència per prototip i l'herència per delegació.
 |                      | a les dites classes. |                      |
 +----------------------+----------------------+----------------------+
 
-![](Inheritance_methods.png "Inheritance_methods.png")
+    ```{figure} imgs/Inheritance_methods.png
+    :scale: 100 %
+    :alt: Herència
 
-El fitxer \_\_openerp\_\_.py ha de contindre les dependències de la
-clase heretada.
+    Diferents modes d'herència
+    ```
 
 ### Herència en el Model 
 
-El disseny d'un objecte d'OpenObject heretat és paregut al disseny d'un
-objecte d'OpenObject no heretat; únicament hi ha dues diferències:
+El disseny d'un model d'Odoo heretat és paregut al disseny d'un no heretat; únicament hi ha dues diferències:
 
 -   Apareix l'atribut **\_inherit** o **\_inherits** per indicar
     l'objecte (herència simple) o els objectes (herència múltiple) dels
@@ -1306,9 +1240,7 @@ modificar el funcionament d'alguns mètodes. En cas d'afegir dades,
 aquestes s'afegeixen a la taula de la base de dades en la qual estava
 mapat l'objecte pare.
 
-```{=html}
-<div style="border: 1px dotted #ddd; width:80%; margin:auto; padding:10px; background-color:#fefffe">
-```
+
 **Exemple d\'herència de classe** L'herència de classe la trobem en
 molts mòduls que afegeixen dades i mètodes a objectes ja existents, com
 per exemple, el mòdul comptabilitat (account) que afegix dades i mètodes
@@ -1329,9 +1261,6 @@ apareix una vegada instal·lat el mòdul.
 Odoo té molts mòduls que deriven de l'objecte res.partner per afegir-hi
 característiques i funcionalitats.
 
-```{=html}
-</div>
-```
 L'herència simple (\_inherit) amb atribut **\_name** diferent al de
 l'objecte pare, s'anomena **herència per prototip** i en ella es crea un
 nou objecte que aglutina les dades i mètodes que tenia l'objecte del
@@ -1339,9 +1268,6 @@ qual deriva, juntament amb les noves dades i mètodes que pugua
 incorporar el nou objecte. En aquest cas, sempre es crea una nova taula
 a la base de dades per mapar el nou objecte.
 
-```{=html}
-<div style="border: 1px dotted #ddd; width:80%; margin:auto; padding:10px; background-color:#fefffe">
-```
 **Exemple d\'herència per prototip** L'herència per prototip és difícil
 de trobar en els mòduls que incorpora Odoo. Un exemple el tenim en el
 mòdul base_calendar en el qual podem observar el mòdul comptabilitat
@@ -1364,10 +1290,7 @@ l'apartat \_atributs de la classe res_alarm i la taula calendar_alarm
 amb camps idèntics als de la taula res_alarm més els camps definits a
 l'apartat \_atributs de la classe calendar_alarm.
 
-```{=html}
-</div>
-```
-```{=mediawiki}
+```{tip}
 L'herència per prototip és la tradicional en els llenguatges orientats a objectes, ja que crea una nova classe vinculada
 ```
 L'herència múltiple (\_inherits) s'anomena herència per delegació i
@@ -1516,9 +1439,6 @@ Si es vol especificar una vista search es pot inclourer la etiqueta
 
 Exemple:
 
-```{=html}
-<div class="toccolours mw-collapsible mw-collapsed" style="overflow: hidden;">
-```
 ``` python
 class socios(models.Model):
      _inherit = 'res.partner'
@@ -1566,9 +1486,6 @@ class socios(models.Model):
     </record>
 ```
 
-```{=html}
-</div>
-```
 **Domains**
 
 Si volem que el action heredat sols mostre els elements que volem, s\'ha
@@ -1611,27 +1528,24 @@ L'herència en el controlador és un mecanisme conegut, ja que l'apliquem
 de forma inconscient quan ens veiem obligats a sobreescriure els mètodes
 de la capa ORM d'OpenObject en el disseny de molts mòduls.
 
-```{=mediawiki}
-{{nota|'''Funció super()'''
+```{tip}
+Funció super()
 
-El llenguatge Python recomana utilitzar la funció super() per invocar el mètode de la classe base quan s’està sobreescrivint en una classe derivada, en lloc d’utilitzar la sintaxi nomClasseBase.metode(self…).}}
+El llenguatge Python recomana utilitzar la funció super() per invocar el mètode de la classe base quan s’està sobreescrivint en una classe derivada, en lloc d’utilitzar la sintaxi nomClasseBase.metode(self…).
 ```
 L'efecte de l'herència en el controlador es manifesta únicament quan cal
 sobreescriure algun dels mètodes de l'objecte del qual es deriva i per a
 fer-ho adequadament cal tenir en compte que el mètode sobreescrit en
 l'objecte derivat:
 
--   A vegades vol substituir el mètode de l'objecte base sense
+-   De vegades vol substituir el mètode de l'objecte base sense
     aprofitar-ne cap funcionalitat: el mètode de l'objecte derivat no
     invoca el mètode sobreescrit.
--   A vegades vol aprofitar la funcionalitat del mètode de l'objecte
+-   De vegades vol aprofitar la funcionalitat del mètode de l'objecte
     base: el mètode de l'objecte derivat invoca el mètode sobreescrit.
 
 Exemples:
 
-```{=html}
-<div class="toccolours mw-collapsible mw-collapsed" style="overflow: hidden;">
-```
 [Sobreescriure el mètode
 **create**](http://www.odoo.yenthevg.com/override-create-functions-odoo/):
 
@@ -1653,9 +1567,6 @@ class res_partner(models.Model):
     return record
 ```
 
-```{=html}
-</div>
-```
 ## El controlador 
 
 Part del controlador l\'hem mencionat al parlar dels camps **computed**.
@@ -1689,7 +1600,7 @@ funcions, per poder ser traduïbles, han de ser introduïts amb la sintaxi
 
 ### API de l\'ORM 
 
-```{=mediawiki}
+```{tip}
 {{nota|'''Interactuar en la terminal'''
  $ odoo shell -d castillo -u containers
  [https://asciinema.org/a/123126 Asciinema amb alguns exemples]
@@ -1697,8 +1608,8 @@ Observa cóm hem ficat el paràmetre '''shell'''. Les coses que se fan en la ter
 Amb el següent exemple, podem arrancar odoo sense molestar a l'instància que està en marxa redefinint els ports:
  $ odoo shell -c /path/to/odoo.conf --xmlrpc-port 8888 --longpolling-port 8899
 Documentació: [https://medium.com/@RafnixG/explorando-odoo-a-fondo-c%C3%B3mo-trabajar-con-la-shell-de-la-cli-y-configurar-ipython-como-repl-8f7bd04a26d] [https://medium.com/@RafnixG/shell-de-odoo-domina-operaciones-avanzadas-integraci%C3%B3n-de-librer%C3%ADas-y-automatizaci%C3%B3n-de-tareas-2e85c7d81d34]
-}}
 ```
+
 Un mètode creat dins d\'un model actua sobre tots els elements del model
 que estiguen actius en el moment de cridar al mètode. Si és un tree,
 seran molts i si és un form sols un. Però en qualsevol cas és una
@@ -1845,7 +1756,7 @@ El context va passant d\'un mètode a un altre o a les vistes i, de
 vegades volem modificar-lo.
 
 Imaginem que volem fer un botó que obriga un
-[wizard](Odoo#Wizards "wikilink"), però volem passar-li **paràmetres**
+wizard, però volem passar-li **paràmetres**
 al wizard. En els botons i fields relacionals es pot especificar un
 context:
 
@@ -1864,7 +1775,7 @@ bookings_fs = fields.Many2many('reserves.bookings',readonly=True, default=_defau
 
 Aquest many2many tindrà els mateixos elements que el form que l\'ha
 cridat. (Això és com el
-[**default\_**](Odoo#Millores_en_les_vistes_form "wikilink") en els
+**default\_** en els
 One2many, però fet a mà)
 
 També es pot utilitzar aquesta manera d\'enviar un recordset per un
@@ -1880,9 +1791,8 @@ En ocasions necessitem especificar valors per defecte i filtres per
 defecte en un **action**. Per exemple, quan implementem l\'herència,
 volem que els nous registres que es facen en el nostre **action**
 tinguem un valor per defecte. En el següent exemple, en la primera línia
-és el que es sol fer en la [
-Herència](#Her.C3.A8ncia_en_la_vista "wikilink") i en la segona estem
-especificant un [ External ID](#External_Ids "wikilink") amb **ref()**
+és el que es sol fer en la Herència i en la segona estem
+especificant un External ID amb **ref()**
 dins d\'un eval.
 
 ``` python
@@ -1910,7 +1820,6 @@ Si és precís modificar el context es pot fer:
  self.env.context = dict(self.env.context)
  self.env.context.update({'key': 'val'})
 ```
-
 o
 
 ``` python
@@ -1975,7 +1884,7 @@ res.partner(7, 18, 12, 14, 17, 19, 8, 31, 26, 16, 13, 20, 30, 22, 29, 15, 23, 28
 'Agrolait'
 ```
 
-```{=mediawiki}
+```{tip}
  Es pot obtindre la quantitat d'elements amb el mètode '''search_count()'''
 ```
 ``` python
@@ -2062,8 +1971,7 @@ existixen.
 
 ##### ref()
 
-Retorna un singleton a partir d\'un [**External
-ID**](Odoo#External_Ids "wikilink").
+Retorna un singleton a partir d\'un **External ID**
 
 ``` python
 >>> env.ref('base.group_public')
@@ -2113,23 +2021,9 @@ on display_name and then name_get() on the result of the search.
 **sorted(key=None, reverse=False)** Retorna el recordset ordenat per un
 criteri.
 
-**name_get()** Retorna el nom que tindrà el record quant siga
-referenciat externament. És el valor per defecte del field
-**display_name**. Aquest mètode, per defecte, mostra el field **name**
-si està. Es pot sobreescriure per mostrar un altre camp o mescla
-d\'ells.
-
-Anem a sobreescriure el mètode
-[name_get](http://odootechnical.com/overriding-name_get-method-in-odoo-8/).
-
-``` python
-  
-     def name_get(self):
-        res=[]
-        for i in self:
-            res.append((i.id,str(i.name)+", "+str(i.id_player.name)))
-        return res
-```
+**display_name**. Aquest atribut, per defecte, mostra el field **name**
+si està. Es pot sobreescriure `_compute_display_name` per mostrar un altre camp o mescla
+d\'ells. També es pot canviar `_rec_name` per indicar un field distint de `name`.
 
 **copy()** Crea una còpia del singleton i permet aportar nous valors per
 als fields de la copia.
@@ -2143,7 +2037,7 @@ Si volem que un valor siga modificat en temps real quant modifiquem el
 valor d\'un altre field sense encara haver guardat, podem usar els
 mètodes **on_change**.
 
-```{=mediawiki}
+```{tip}
  Els camps '''computed''' ja tenen el seu propi onchange, per tant, no cal fer-lo
 ```
 En onchange es modifica el valor d\'un o més camps dirèctament i, si cal
@@ -2212,12 +2106,11 @@ def onchange_partner_id(self, part):
     return res 
 ```
 
-```{=mediawiki}
-{{nota|Si l'usuari s'equivoca introduint algunes dades, Odoo proporciona varies maneres d'evitar-lo: 
+```{tip}
+Si l'usuari s'equivoca introduint algunes dades, Odoo proporciona varies maneres d'evitar-lo: 
 * Constraints
 * onchange amb missatge d'error i restablint els valors originals
 * Sobreescriptura del mètode write o create per comprovar coses abans de guardar 
-}}
 ```
 ##### Cron Jobs 
 
@@ -2278,12 +2171,6 @@ crida i quant se crida.
     indicat en la vista. En aquest, com que es crida quant es modifica
     un form, sempre **self** serà un singleton. Però si fiquem un for no
     passa res.
-
-```{=mediawiki}
-{{Nota | @api.multi i @api.one estan obsolets en el Odoo 13 i no es poden utilitzar mai. }}
-```
-[Exemple de tots els decoradors: (Odoo
-12)](https://github.com/xxjcaxx/SGE-Odoo-2016-2017/tree/master/proves_decoradors)
 
 ### Càlculs en dates 
 
@@ -2446,47 +2333,6 @@ diferència i veure si en dies és major o menor de 30, per exemple. Però
 si volem major precisió, en aquest cas es recomana utilitar
 relativedelta.
 
-## Wizards
-
-Els wizards permeten fer un asistent interactiu per a que l\'usuari
-complete una tasca. Com que no ha d\'agafar les dades dirèctament en un
-formulari, si no que va ajundant-lo a completar-lo, no pot ser guardat
-en la base de dades fins al final.
-
-Els wizards en Odoo són models que estenen la classe TransientModel en
-compte de Model. Aquesta classe és molt pareguda, però:
-
--   Les dades no són persistents, encara que es guarden temporalment en
-    la base de dades.
--   A partir de odoo 14 necessiten permisos
--   Els records dels wizards poden tindre referències Many2One amb el
-    records dels models normals, però no al contrari.
-
-Veure més: [Wizards en Odoo](Wizards_en_Odoo "wikilink")
-
-## Client web 
-
-[El client Web Odoo](El_client_Web_Odoo "wikilink") (Obsolet a partir de
-la versió 14)
-
-## Web Controllers 
-
-[Web Controller en Odoo](Web_Controller_en_Odoo "wikilink")
-
-## Pàgina web 
-
-<https://www.odoo.yenthevg.com/creating-webpages-controllers-odoo10/>
-<http://learnopenerp.blogspot.com/2018/08/odoo-web-controller.html>
-
-## Exemples
-
-[Projecte Odoo complet](Projecte_Odoo_complet "wikilink")
-
-[Vídeo de Mòdul Odoo
-complet](https://www.youtube.com/watch?v=hwhhZcSEG1s)[Codi del
-vídeo](https://github.com/tivisse/odoodays-2018)
-
-[Point Of Sale](Point_Of_Sale "wikilink")
 
 ## Misc.
 
@@ -2497,9 +2343,7 @@ vídeo](https://github.com/tivisse/odoodays-2018)
 
 Distintes alertes:
 
-```{=html}
-<div class="toccolours mw-collapsible mw-collapsed" style="overflow: hidden;">
-```
+
 Odoo pot mostrar distintes alertes en funció del que necessitem. Totes
 estan en openerp.exceptions
 
@@ -2546,14 +2390,9 @@ retorna l\'objecte referit amb una id externa. En aquest cas, un action.
 
 En el cas de les Constrains també s\'ha de llançar un Validation error.
 
-```{=html}
-</div>
-```
 Funcions lambda:
 
-```{=html}
-<div class="toccolours mw-collapsible mw-collapsed" style="overflow: hidden;">
-```
+
 En moltes ocasions, cal cridar a alguna funció de l\'ORM o similar
 passant com a paràmetre una funció lambda. La raó és que si passem una
 variable, esta queda establerta en temps de càrrega i no es modifica. La
@@ -2573,67 +2412,7 @@ calcula.
 Cal recordar que les funcions lambda són de una sola línia de codi. Si
 volem alguna cosa més sofisticada hem de cridar a una funció normal.
 
-```{=html}
-</div>
-```
-Imatges en Odoo:
 
-```{=html}
-<div class="toccolours mw-collapsible mw-collapsed" style="overflow: hidden;">
-```
-Les imatges es guarden com un text en la base de dades. Per convertir un
-binari en text es fa en base64. Aquesta codificació funciona sense
-problemes en els navegadors web i no cal preocupar-se de cóm guardar les
-imatges en PostgreSQL.
-
-Per mostrar la imatge en formularis o llistes es pot ficar
-**widget=\"image\"** en el *field*. Si no fem res més, la imatge es
-veurà en la mida original. Podem navegar per altres formularis per veure
-cóm han fet per mostrar la imatge i aprofitar les classes CSS. També
-podem utilitzar la etiqueta **width** o **style** per especificar la
-mida exacta.
-
-No obstant, no és recomanable carregar les imatges en el seu tamany
-original. El millor és guardar la versió mitjana o menuda i mostrar eixa
-sols. Per aconseguir-ho, es pot fer un camp binary computed d\'aquesta
-manera:
-
-``` python
-from odoo import models, fields, api, tools
-[...]
-    photo = fields.Binary()
-    photo_small = fields.Binary(compute='_get_images',store=True)
-    photo_medium = fields.Binary(compute='_get_images',store=True)
-
-    @api.one
-    @api.depends('photo')
-    def _get_images(self):
-        image = self.photo
-        data = tools.image_get_resized_images(image)
-        self.photo_small = data["image_small"]
-        self.photo_medium = data["image_medium"]
-```
-
-La ferramenta **tools.image** d\'Odoo té funcions per a reescalar,
-retallar o millorar les imatges.
-
-Per utilitzar una imatge dins d\'un Kanban, es necessita la funció
-**kanban_image()**:
-
-``` xml
-<img t-att-src="kanban_image('reserves.hotels', 'photo_small', record.id.value)"/>
-```
-
-Prèviament, s\'ha declarat el field *photo_small* i *id* al kanban.
-
-```{=html}
-</div>
-```
-**res.config.settings**
-
-```{=html}
-<div class="toccolours mw-collapsible mw-collapsed" style="overflow: hidden;">
-```
 Si volem que el nostre mòdul tinga configuració podem afegir-la com a un
 field més del model **res.control.settings**. Aquest ja s\'encarrega de
 centralitzar opcions de configuració. Per a que aparega en el menú de
@@ -2673,56 +2452,3 @@ class config(models.TransientModel):
 
 Si en data-key posem el nom del mòdul, afegirà l\'icona al menú de
 settings.
-
-<https://www.youtube.com/watch?v=MsVoYPQ4-J4>
-
-```{=html}
-</div>
-```
-## Enllaços
-
-<https://www.odoo.com/documentation/8.0/>
-<https://www.odoo.com/documentation/9.0/>
-
-<https://www.odoo.com/documentation/8.0/howtos/backend.html>
-
-Blogs: <http://ludwiktrammer.github.io/> <http://www.odoo.yenthevg.com/>
-<https://sateliteguayana.wordpress.com/>
-<https://poncesoft.blogspot.com/>
-
-Repositori dels exemples: <https://github.com/xxjcaxx/sge20152016>
-<https://github.com/xxjcaxx/SGE-Odoo-2016-2017>
-
-<https://www.youtube.com/watch?v=0GUxV85DDm4&feature=youtu.be&t=5h47m45s>
-
-<http://es.slideshare.net/openobject/presentation-of-the-new-openerp-api-raphael-collet-openerp>
-
-<http://fundamentos-de-desarrollo-en-odoo.readthedocs.org/es/latest/capitulos/comenzando-con-odoo.html>
-
-<https://www.odoo.com/es_ES/slides/slide/keynote-odoo-9-new-features-201>
-
-<https://media.readthedocs.org/pdf/odoo-development/latest/odoo-development.pdf>
-
-<http://webkul.com/blog/beginner-guide-odoo-clicommand-line-interface/>
-
-<http://useopenerp.com/v8>
-
-Podcast que parlen dels beneficis d\'Odoo:
-<http://www.ivoox.com/podcast-26-odoo-transformacion-digital-audios-mp3_rf_18433975_1.html>
-
-[Canal de youtube de SGE amb Odoo en
-castellà](https://www.youtube.com/channel/UC8gl7Ap_GZVbsKjri2GChkg)
-
-<https://www.odoo.yenthevg.com/extend-selection-odoo-10/>
-
-[Apunts d\'altres professors
-recopilats](https://apuntesfpinformatica.es/sistemas-de-gestion-empresarial/)
-
-<https://naglis.me/post/odoo-13-changelog/>
-<https://www.odoo.com/es_ES/forum/ayuda-1/question/odoo-13-features-and-odoo-14-expected-features-148369#answer-148370>
-
-<https://medium.com/@manuelcalerosolis>
-
-<https://www.youtube.com/playlist?list=PLeJtXzTubzj-tbQ94heWeQFB0twGd0vvN>
-
-<https://vimeo.com/channels/m10dam/page:1>
