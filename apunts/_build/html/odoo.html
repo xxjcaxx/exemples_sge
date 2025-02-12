@@ -60,10 +60,12 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'odoo';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Millores en les vistes tree {#millores_en_les_vistes_tree}" href="vista.html" />
+    <link rel="next" title="La vista" href="vista.html" />
     <link rel="prev" title="Instal·lar Odoo" href="instalarodoo.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -171,22 +173,13 @@
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="instalarodoo.html">Instal·lar Odoo</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Desenvolupar per a Odoo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vista.html">Millores en les vistes tree {#millores_en_les_vistes_tree}</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vista.html">La vista</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accions_menus.html">Accions i menús</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reports.html">Reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wizards.html">Wizards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web_controllers.html">Web Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client_web.html">Client Web</a></li>
 
-
-
-
-
-<li class="toctree-l1"><a class="reference internal" href="accions_menus.html">Accions i menús {#accions_i_menús}</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wizards.html">Wizard bàsic {#wizard_bàsic}</a></li>
-
-
-
-
-
-
-<li class="toctree-l1"><a class="reference internal" href="web_controllers.html">Web Controllers {#web_controllers}</a></li>
-<li class="toctree-l1"><a class="reference internal" href="client_web.html">Arquitectura del client web {#arquitectura_del_client_web}</a></li>
 
 
 
@@ -432,7 +425,6 @@
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#la-vista">La vista</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#els-reports">Els reports</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#herencia">Herència</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#herencia-en-el-model">Herència en el Model</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#herencia-en-la-vista">Herència en la vista</a></li>
@@ -466,13 +458,7 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculs-en-dates">Càlculs en dates</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wizards">Wizards</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#client-web">Client web</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#web-controllers">Web Controllers</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pagina-web">Pàgina web</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exemples">Exemples</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#misc">Misc.</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enllacos">Enllaços</a></li>
 </ul>
             </nav>
         </div>
@@ -912,8 +898,7 @@ alienes.</p>
 </section>
 <section id="related">
 <h4>Related<a class="headerlink" href="#related" title="Link to this heading">#</a></h4>
-<p>Un camp d’un altre model, necessita una relació Many2one. Encara que
-estiga Store=True, Odoo 8.0 l’actualitza correctament. D’aquesta
+<p>Un camp d’un altre model, necessita una relació Many2one. D’aquesta
 manera es poden aprofitar les funcionalitats de guardar, com ara les
 búsquedes o referències en funcions. En termes de bases de dades, un
 camp related trenca la tercera forma normal. Això sol ser problemàtic,
@@ -931,8 +916,7 @@ preocupa això, amb store=False no guarda res en la taula.</p>
 </section>
 <section id="many2onereference">
 <h4>Many2oneReference<a class="headerlink" href="#many2onereference" title="Link to this heading">#</a></h4>
-<p>Un Many2one on es guardar també el model al qual fa referència amb el
-atribut: <strong>model_field</strong>.</p>
+<p>Un Many2one on es guardar també el model al qual fa referència amb l’atribut: <strong>model_field</strong>.</p>
 </section>
 <section id="one2one">
 <h4>One2one<a class="headerlink" href="#one2one" title="Link to this heading">#</a></h4>
@@ -1067,27 +1051,13 @@ perquè recorre totes les instancies a les que fa referència el model.
 Aquesta funció sols s’executarà una vegada encara que tinga que
 calcular tots els elements d’una llista. Per això, la propia funció és
 la que té que iterar els elements de <strong>self</strong>. <strong>self</strong> és un
-<a class="reference internal" href="#Odoo#API_de_l.27ORM"><span class="xref myst">recordset</span></a>, per tant, és com una llista
+<code class="docutils literal notranslate"><span class="pre">recordset</span></code>, per tant, és com una llista
 en la que cada element és un registre del model. Si el computed és
 cridat al entrar a un formulari, el recordset tindrà sols un element,
 però si el camp computed es veu en una llista (tree), pot ser que siguen
 més d’un registre. És important recordar fer el <strong>for record in self:</strong>
 encara que pensem que el camp computed sols l’utilitzarem en un
 formulari.</p>
-<p>Un altre exemple:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ComputedModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
-    <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;test.computed&#39;</span>
-
-    <span class="n">name</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Char</span><span class="p">(</span><span class="n">compute</span><span class="o">=</span><span class="s1">&#39;_compute_name&#39;</span><span class="p">)</span>
-    <span class="n">value</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Integer</span><span class="p">()</span>
-
-    <span class="nd">@api</span><span class="o">.</span><span class="n">depends</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Record with value </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
-</pre></div>
-</div>
-<p>En aquest exemple, és el nom el que és calcular a partir del <em>value</em>.</p>
 <p>Exemples de <strong>computed</strong> de tots els tipus de fields:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
@@ -1146,8 +1116,9 @@ formulari.</p>
 </div>
 <p>(<a class="reference external" href="https://github.com/xxjcaxx/SGE-Odoo-2016-2017/tree/master/proves_computed">Codi
 complet</a>)</p>
-<p>En l’apartat del <a class="reference internal" href="#Odoo#El_controlador"><span class="xref myst">controlador</span></a>
-s’expliquem més detalls de les funcions en python-odoo.</p>
+<blockquote>
+<div><p>En l’apartat del <code class="docutils literal notranslate"><span class="pre">controlador</span></code> s’expliquem més detalls de les funcions en python-odoo.</p>
+</div></blockquote>
 <section id="buscar-i-escriure-en-camps-computed">
 <h4>Buscar i escriure en camps computed<a class="headerlink" href="#buscar-i-escriure-en-camps-computed" title="Link to this heading">#</a></h4>
 <p>Amb el <strong>api.depends</strong> podem fer que camps calculats puguen ser buscats
@@ -1192,8 +1163,7 @@ funció i fer que estiga en l’opció <strong>inverse</strong>.</p>
        <span class="bp">self</span><span class="o">.</span><span class="n">pelicula</span><span class="o">.</span><span class="n">preu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">preu</span>  <span class="c1"># Açò és un exemple, però està mal, ja que modifiques el preu de la peli en totes les sessions</span>
 </pre></div>
 </div>
-<p>Documentació oficial:
-<a class="reference external" href="https://www.odoo.com/documentation/12.0/reference/orm.html#computed-fields">https://www.odoo.com/documentation/12.0/reference/orm.html#computed-fields</a></p>
+<p>Documentació oficial: <a class="reference external" href="https://www.odoo.com/documentation/master/developer/reference/backend/orm.html">https://www.odoo.com/documentation/master/developer/reference/backend/orm.html</a></p>
 </section>
 </section>
 <section id="valors-per-defecte">
@@ -1235,8 +1205,7 @@ pot utilitzar la funció <strong>default_get</strong> que ja tenen els models.</
         <span class="k">return</span> <span class="n">result</span>
 </pre></div>
 </div>
-<p>El que fa aquesta funció és un poc avançat de moment, ja que fa ús del <a class="reference internal" href="#Odoo#Context"><span class="xref myst">
-context</span></a> i l’herencia per afegir un valor per
+<p>El que fa aquesta funció és un poc avançat de moment, ja que fa ús del <code class="docutils literal notranslate"><span class="pre">context</span></code> i l’herencia per afegir un valor per
 defecte al diccionari que retorna aquesta funció en la classe <em>Model</em></p>
 </section>
 <section id="restriccions-constrains">
@@ -1274,6 +1243,10 @@ fer una búsqueda en python.</p>
 <p>Quan fem un mòdul d’Odoo, es poden definir dades que es guardaran en la
 base de dades. Aquestes dades poden ser necessàries per al funcionament
 del mòdul, de demostració o inclús part de la vista.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Alguns mòduls sols estan per clavar dades en Odoo</p>
+</div>
 <p>Tots els fitxers de dades són en XML i tenen una estructura com esta:</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;odoo&gt;</span>
 <span class="w">        </span><span class="nt">&lt;record</span><span class="w"> </span><span class="na">model=</span><span class="s">&quot;{model name}&quot;</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;{record identifier}&quot;</span><span class="nt">&gt;</span>
@@ -1282,8 +1255,7 @@ del mòdul, de demostració o inclús part de la vista.</p>
 <span class="nt">&lt;odoo&gt;</span>
 </pre></div>
 </div>
-<p>Dins de les etiquetes <strong>odoo</strong> (o les etiquetes <strong>openerp</strong> i <strong>data</strong>
-en versions anteriors) poden trobar una etiqueta <strong>record</strong> per cada
+<p>Dins de les etiquetes <strong>odoo</strong> poden trobar una etiqueta <strong>record</strong> per cada
 fila en la taula que volem introduir. Cal especificar el model i el id.
 El <strong>id</strong> és un identificador extern, que no te perquè coincidir amb la
 clau primària que l’ORM utilitzarà després. Cada <strong>field</strong> tindrà un
@@ -1309,7 +1281,13 @@ cal utilitzar l’atribut <strong>ref</strong>:</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;product_id&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;product.product1&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
-<p>Veure també la funció <a class="reference internal" href="#Odoo#ref.28.29"><span class="xref myst"><strong>ref()</strong></span></a> de l’ORM</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Es recomana fer l’atribut ‘’’id’’’ en el record, encara que no sobreescriu el id real, serveix per declarar el External Id i és més fàcil després fer referència a ell.</p>
+</div>
+<blockquote>
+<div><p>Veure també la funció <strong>ref()</strong> de l’ORM</p>
+</div></blockquote>
 </section>
 <section id="expressions">
 <h3>Expressions<a class="headerlink" href="#expressions" title="Link to this heading">#</a></h3>
@@ -1348,19 +1326,21 @@ amb el external ID o amb un search:</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;delete</span><span class="w"> </span><span class="na">model=</span><span class="s">&quot;cine.sessio&quot;</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;sessio_cine1_1&quot;</span><span class="nt">&gt;&lt;/delete&gt;</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">En postgresql:</span></code><br />
-<code class="docutils literal notranslate"><span class="pre">update ir_module_module set demo = 't' where name='school';</span></code></p>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>Si falla l’actualització amb dades de demo, és possible que Odoo 12 deshabilite la possibilitat de tornar-les a instal·lar. Això és el field demo de ir.module.module que és readonly, per tant, cal modificar-lo a ma en la base de dades:</p>
+<p><code class="docutils literal notranslate"><span class="pre">update ir_module_module set demo = 't' where name='school';</span></code></p>
+</div>
 </section>
 </section>
 <section id="accions-i-menus">
 <h2>Accions i menús<a class="headerlink" href="#accions-i-menus" title="Link to this heading">#</a></h2>
 <p>Si vols conèixer en més detall cóm funcionen les accions en Odoo, llig
-l’article <a class="reference internal" href="#Accions_i_men%C3%BAs_en_Odoo"><span class="xref myst">Accions i menús en
-Odoo</span></a>.</p>
+l’article <strong>Accions i menús en Odoo</strong></p>
 <p>El client web de Odoo conté uns menús dalt i a l’esquerra. Aquests
 menús, al ser accionats mostren altres menús i les pantalles del
 programa. Quant pulsem en un menú, canvia la pantalla perquè hem fet una
-<a class="reference external" href="https://www.odoo.com/documentation/12.0/reference/actions.html">acció</a>.</p>
+<a class="reference external" href="https://www.odoo.com/documentation/master/developer/reference/backend/actions.html">acció</a>.</p>
 <p>Una acció bàsicament té:</p>
 <ul class="simple">
 <li><p><strong>type</strong>: El tipus d’acció que és i cóm l’acció és interpretada.
@@ -1404,6 +1384,10 @@ declarats amb una etiqueta <strong>menuitem</strong>:</p>
 <span class="w">          </span><span class="na">action=</span><span class="s">&quot;action_list_ideas&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Les accions han de ser declarades al XML abans que els menús que les accionen.</p>
+</div>
 <p>Exemple:</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
 <span class="nt">&lt;openerp&gt;</span>
@@ -1444,62 +1428,16 @@ declarats amb una etiqueta <strong>menuitem</strong>:</p>
 </div>
 <p>Sols el tercer nivell de menús pot tindre associada un action. El primer
 és el menú de dalt i el segon no es ‘clicable’.</p>
-<p>Si vols conèixer en més detall cóm funcionen les accions en Odoo, llig
-l’article <a class="reference internal" href="#Accions_i_men%C3%BAs_en_Odoo"><span class="xref myst">Accions i menús en
-Odoo</span></a>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>El que hem vist en esta secció és la definició d’una acció en un XML com a part de la vista, però una acció no és més que una forma còmoda d’escriure moltes coses que farà el client en javascript per demanar alguna cosa al servidor. Els actions separen i simplifiquen el desenvolupament de la interfície d’usuari que és el client web. Un menú o botó en html acciona una funció javascript que en principi no sap el que fer. Aquesta demana que es carregue la definició del seu action. Una vegada carregada la definició, queda clar tot el que ha de demanar (les vistes, context, dominis, vistes search, lloc on carregar-ho tot…) aleshores demana les vistes i amb ajuda de les vistes i els fields, demana els records que són les dades a mostrar. Per tant, un action és la definició sense programar javascript de coses que ha de fer el javascript. Odoo permet declarar actions com a resposta de funcions. Aquestes actions no estan en la base de dades, però són enviades igualment al client i el client fa en elles el mateix que en un action que ell ha demanat. Un exemple d’això són els actions que retornen els botons dels wizards. De fet, podem fer que un botó torne un action i, per tant, obrir una vista diferent.</p>
+</div>
 </section>
 </section>
 <section id="la-vista">
 <h2>La vista<a class="headerlink" href="#la-vista" title="Link to this heading">#</a></h2>
 <p>Per saber més sobre les vistes i cómo millorar-les, consulta l’article
-de <a class="reference internal" href="#Millores_en_la_vista_en_Odoo"><span class="xref myst">Millores en la vista en
-Odoo</span></a>.</p>
-<p>Les vistes són la manera en la que es representen els models. En cas de
-que no declarem les vistes, es poden referenciar per el seu tipus i Odoo
-generarà una vista de llista o formulari estandar per poder vorer els
-registres de cada model. No obstant, quasi sempre volem personalitzar
-les vistes i en aquest cas, es poden referenciar per un identificador.</p>
-<p>Les vistes tenen una prioritat i, si no s’especifica el identificador
-de la que volem mostrar, es mostrarà la que més prioritat tinga.</p>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;record</span><span class="w"> </span><span class="na">model=</span><span class="s">&quot;ir.ui.view&quot;</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;view_id&quot;</span><span class="nt">&gt;</span>
-<span class="w">    </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>view.name<span class="nt">&lt;/field&gt;</span>
-<span class="w">    </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;model&quot;</span><span class="nt">&gt;</span>object_name<span class="nt">&lt;/field&gt;</span>
-<span class="w">    </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;priority&quot;</span><span class="w"> </span><span class="na">eval=</span><span class="s">&quot;16&quot;</span><span class="nt">/&gt;</span>
-<span class="w">    </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;arch&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;xml&quot;</span><span class="nt">&gt;</span>
-<span class="w">        </span><span class="cm">&lt;!-- view content: &lt;form&gt;, &lt;tree&gt;, &lt;graph&gt;, ... --&gt;</span>
-<span class="w">    </span><span class="nt">&lt;/field&gt;</span>
-<span class="nt">&lt;/record&gt;</span>
-</pre></div>
-</div>
-<p>Exemple de vista form:</p>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="nt">&lt;record</span><span class="w"> </span><span class="na">model=</span><span class="s">&quot;ir.ui.view&quot;</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;course_form_view&quot;</span><span class="nt">&gt;</span>
-<span class="w">            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>course.form<span class="nt">&lt;/field&gt;</span>
-<span class="w">            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;model&quot;</span><span class="nt">&gt;</span>openacademy.course<span class="nt">&lt;/field&gt;</span>
-<span class="w">            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;arch&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;xml&quot;</span><span class="nt">&gt;</span>
-<span class="w">                </span><span class="nt">&lt;form</span><span class="w"> </span><span class="na">string=</span><span class="s">&quot;Course Form&quot;</span><span class="nt">&gt;</span>
-<span class="w">                    </span><span class="nt">&lt;sheet&gt;</span>
-<span class="w">                        </span><span class="nt">&lt;group&gt;</span>
-<span class="w">                            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;name&quot;</span><span class="nt">/&gt;</span>
-<span class="w">                            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;description&quot;</span><span class="nt">/&gt;</span>
-<span class="w">                        </span><span class="nt">&lt;/group&gt;</span>
-<span class="w">                    </span><span class="nt">&lt;/sheet&gt;</span>
-<span class="w">                </span><span class="nt">&lt;/form&gt;</span>
-<span class="w">            </span><span class="nt">&lt;/field&gt;</span>
-<span class="w">        </span><span class="nt">&lt;/record&gt;</span>
-</pre></div>
-</div>
-<p>Encara que Odoo ja proporciona un tree i un form per defecte, la vista
-cal millorar-la quasi sempre. Totes les vistes tenen fields que poden
-tindre widgets diferents. En les vistes form, podem adaptar molt
-l’aspecte amb grups de fields, pestanyes, camps ocults
-condicionalment…</p>
-<p>Per saber més sobre les vistes i cómo millorar-les, consulta l’article
-de <a class="reference internal" href="#Millores_en_la_vista_en_Odoo"><span class="xref myst">Millores en la vista en
-Odoo</span></a>.</p>
-</section>
-<section id="els-reports">
-<h2>Els reports<a class="headerlink" href="#els-reports" title="Link to this heading">#</a></h2>
-<p><a class="reference internal" href="#Odoo_reports"><span class="xref myst">Odoo reports</span></a></p>
+de <strong>La vista en Odoo</strong></p>
 </section>
 <section id="herencia">
 <h2>Herència<a class="headerlink" href="#herencia" title="Link to this heading">#</a></h2>
@@ -1612,13 +1550,17 @@ l’herència per prototip i l’herència per delegació.</p>
 |                      | taules corresponents |                      |
 |                      | a les dites classes. |                      |
 +———————-+———————-+———————-+</p>
-<p><img alt="" src="Inheritance_methods.png" /></p>
-<p>El fitxer __openerp__.py ha de contindre les dependències de la
-clase heretada.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>```{figure} imgs/Inheritance_methods.png
+:scale: 100 %
+:alt: Herència
+
+Diferents modes d&#39;herència
+```
+</pre></div>
+</div>
 <section id="herencia-en-el-model">
 <h3>Herència en el Model<a class="headerlink" href="#herencia-en-el-model" title="Link to this heading">#</a></h3>
-<p>El disseny d’un objecte d’OpenObject heretat és paregut al disseny d’un
-objecte d’OpenObject no heretat; únicament hi ha dues diferències:</p>
+<p>El disseny d’un model d’Odoo heretat és paregut al disseny d’un no heretat; únicament hi ha dues diferències:</p>
 <ul class="simple">
 <li><p>Apareix l’atribut <strong>_inherit</strong> o <strong>_inherits</strong> per indicar
 l’objecte (herència simple) o els objectes (herència múltiple) dels
@@ -1681,6 +1623,10 @@ comprovar l’existència de la taula res_alarm amb els camps definits a
 l’apartat _atributs de la classe res_alarm i la taula calendar_alarm
 amb camps idèntics als de la taula res_alarm més els camps definits a
 l’apartat _atributs de la classe calendar_alarm.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>L’herència per prototip és la tradicional en els llenguatges orientats a objectes, ja que crea una nova classe vinculada</p>
+</div>
 <p>L’herència múltiple (_inherits) s’anomena herència per delegació i
 sempre provoca la creació d’una nova taula a la base de dades. L’objecte
 derivat ha d’incloure, per cada derivació, un camp many2one apuntant
@@ -1884,15 +1830,20 @@ vista search i en l’action dir que volem aquest filtre per defecte:</p>
 <p>L’herència en el controlador és un mecanisme conegut, ja que l’apliquem
 de forma inconscient quan ens veiem obligats a sobreescriure els mètodes
 de la capa ORM d’OpenObject en el disseny de molts mòduls.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Funció super()</p>
+<p>El llenguatge Python recomana utilitzar la funció super() per invocar el mètode de la classe base quan s’està sobreescrivint en una classe derivada, en lloc d’utilitzar la sintaxi nomClasseBase.metode(self…).</p>
+</div>
 <p>L’efecte de l’herència en el controlador es manifesta únicament quan cal
 sobreescriure algun dels mètodes de l’objecte del qual es deriva i per a
 fer-ho adequadament cal tenir en compte que el mètode sobreescrit en
 l’objecte derivat:</p>
 <ul class="simple">
-<li><p>A vegades vol substituir el mètode de l’objecte base sense
+<li><p>De vegades vol substituir el mètode de l’objecte base sense
 aprofitar-ne cap funcionalitat: el mètode de l’objecte derivat no
 invoca el mètode sobreescrit.</p></li>
-<li><p>A vegades vol aprofitar la funcionalitat del mètode de l’objecte
+<li><p>De vegades vol aprofitar la funcionalitat del mètode de l’objecte
 base: el mètode de l’objecte derivat invoca el mètode sobreescrit.</p></li>
 </ul>
 <p>Exemples:</p>
@@ -1946,6 +1897,16 @@ _(‘text’) i el fitxer .py ha de contenir from tools.translate import
 _ a la capçalera.</p>
 <section id="api-de-l-orm">
 <h3>API de l’ORM<a class="headerlink" href="#api-de-l-orm" title="Link to this heading">#</a></h3>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>{{nota|’’’Interactuar en la terminal’’’
+<span class="math notranslate nohighlight">\( odoo shell -d castillo -u containers
+ [https://asciinema.org/a/123126 Asciinema amb alguns exemples]
+Observa cóm hem ficat el paràmetre '''shell'''. Les coses que se fan en la terminal no són persistents en la base de dades fins que no s'executa '''self.env.cr.commit()'''. Dins de la terminal podem obtindre ajuda dels mètodes d'Odoo amb help(), per exemple: help(tools.image)
+Amb el següent exemple, podem arrancar odoo sense molestar a l'instància que està en marxa redefinint els ports:
+ \)</span> odoo shell -c /path/to/odoo.conf –xmlrpc-port 8888 –longpolling-port 8899
+Documentació: [<a class="reference external" href="https://medium.com/&#64;RafnixG/explorando-odoo-a-fondo-c%C3%B3mo-trabajar-con-la-shell-de-la-cli-y-configurar-ipython-como-repl-8f7bd04a26d">https://medium.com/&#64;RafnixG/explorando-odoo-a-fondo-cómo-trabajar-con-la-shell-de-la-cli-y-configurar-ipython-como-repl-8f7bd04a26d</a>] [<a class="reference external" href="https://medium.com/&#64;RafnixG/shell-de-odoo-domina-operaciones-avanzadas-integraci%C3%B3n-de-librer%C3%ADas-y-automatizaci%C3%B3n-de-tareas-2e85c7d81d34">https://medium.com/&#64;RafnixG/shell-de-odoo-domina-operaciones-avanzadas-integración-de-librerías-y-automatización-de-tareas-2e85c7d81d34</a>]</p>
+</div>
 <p>Un mètode creat dins d’un model actua sobre tots els elements del model
 que estiguen actius en el moment de cridar al mètode. Si és un tree,
 seran molts i si és un form sols un. Però en qualsevol cas és una
@@ -2076,7 +2037,7 @@ per a mostrar condicionalment o per als <em>domains</em></p></li>
 <p>El context va passant d’un mètode a un altre o a les vistes i, de
 vegades volem modificar-lo.</p>
 <p>Imaginem que volem fer un botó que obriga un
-<a class="reference internal" href="#Odoo#Wizards"><span class="xref myst">wizard</span></a>, però volem passar-li <strong>paràmetres</strong>
+wizard, però volem passar-li <strong>paràmetres</strong>
 al wizard. En els botons i fields relacionals es pot especificar un
 context:</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;button</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;%(reserves.act_w_clients_bookings)d&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;action&quot;</span><span class="w"> </span><span class="na">string=</span><span class="s">&quot;Select bookings&quot;</span><span class="w"> </span><span class="na">context=</span><span class="s">&quot;{&#39;b_fs&#39;:bookings_fs}&quot;</span><span class="nt">/&gt;</span>
@@ -2091,7 +2052,7 @@ definir un field amb els continguts del context:</p>
 </div>
 <p>Aquest many2many tindrà els mateixos elements que el form que l’ha
 cridat. (Això és com el
-<a class="reference internal" href="#Odoo#Millores_en_les_vistes_form"><span class="xref myst"><strong>default_</strong></span></a> en els
+<strong>default_</strong> en els
 One2many, però fet a mà)</p>
 <p>També es pot utilitzar aquesta manera d’enviar un recordset per un
 context per al <strong>domain</strong> d’un field Many2one o Many2many:</p>
@@ -2104,9 +2065,8 @@ context per al <strong>domain</strong> d’un field Many2one o Many2many:</p>
 defecte en un <strong>action</strong>. Per exemple, quan implementem l’herència,
 volem que els nous registres que es facen en el nostre <strong>action</strong>
 tinguem un valor per defecte. En el següent exemple, en la primera línia
-és el que es sol fer en la <a class="reference internal" href="#Her.C3.A8ncia_en_la_vista"><span class="xref myst">
-Herència</span></a> i en la segona estem
-especificant un <a class="reference internal" href="#External_Ids"><span class="xref myst"> External ID</span></a> amb <strong>ref()</strong>
+és el que es sol fer en la Herència i en la segona estem
+especificant un External ID amb <strong>ref()</strong>
 dins d’un eval.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>        <span class="o">&lt;</span><span class="n">field</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;context&quot;</span><span class="o">&gt;</span><span class="p">{</span><span class="s1">&#39;default_is_player&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;search_default_player_partner&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span><span class="o">&lt;/</span><span class="n">field</span><span class="o">&gt;</span>
         <span class="o">&lt;</span><span class="n">field</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;context&quot;</span> <span class="nb">eval</span><span class="o">=</span><span class="s2">&quot;{&#39;default_partner_id&#39;:ref(&#39;base.main_partner&#39;), &#39;company_hide&#39;:False, &#39;default_company_id&#39;:ref(&#39;base.main_company&#39;), &#39;search_default_my_bank&#39;:1}&quot;</span><span class="o">/&gt;</span>
@@ -2185,6 +2145,10 @@ elements que coincideixen:</p>
 <span class="go">&#39;Agrolait&#39;</span>
 </pre></div>
 </div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Es pot obtindre la quantitat d’elements amb el mètode ‘’’search_count()’’’</p>
+</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Parameters</span>
     <span class="n">args</span> <span class="o">--</span> <span class="n">A</span> <span class="n">search</span> <span class="n">domain</span><span class="o">.</span> <span class="n">Use</span> <span class="n">an</span> <span class="n">empty</span> <span class="nb">list</span> <span class="n">to</span> <span class="n">match</span> <span class="nb">all</span> <span class="n">records</span><span class="o">.</span>
     <span class="n">offset</span> <span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">--</span> <span class="n">number</span> <span class="n">of</span> <span class="n">results</span> <span class="n">to</span> <span class="n">ignore</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="n">none</span><span class="p">)</span>
@@ -2258,8 +2222,7 @@ existixen.</p>
 </section>
 <section id="ref">
 <h5>ref()<a class="headerlink" href="#ref" title="Link to this heading">#</a></h5>
-<p>Retorna un singleton a partir d’un <a class="reference internal" href="#Odoo#External_Ids"><span class="xref myst"><strong>External
-ID</strong></span></a>.</p>
+<p>Retorna un singleton a partir d’un <strong>External ID</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">env</span><span class="o">.</span><span class="n">ref</span><span class="p">(</span><span class="s1">&#39;base.group_public&#39;</span><span class="p">)</span>
 <span class="go">res.groups(2)</span>
 </pre></div>
@@ -2298,21 +2261,9 @@ on display_name and then name_get() on the result of the search.</p>
 <p><strong>ids</strong> Llista dels ids del recordset actual.</p>
 <p><strong>sorted(key=None, reverse=False)</strong> Retorna el recordset ordenat per un
 criteri.</p>
-<p><strong>name_get()</strong> Retorna el nom que tindrà el record quant siga
-referenciat externament. És el valor per defecte del field
-<strong>display_name</strong>. Aquest mètode, per defecte, mostra el field <strong>name</strong>
-si està. Es pot sobreescriure per mostrar un altre camp o mescla
-d’ells.</p>
-<p>Anem a sobreescriure el mètode
-<a class="reference external" href="http://odootechnical.com/overriding-name_get-method-in-odoo-8/">name_get</a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>  
-     <span class="k">def</span><span class="w"> </span><span class="nf">name_get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">res</span><span class="o">=</span><span class="p">[]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
-            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="o">.</span><span class="n">id</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;, &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">id_player</span><span class="o">.</span><span class="n">name</span><span class="p">)))</span>
-        <span class="k">return</span> <span class="n">res</span>
-</pre></div>
-</div>
+<p><strong>display_name</strong>. Aquest atribut, per defecte, mostra el field <strong>name</strong>
+si està. Es pot sobreescriure <code class="docutils literal notranslate"><span class="pre">_compute_display_name</span></code> per mostrar un altre camp o mescla
+d’ells. També es pot canviar <code class="docutils literal notranslate"><span class="pre">_rec_name</span></code> per indicar un field distint de <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p>
 <p><strong>copy()</strong> Crea una còpia del singleton i permet aportar nous valors per
 als fields de la copia.</p>
 <p>En els fields <strong>One2many</strong> no es pot copiar per defecte, però es pot dir
@@ -2323,6 +2274,10 @@ als fields de la copia.</p>
 <p>Si volem que un valor siga modificat en temps real quant modifiquem el
 valor d’un altre field sense encara haver guardat, podem usar els
 mètodes <strong>on_change</strong>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Els camps ‘’’computed’’’ ja tenen el seu propi onchange, per tant, no cal fer-lo</p>
+</div>
 <p>En onchange es modifica el valor d’un o més camps dirèctament i, si cal
 un filtre o un missatge, es fa en el return:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="p">{</span>
@@ -2384,6 +2339,15 @@ altre cas, en un dialog. (Odoo 13)</p>
     <span class="k">return</span> <span class="n">res</span> 
 </pre></div>
 </div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Si l’usuari s’equivoca introduint algunes dades, Odoo proporciona varies maneres d’evitar-lo:</p>
+<ul class="simple">
+<li><p>Constraints</p></li>
+<li><p>onchange amb missatge d’error i restablint els valors originals</p></li>
+<li><p>Sobreescriptura del mètode write o create per comprovar coses abans de guardar</p></li>
+</ul>
+</div>
 </section>
 <section id="cron-jobs">
 <h5>Cron Jobs<a class="headerlink" href="#cron-jobs" title="Link to this heading">#</a></h5>
@@ -2441,8 +2405,6 @@ indicat en la vista. En aquest, com que es crida quant es modifica
 un form, sempre <strong>self</strong> serà un singleton. Però si fiquem un for no
 passa res.</p></li>
 </ul>
-<p><a class="reference external" href="https://github.com/xxjcaxx/SGE-Odoo-2016-2017/tree/master/proves_decoradors">Exemple de tots els decoradors: (Odoo
-12)</a></p>
 </section>
 <section id="calculs-en-dates">
 <h3>Càlculs en dates<a class="headerlink" href="#calculs-en-dates" title="Link to this heading">#</a></h3>
@@ -2570,45 +2532,6 @@ si volem major precisió, en aquest cas es recomana utilitar
 relativedelta.</p>
 </section>
 </section>
-<section id="wizards">
-<h2>Wizards<a class="headerlink" href="#wizards" title="Link to this heading">#</a></h2>
-<p>Els wizards permeten fer un asistent interactiu per a que l’usuari
-complete una tasca. Com que no ha d’agafar les dades dirèctament en un
-formulari, si no que va ajundant-lo a completar-lo, no pot ser guardat
-en la base de dades fins al final.</p>
-<p>Els wizards en Odoo són models que estenen la classe TransientModel en
-compte de Model. Aquesta classe és molt pareguda, però:</p>
-<ul class="simple">
-<li><p>Les dades no són persistents, encara que es guarden temporalment en
-la base de dades.</p></li>
-<li><p>A partir de odoo 14 necessiten permisos</p></li>
-<li><p>Els records dels wizards poden tindre referències Many2One amb el
-records dels models normals, però no al contrari.</p></li>
-</ul>
-<p>Veure més: <a class="reference internal" href="#Wizards_en_Odoo"><span class="xref myst">Wizards en Odoo</span></a></p>
-</section>
-<section id="client-web">
-<h2>Client web<a class="headerlink" href="#client-web" title="Link to this heading">#</a></h2>
-<p><a class="reference internal" href="#El_client_Web_Odoo"><span class="xref myst">El client Web Odoo</span></a> (Obsolet a partir de
-la versió 14)</p>
-</section>
-<section id="web-controllers">
-<h2>Web Controllers<a class="headerlink" href="#web-controllers" title="Link to this heading">#</a></h2>
-<p><a class="reference internal" href="#Web_Controller_en_Odoo"><span class="xref myst">Web Controller en Odoo</span></a></p>
-</section>
-<section id="pagina-web">
-<h2>Pàgina web<a class="headerlink" href="#pagina-web" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://www.odoo.yenthevg.com/creating-webpages-controllers-odoo10/">https://www.odoo.yenthevg.com/creating-webpages-controllers-odoo10/</a>
-<a class="reference external" href="http://learnopenerp.blogspot.com/2018/08/odoo-web-controller.html">http://learnopenerp.blogspot.com/2018/08/odoo-web-controller.html</a></p>
-</section>
-<section id="exemples">
-<h2>Exemples<a class="headerlink" href="#exemples" title="Link to this heading">#</a></h2>
-<p><a class="reference internal" href="#Projecte_Odoo_complet"><span class="xref myst">Projecte Odoo complet</span></a></p>
-<p><a class="reference external" href="https://www.youtube.com/watch?v=hwhhZcSEG1s">Vídeo de Mòdul Odoo
-complet</a><a class="reference external" href="https://github.com/tivisse/odoodays-2018">Codi del
-vídeo</a></p>
-<p><a class="reference internal" href="#Point_Of_Sale"><span class="xref myst">Point Of Sale</span></a></p>
-</section>
 <section id="misc">
 <h2>Misc.<a class="headerlink" href="#misc" title="Link to this heading">#</a></h2>
 <ul class="simple">
@@ -2669,45 +2592,6 @@ funció sempre recalcula.</p>
 calcula.</p>
 <p>Cal recordar que les funcions lambda són de una sola línia de codi. Si
 volem alguna cosa més sofisticada hem de cridar a una funció normal.</p>
-<p>Imatges en Odoo:</p>
-<p>Les imatges es guarden com un text en la base de dades. Per convertir un
-binari en text es fa en base64. Aquesta codificació funciona sense
-problemes en els navegadors web i no cal preocupar-se de cóm guardar les
-imatges en PostgreSQL.</p>
-<p>Per mostrar la imatge en formularis o llistes es pot ficar
-<strong>widget=”image”</strong> en el <em>field</em>. Si no fem res més, la imatge es
-veurà en la mida original. Podem navegar per altres formularis per veure
-cóm han fet per mostrar la imatge i aprofitar les classes CSS. També
-podem utilitzar la etiqueta <strong>width</strong> o <strong>style</strong> per especificar la
-mida exacta.</p>
-<p>No obstant, no és recomanable carregar les imatges en el seu tamany
-original. El millor és guardar la versió mitjana o menuda i mostrar eixa
-sols. Per aconseguir-ho, es pot fer un camp binary computed d’aquesta
-manera:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">odoo</span><span class="w"> </span><span class="kn">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">api</span><span class="p">,</span> <span class="n">tools</span>
-<span class="p">[</span><span class="o">...</span><span class="p">]</span>
-    <span class="n">photo</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Binary</span><span class="p">()</span>
-    <span class="n">photo_small</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Binary</span><span class="p">(</span><span class="n">compute</span><span class="o">=</span><span class="s1">&#39;_get_images&#39;</span><span class="p">,</span><span class="n">store</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">photo_medium</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Binary</span><span class="p">(</span><span class="n">compute</span><span class="o">=</span><span class="s1">&#39;_get_images&#39;</span><span class="p">,</span><span class="n">store</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="nd">@api</span><span class="o">.</span><span class="n">one</span>
-    <span class="nd">@api</span><span class="o">.</span><span class="n">depends</span><span class="p">(</span><span class="s1">&#39;photo&#39;</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_get_images</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">photo</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">image_get_resized_images</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">photo_small</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;image_small&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">photo_medium</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;image_medium&quot;</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>La ferramenta <strong>tools.image</strong> d’Odoo té funcions per a reescalar,
-retallar o millorar les imatges.</p>
-<p>Per utilitzar una imatge dins d’un Kanban, es necessita la funció
-<strong>kanban_image()</strong>:</p>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;img</span><span class="w"> </span><span class="na">t-att-src=</span><span class="s">&quot;kanban_image(&#39;reserves.hotels&#39;, &#39;photo_small&#39;, record.id.value)&quot;</span><span class="nt">/&gt;</span>
-</pre></div>
-</div>
-<p>Prèviament, s’ha declarat el field <em>photo_small</em> i <em>id</em> al kanban.</p>
-<p><strong>res.config.settings</strong></p>
 <p>Si volem que el nostre mòdul tinga configuració podem afegir-la com a un
 field més del model <strong>res.control.settings</strong>. Aquest ja s’encarrega de
 centralitzar opcions de configuració. Per a que aparega en el menú de
@@ -2744,37 +2628,6 @@ configuració també podem afegir-lo heretant en la vista:</p>
 </div>
 <p>Si en data-key posem el nom del mòdul, afegirà l’icona al menú de
 settings.</p>
-<p><a class="reference external" href="https://www.youtube.com/watch?v=MsVoYPQ4-J4">https://www.youtube.com/watch?v=MsVoYPQ4-J4</a></p>
-</section>
-<section id="enllacos">
-<h2>Enllaços<a class="headerlink" href="#enllacos" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://www.odoo.com/documentation/8.0/">https://www.odoo.com/documentation/8.0/</a>
-<a class="reference external" href="https://www.odoo.com/documentation/9.0/">https://www.odoo.com/documentation/9.0/</a></p>
-<p><a class="reference external" href="https://www.odoo.com/documentation/8.0/howtos/backend.html">https://www.odoo.com/documentation/8.0/howtos/backend.html</a></p>
-<p>Blogs: <a class="reference external" href="http://ludwiktrammer.github.io/">http://ludwiktrammer.github.io/</a> <a class="reference external" href="http://www.odoo.yenthevg.com/">http://www.odoo.yenthevg.com/</a>
-<a class="reference external" href="https://sateliteguayana.wordpress.com/">https://sateliteguayana.wordpress.com/</a>
-<a class="reference external" href="https://poncesoft.blogspot.com/">https://poncesoft.blogspot.com/</a></p>
-<p>Repositori dels exemples: <a class="github reference external" href="https://github.com/xxjcaxx/sge20152016">xxjcaxx/sge20152016</a>
-<a class="github reference external" href="https://github.com/xxjcaxx/SGE-Odoo-2016-2017">xxjcaxx/SGE-Odoo-2016-2017</a></p>
-<p><a class="reference external" href="https://www.youtube.com/watch?v=0GUxV85DDm4&amp;amp;feature=youtu.be&amp;amp;t=5h47m45s">https://www.youtube.com/watch?v=0GUxV85DDm4&amp;feature=youtu.be&amp;t=5h47m45s</a></p>
-<p><a class="reference external" href="http://es.slideshare.net/openobject/presentation-of-the-new-openerp-api-raphael-collet-openerp">http://es.slideshare.net/openobject/presentation-of-the-new-openerp-api-raphael-collet-openerp</a></p>
-<p><a class="reference external" href="http://fundamentos-de-desarrollo-en-odoo.readthedocs.org/es/latest/capitulos/comenzando-con-odoo.html">http://fundamentos-de-desarrollo-en-odoo.readthedocs.org/es/latest/capitulos/comenzando-con-odoo.html</a></p>
-<p><a class="reference external" href="https://www.odoo.com/es_ES/slides/slide/keynote-odoo-9-new-features-201">https://www.odoo.com/es_ES/slides/slide/keynote-odoo-9-new-features-201</a></p>
-<p><a class="reference external" href="https://media.readthedocs.org/pdf/odoo-development/latest/odoo-development.pdf">https://media.readthedocs.org/pdf/odoo-development/latest/odoo-development.pdf</a></p>
-<p><a class="reference external" href="http://webkul.com/blog/beginner-guide-odoo-clicommand-line-interface/">http://webkul.com/blog/beginner-guide-odoo-clicommand-line-interface/</a></p>
-<p><a class="reference external" href="http://useopenerp.com/v8">http://useopenerp.com/v8</a></p>
-<p>Podcast que parlen dels beneficis d’Odoo:
-<a class="reference external" href="http://www.ivoox.com/podcast-26-odoo-transformacion-digital-audios-mp3_rf_18433975_1.html">http://www.ivoox.com/podcast-26-odoo-transformacion-digital-audios-mp3_rf_18433975_1.html</a></p>
-<p><a class="reference external" href="https://www.youtube.com/channel/UC8gl7Ap_GZVbsKjri2GChkg">Canal de youtube de SGE amb Odoo en
-castellà</a></p>
-<p><a class="reference external" href="https://www.odoo.yenthevg.com/extend-selection-odoo-10/">https://www.odoo.yenthevg.com/extend-selection-odoo-10/</a></p>
-<p><a class="reference external" href="https://apuntesfpinformatica.es/sistemas-de-gestion-empresarial/">Apunts d’altres professors
-recopilats</a></p>
-<p><a class="reference external" href="https://naglis.me/post/odoo-13-changelog/">https://naglis.me/post/odoo-13-changelog/</a>
-<a class="reference external" href="https://www.odoo.com/es_ES/forum/ayuda-1/question/odoo-13-features-and-odoo-14-expected-features-148369#answer-148370">https://www.odoo.com/es_ES/forum/ayuda-1/question/odoo-13-features-and-odoo-14-expected-features-148369#answer-148370</a></p>
-<p><a class="reference external" href="https://medium.com/&#64;manuelcalerosolis">https://medium.com/&#64;manuelcalerosolis</a></p>
-<p><a class="reference external" href="https://www.youtube.com/playlist?list=PLeJtXzTubzj-tbQ94heWeQFB0twGd0vvN">https://www.youtube.com/playlist?list=PLeJtXzTubzj-tbQ94heWeQFB0twGd0vvN</a></p>
-<p><a class="reference external" href="https://vimeo.com/channels/m10dam/page:1">https://vimeo.com/channels/m10dam/page:1</a></p>
 </section>
 </section>
 
@@ -2822,7 +2675,7 @@ recopilats</a></p>
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Millores en les vistes tree {#millores_en_les_vistes_tree}</p>
+        <p class="prev-next-title">La vista</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -2887,7 +2740,6 @@ recopilats</a></p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#la-vista">La vista</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#els-reports">Els reports</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#herencia">Herència</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#herencia-en-el-model">Herència en el Model</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#herencia-en-la-vista">Herència en la vista</a></li>
@@ -2921,13 +2773,7 @@ recopilats</a></p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculs-en-dates">Càlculs en dates</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wizards">Wizards</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#client-web">Client web</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#web-controllers">Web Controllers</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pagina-web">Pàgina web</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exemples">Exemples</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#misc">Misc.</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enllacos">Enllaços</a></li>
 </ul>
   </nav></div>
 

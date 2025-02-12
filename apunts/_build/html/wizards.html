@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Wizard bàsic {#wizard_bàsic} &#8212; Apunts d&#39;Odoo</title>
+    <title>Wizards &#8212; Apunts d&#39;Odoo</title>
   
   
   
@@ -63,8 +63,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'wizards';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Web Controllers {#web_controllers}" href="web_controllers.html" />
-    <link rel="prev" title="&lt;no title&gt;" href="reports.html" />
+    <link rel="next" title="Web Controllers" href="web_controllers.html" />
+    <link rel="prev" title="Reports" href="reports.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -171,21 +171,11 @@
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="instalarodoo.html">Instal·lar Odoo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="odoo.html">Desenvolupar per a Odoo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vista.html">Millores en les vistes tree {#millores_en_les_vistes_tree}</a></li>
-
-
-
-
-
-<li class="toctree-l1"><a class="reference internal" href="accions_menus.html">Accions i menús {#accions_i_menús}</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Wizard bàsic {#wizard_bàsic}</a></li>
-
-
-
-
-
-
-<li class="toctree-l1"><a class="reference internal" href="web_controllers.html">Web Controllers {#web_controllers}</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vista.html">La vista</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accions_menus.html">Accions i menús</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reports.html">Reports</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Wizards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web_controllers.html">Web Controllers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="client_web.html">Arquitectura del client web {#arquitectura_del_client_web}</a></li>
 
 
@@ -378,7 +368,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Wizard bàsic {#wizard_bàsic}</h1>
+    <h1>Wizards</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -388,19 +378,18 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Wizard bàsic {#wizard_bàsic}</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#wizard-amb-assistent-wizard-amb-assistent">Wizard amb assistent {#wizard_amb_assistent}</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#wizard-amb-dades-per-context-wizard-amb-dades-per-context">Wizard amb dades per context {#wizard_amb_dades_per_context}</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#x2many-en-wizards-x2many-en-wizards">X2many en Wizards {#x2many_en_wizards}</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#amb-one2many-amb-one2many">Amb One2many {#amb_one2many}</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#amb-many2many-amb-many2many">Amb Many2many {#amb_many2many}</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wizard-basic">Wizard bàsic</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wizard-amb-assistent">Wizard amb assistent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wizard-amb-dades-per-context">Wizard amb dades per context</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#x2many-en-wizards">X2many en Wizards</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#amb-one2many">Amb One2many</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#amb-many2many">Amb Many2many</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#onchange-en-wizards-onchange-en-wizards">Onchange en Wizards {#onchange_en_wizards}</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#alertes">Alertes</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#exemple-complet-de-wizards-exemple-complet-de-wizards">Exemple Complet de Wizards {#exemple_complet_de_wizards}</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#onchange-en-wizards">Onchange en Wizards</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alertes">Alertes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exemple-complet-de-wizards">Exemple Complet de Wizards</a></li>
 </ul>
-
             </nav>
         </div>
     </div>
@@ -411,7 +400,9 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <p>Els wizards d’<a class="reference internal" href="#Odoo"><span class="xref myst">Odoo</span></a> permeten fer un asistent
+  <section class="tex2jax_ignore mathjax_ignore" id="wizards">
+<h1>Wizards<a class="headerlink" href="#wizards" title="Link to this heading">#</a></h1>
+<p>Els wizards d’Odoo permeten fer un asistent
 interactiu per a que l’usuari complete una tasca. Com que no ha
 d’agafar les dades directament en un formulari, si no que el va ajudant
 a completar-ho, no pot ser guardat en la base de dades fins al final.</p>
@@ -477,8 +468,8 @@ permanent de la base de dades. Això es fa en una funció. Eixa funció
 pot retornar un action per mostrar les instàncies creades o per
 refrescar la vista que l’ha cridat.</p></li>
 </ul>
-<section id="wizard-basic-wizard-basic">
-<h1>Wizard bàsic {#wizard_bàsic}<a class="headerlink" href="#wizard-basic-wizard-basic" title="Link to this heading">#</a></h1>
+<section id="wizard-basic">
+<h2>Wizard bàsic<a class="headerlink" href="#wizard-basic" title="Link to this heading">#</a></h2>
 <p>A continuació anem a veure un exemple de wizard que sols mostra un
 formulari i crea una instància d’un model a partir de les dades del
 formulari:</p>
@@ -537,6 +528,10 @@ especial per a cancel·lar el wizard. L’altre crida al mètode. També
 s’ha creat un action indicant el <strong>src_model</strong> sobre el que treballa i
 el model del wizard que utilitza. Els action que criden a wizard tenen
 l’atribut <strong>target</strong> a <strong>new</strong> per a que llance una finestra emergent.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><code class="docutils literal notranslate"><span class="pre">binding_model</span></code> és el model on es pot llançar el wizard. Amb això només ja apareix en el menú superior d’accions. Però podem fer un botó que el cride de forma més intuïtiva. En alguns tutorials el trobareu com res_model, però és per a versions anteriors a la 13.</p>
+</div>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="nt">&lt;button</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;%(launch_mmog_fortress_wizard)d&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;action&quot;</span><span class="w"> </span><span class="na">string=</span><span class="s">&quot;Launch attack&quot;</span><span class="w"> </span><span class="na">class=</span><span class="s">&quot;oe_highlight&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
@@ -544,8 +539,8 @@ l’atribut <strong>target</strong> a <strong>new</strong> per a que llance una 
 la sintaxi del name, que és igual sempre que el button siga de tipus
 action, ja que és l’anomenat <strong>XML id</strong>.</p>
 </section>
-<section id="wizard-amb-assistent-wizard-amb-assistent">
-<h1>Wizard amb assistent {#wizard_amb_assistent}<a class="headerlink" href="#wizard-amb-assistent-wizard-amb-assistent" title="Link to this heading">#</a></h1>
+<section id="wizard-amb-assistent">
+<h2>Wizard amb assistent<a class="headerlink" href="#wizard-amb-assistent" title="Link to this heading">#</a></h2>
 <p>En aquest exemple anem a fer un wizard amb assistent. Per començar, cal
 crear un camp <strong>state</strong> amb varis valors possibles:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>      <span class="n">state</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Selection</span><span class="p">([</span>
@@ -600,6 +595,10 @@ crear un camp <strong>state</strong> amb varis valors possibles:</p>
 </div>
 <p>Després es pot fer que el formulari tinga un aspecte diferent depèn del
 valor de <strong>state</strong>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>En l’anterior exemple els botons per a passar al següent estat s’oculten. Si volem deshabilitar-los podem crear un duplicat amb els states inversos i amb la classe “oe_highlight disabled”</p>
+</div>
 <p>Els wizards poden tornar a recarregar la vista des de la que són
 cridats:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="p">{</span>
@@ -625,8 +624,8 @@ afegir:</p>
 </pre></div>
 </div>
 </section>
-<section id="wizard-amb-dades-per-context-wizard-amb-dades-per-context">
-<h1>Wizard amb dades per context {#wizard_amb_dades_per_context}<a class="headerlink" href="#wizard-amb-dades-per-context-wizard-amb-dades-per-context" title="Link to this heading">#</a></h1>
+<section id="wizard-amb-dades-per-context">
+<h2>Wizard amb dades per context<a class="headerlink" href="#wizard-amb-dades-per-context" title="Link to this heading">#</a></h2>
 <p>En ocasions, necessitem que el wizard obtinga informació de qui l’ha
 cridat. En els exemples hem vist que obtenim el active_id, és a di, el
 registre del que ha sigut cridat, amb:</p>
@@ -650,8 +649,8 @@ afegir coses al context en el action o en el botó que el crida.</p>
 </pre></div>
 </div>
 </section>
-<section id="x2many-en-wizards-x2many-en-wizards">
-<h1>X2many en Wizards {#x2many_en_wizards}<a class="headerlink" href="#x2many-en-wizards-x2many-en-wizards" title="Link to this heading">#</a></h1>
+<section id="x2many-en-wizards">
+<h2>X2many en Wizards<a class="headerlink" href="#x2many-en-wizards" title="Link to this heading">#</a></h2>
 <p>Els <strong>Many2one</strong> en wizards són simples, ja que es tracta d’una relació
 de dins del wizard cap a un model permanent. El problema està en els
 <strong>One2many</strong> i els <strong>Many2many</strong>. Aquestes relacions impliquen que hi ha
@@ -659,8 +658,8 @@ algun model que apunta al <strong>transientmodel</strong> del wizard. Eixe tipus
 relacions són impossibles o no recomanables, aleshores cal crear altres
 <em>transientmodels</em> auxiliars que representen als originals per
 implementar les relacions.</p>
-<section id="amb-one2many-amb-one2many">
-<h2>Amb One2many {#amb_one2many}<a class="headerlink" href="#amb-one2many-amb-one2many" title="Link to this heading">#</a></h2>
+<section id="amb-one2many">
+<h3>Amb One2many<a class="headerlink" href="#amb-one2many" title="Link to this heading">#</a></h3>
 <p>En el següent exemple anem a veure cóm implementar un wizard per a un
 viatge en el que tindrem una llista de ciutats disponibles en funció
 d’un origen i unes carreteres. Observem primer el transientModel de
@@ -681,8 +680,11 @@ d’un origen i unes carreteres. Observem primer el transientModel de
 </div>
 <p>Com es veu, obté la ciutat d’origen per context i cal filtrar les
 ciutats disponibles per al destí en funció d’un field One2many que
-tenim que omplir amb la informació de l’origen.
-<code class="docutils literal notranslate"><span class="pre">{{nota|En</span> <span class="pre">realitat</span> <span class="pre">és</span> <span class="pre">millor</span> <span class="pre">fer-ho</span> <span class="pre">en</span> <span class="pre">un</span> <span class="pre">Many2many,</span> <span class="pre">després</span> <span class="pre">ho</span> <span class="pre">emplicarem.}}</span></code>{=mediawiki}</p>
+tenim que omplir amb la informació de l’origen.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>En realitat és millor fer-ho en un Many2many, després ho emplicarem</p>
+</div>
 <p>Mirem també el transientModel de les ciutats per a cities_available:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">city_transient</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TransientModel</span><span class="p">):</span>
     <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;negocity.city_transient&#39;</span>
@@ -762,8 +764,8 @@ aplicar el filtre:</p>
 <p>Aprofita la funció <strong>context.get</strong> de QWeb per obtindre el context i
 aplicar el filtre.</p>
 </section>
-<section id="amb-many2many-amb-many2many">
-<h2>Amb Many2many {#amb_many2many}<a class="headerlink" href="#amb-many2many-amb-many2many" title="Link to this heading">#</a></h2>
+<section id="amb-many2many">
+<h3>Amb Many2many<a class="headerlink" href="#amb-many2many" title="Link to this heading">#</a></h3>
 <p>Anem a veure el mateix exemple implementat en <strong>Many2many computed</strong>. En
 primer lloc, la definició del field:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="n">cities_available</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Many2many</span><span class="p">(</span><span class="s1">&#39;negocity.city_transient&#39;</span><span class="p">,</span> <span class="n">compute</span><span class="o">=</span><span class="s2">&quot;_get_cities_available&quot;</span><span class="p">)</span>
@@ -812,8 +814,8 @@ ens permet seleccionar. Si fem el botó d’aquesta manera:</p>
 </div>
 </section>
 </section>
-<section id="onchange-en-wizards-onchange-en-wizards">
-<h1>Onchange en Wizards {#onchange_en_wizards}<a class="headerlink" href="#onchange-en-wizards-onchange-en-wizards" title="Link to this heading">#</a></h1>
+<section id="onchange-en-wizards">
+<h2>Onchange en Wizards<a class="headerlink" href="#onchange-en-wizards" title="Link to this heading">#</a></h2>
 <p>En principi els Onchange funcionen igual que sempre. És a dir, poden
 modificar el valor dels fields o retornar un domain o un warning. No
 obstant, cal indicar que Onchange funciona sobre un record virtual còpia
@@ -850,7 +852,7 @@ vista:</p>
 </div>
 </section>
 <section id="alertes">
-<h1>Alertes<a class="headerlink" href="#alertes" title="Link to this heading">#</a></h1>
+<h2>Alertes<a class="headerlink" href="#alertes" title="Link to this heading">#</a></h2>
 <p>És possible notificar a l’usuari de varies maneres. En cas de que
 s’equivoque en un field, podem afegir un label amb vista condicional:</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;oil_required&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
@@ -886,8 +888,8 @@ vista form i cridar a un action que la mostre.</p>
 </div>
 <p>Pot ser de molts tipus i no tanca el wizard, per tant, es pot continuar.</p>
 </section>
-<section id="exemple-complet-de-wizards-exemple-complet-de-wizards">
-<h1>Exemple Complet de Wizards {#exemple_complet_de_wizards}<a class="headerlink" href="#exemple-complet-de-wizards-exemple-complet-de-wizards" title="Link to this heading">#</a></h1>
+<section id="exemple-complet-de-wizards">
+<h2>Exemple Complet de Wizards<a class="headerlink" href="#exemple-complet-de-wizards" title="Link to this heading">#</a></h2>
 <p>El codi complet de l’exemple està a:
 <a class="reference external" href="https://github.com/xxjcaxx/sge18-19/tree/master/wizards">1</a></p>
 <p><strong>Wizard cridat en un botó del formulari:</strong></p>
@@ -1077,6 +1079,7 @@ variable de context <strong>active_ids</strong> en compte de <strong>active_id</
 </pre></div>
 </div>
 </section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1114,7 +1117,7 @@ variable de context <strong>active_ids</strong> en compte de <strong>active_id</
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">&lt;no title&gt;</p>
+        <p class="prev-next-title">Reports</p>
       </div>
     </a>
     <a class="right-next"
@@ -1122,7 +1125,7 @@ variable de context <strong>active_ids</strong> en compte de <strong>active_id</
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Web Controllers {#web_controllers}</p>
+        <p class="prev-next-title">Web Controllers</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1143,19 +1146,18 @@ variable de context <strong>active_ids</strong> en compte de <strong>active_id</
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Wizard bàsic {#wizard_bàsic}</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#wizard-amb-assistent-wizard-amb-assistent">Wizard amb assistent {#wizard_amb_assistent}</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#wizard-amb-dades-per-context-wizard-amb-dades-per-context">Wizard amb dades per context {#wizard_amb_dades_per_context}</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#x2many-en-wizards-x2many-en-wizards">X2many en Wizards {#x2many_en_wizards}</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#amb-one2many-amb-one2many">Amb One2many {#amb_one2many}</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#amb-many2many-amb-many2many">Amb Many2many {#amb_many2many}</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wizard-basic">Wizard bàsic</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wizard-amb-assistent">Wizard amb assistent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wizard-amb-dades-per-context">Wizard amb dades per context</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#x2many-en-wizards">X2many en Wizards</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#amb-one2many">Amb One2many</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#amb-many2many">Amb Many2many</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#onchange-en-wizards-onchange-en-wizards">Onchange en Wizards {#onchange_en_wizards}</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#alertes">Alertes</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#exemple-complet-de-wizards-exemple-complet-de-wizards">Exemple Complet de Wizards {#exemple_complet_de_wizards}</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#onchange-en-wizards">Onchange en Wizards</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alertes">Alertes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exemple-complet-de-wizards">Exemple Complet de Wizards</a></li>
 </ul>
-
   </nav></div>
 
 </div></div>

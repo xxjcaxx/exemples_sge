@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>&lt;no title&gt; &#8212; Apunts d&#39;Odoo</title>
+    <title>Reports &#8212; Apunts d&#39;Odoo</title>
   
   
   
@@ -63,8 +63,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'reports';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Wizard bàsic {#wizard_bàsic}" href="wizards.html" />
-    <link rel="prev" title="Accions i menús {#accions_i_menús}" href="accions_menus.html" />
+    <link rel="next" title="Wizards" href="wizards.html" />
+    <link rel="prev" title="Accions i menús" href="accions_menus.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -168,24 +168,14 @@
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="instalarodoo.html">Instal·lar Odoo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="odoo.html">Desenvolupar per a Odoo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vista.html">Millores en les vistes tree {#millores_en_les_vistes_tree}</a></li>
-
-
-
-
-
-<li class="toctree-l1"><a class="reference internal" href="accions_menus.html">Accions i menús {#accions_i_menús}</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wizards.html">Wizard bàsic {#wizard_bàsic}</a></li>
-
-
-
-
-
-
-<li class="toctree-l1"><a class="reference internal" href="web_controllers.html">Web Controllers {#web_controllers}</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vista.html">La vista</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accions_menus.html">Accions i menús</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wizards.html">Wizards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web_controllers.html">Web Controllers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="client_web.html">Arquitectura del client web {#arquitectura_del_client_web}</a></li>
 
 
@@ -365,9 +355,7 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -378,19 +366,11 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1><no title></h1>
+    <h1>Reports</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="simple visible nav section-nav flex-column">
-</ul>
-
-            </nav>
         </div>
     </div>
 </div>
@@ -400,15 +380,20 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <p>El nou motor de reports utilitza una combinació de <strong>QWeb, BootStrap i
+  <section class="tex2jax_ignore mathjax_ignore" id="reports">
+<h1>Reports<a class="headerlink" href="#reports" title="Link to this heading">#</a></h1>
+<p>El nou motor de reports utilitza una combinació de <strong>QWeb, BootStrap i
 Wkhtmltopdf</strong>.</p>
+<div class="tip admonition">
+<p class="admonition-title">Consell</p>
+<p>Pot ser que el wkhtmltopdf de la distribució no funcione. Cal anar a <a class="github reference external" href="https://github.com/wkhtmltopdf/wkhtmltopdf/releases/">wkhtmltopdf/wkhtmltopdf</a> i descarregar el ‘’’.deb’’’ de la versió estable més alta. S’instal·larà amb ‘’’dpkg -i’’’</p>
+<p>Amb ‘’’wkhtmltopdf -V’’’ podem comprovar si la versió correcta s’ha instal·lat.</p>
+</div>
 <p>Un report consta de dos elements:</p>
 <ul class="simple">
 <li><p>Un registre en la base de dades en el model:
 <strong>ir.actions.report.xml</strong> amb els paràmetres bàsics</p></li>
-<li><p>Una vista
-<a class="reference external" href="https://www.odoo.com/documentation/8.0/reference/qweb.html">Qweb</a>
-per al contingut.</p></li>
+<li><p>Una vista <code class="docutils literal notranslate"><span class="pre">Qweb</span></code>  per al contingut.</p></li>
 </ul>
 <p>Per exemple, en el xml:</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;report</span>
@@ -461,8 +446,11 @@ form per imprimir.</p>
 <ul>
 <li><p><strong>external_layout</strong>: Afegeix la capçalera i el peu per defecte de
 Odoo.</p></li>
-<li><p>Dins de ‘’’</p>
-<p>‘’’: Està el contingut del report.</p>
+<li><p>Dins de</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;div</span><span class="w"> </span><span class="na">class=</span><span class="s">&quot;page&quot;</span><span class="nt">&gt;</span>
+</pre></div>
+</div>
+<p>Està el contingut del report.</p>
 </li>
 <li><p><strong>id</strong>: A de ser el mateix que el name del report.</p></li>
 <li><p><strong>docs</strong>: Llista d’objectes a imprimir. (Paregut a self)</p></li>
@@ -511,6 +499,7 @@ is installed) and the PDF version through
 <a class="reference external" href="http://localhost:8069/report/pdf/account.report_invoice/1">http://localhost:8069/report/pdf/account.report_invoice/1</a>.</p>
 <p>Més informació
 <a class="reference external" href="https://www.odoo.com/documentation/8.0/reference/reports.html">https://www.odoo.com/documentation/8.0/reference/reports.html</a></p>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -548,7 +537,7 @@ is installed) and the PDF version through
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Accions i menús {#accions_i_menús}</p>
+        <p class="prev-next-title">Accions i menús</p>
       </div>
     </a>
     <a class="right-next"
@@ -556,7 +545,7 @@ is installed) and the PDF version through
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Wizard bàsic {#wizard_bàsic}</p>
+        <p class="prev-next-title">Wizards</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -566,22 +555,6 @@ is installed) and the PDF version through
             </div>
             
             
-              
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="simple visible nav section-nav flex-column">
-</ul>
-
-  </nav></div>
-
-</div></div>
               
             
           </div>

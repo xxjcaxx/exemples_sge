@@ -1,4 +1,81 @@
-### Millores en les vistes tree {#millores_en_les_vistes_tree}
+## La vista
+
+En aquest capítol, explorarem com funcionen les vistes en Odoo, quins tipus de vistes podem utilitzar i com es poden personalitzar mitjançant XML i accions de servidor. Aprendrem a estructurar correctament una interfície d'usuari, a definir formularis, llistats, kanbans i gràfics, i a gestionar la navegació entre ells.
+
+Les vistes són la manera en la que es representen els models. En cas de que no declarem les vistes, es poden referenciar per el seu tipus i Odoo generarà una vista de llista o formulari estandar per poder vorer els registres de cada model. No obstant, quasi sempre volem personalitzar les vistes i en aquest cas, es poden referenciar per un identificador.
+
+Les vistes tenen una prioritat i, si no s\'especifica el identificador de la que volem mostrar, es mostrarà la que més prioritat tinga.
+
+``` xml
+<record model="ir.ui.view" id="view_id">
+    <field name="name">view.name</field>
+    <field name="model">object_name</field>
+    <field name="priority" eval="16"/>
+    <field name="arch" type="xml">
+        <!-- view content: <form>, <tree>, <graph>, ... -->
+    </field>
+</record>
+```
+
+```{tip}
+Les vistes es guarden en el model '''ir.ui.view'''. Tots els elements de interficie tenen en el seu nom ir.ui (Information Repository, User Interface). Els menús a ir.ui.menu o les accions a '''ir.actions.window'''
+```
+Exemple de vista form:
+
+``` xml
+  <record model="ir.ui.view" id="course_form_view">
+            <field name="name">course.form</field>
+            <field name="model">openacademy.course</field>
+            <field name="arch" type="xml">
+                <form string="Course Form">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+```
+
+Encara que Odoo ja proporciona un tree i un form per defecte, la vista
+cal millorar-la quasi sempre. Totes les vistes tenen fields que poden
+tindre widgets diferents. En les vistes form, podem adaptar molt
+l\'aspecte amb grups de fields, pestanyes, camps ocults
+condicionalment\...
+
+### Les vistes tree
+
+Les vistes *tree* (o vistes de llista) són un dels tipus de vistes més utilitzats en Odoo. Permeten mostrar registres en format de taula, facilitant la visualització i la gestió de grans quantitats de dades.  
+
+Aquestes vistes són especialment útils per a representar informació resumida d'un conjunt de registres, amb columnes que mostren els camps més rellevants. A més, poden incloure funcionalitats com l’ordenació, els filtres i les accions ràpides.  
+
+Un exemple bàsic d’una vista *tree* per al model de clients (*res.partner*) seria el següent:  
+
+```xml
+<record id="view_partner_tree" model="ir.ui.view">
+    <field name="name">res.partner.tree</field>
+    <field name="model">res.partner</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name"/>
+            <field name="phone"/>
+            <field name="email"/>
+            <field name="company_id"/>
+        </tree>
+    </field>
+</record>
+```
+
+---
+
+- `<record>`: Defineix un nou registre en el model `ir.ui.view`, que representa la vista.  
+- `<field name="name">`: Assigna un nom únic a la vista.  
+- `<field name="model">`: Indica el model al qual pertany la vista (`res.partner` en aquest cas).  
+- `<field name="arch" type="xml">`: Conté l'estructura XML de la vista.  
+- `<tree>`: Defineix una vista de tipus *tree*.  
+- `<field name="name"/>`, `<field name="phone"/>`, etc.: Representen les columnes que es mostraran en la llista.  
 
 #### Colors
 
@@ -40,7 +117,7 @@ els nous registres. Els trees editables poden tindre un atribut més
 **on_write** que indica un mètode a executar quan s\'edita o crea un
 element.
 
-#### Camps invisibles {#camps_invisibles}
+#### Camps invisibles 
 
 De vegades, un camp pot servir per a alguna cosa, però no cal que
 l\'usuari el veja. El que cal fer és ficar el field , però dir que es
@@ -60,8 +137,8 @@ l\'usuari el veja. El que cal fer és ficar el field , però dir que es
 Els *trees* poden tindre **buttons** amb els mateixos atributs que els
 buttons dels forms.
 
-```{=mediawiki}
-{{nota| Cal tindre cura en els trees dins de forms (X2many), ja que el botó s'executa en el model del tree i no del formulari que el conté. Si volem accedir al pare, cal utilitzar l'atribut parent. Mireu en [[Odoo#Context]] }}
+```{tip}
+Cal tindre cura en els trees dins de forms (X2many), ja que el botó s'executa en el model del tree i no del formulari que el conté. Si volem accedir al pare, cal utilitzar l'atribut parent. Mireu en [[Odoo#Context]]
 ```
 #### Totals
 
@@ -71,8 +148,7 @@ En els trees es pot calcular totals amb aquesta etiqueta:
 <field name="amount" sum="Total Amount"/>
 ```
 
-#### Ordenar per un field {#ordenar_per_un_field}
-
+#### Ordenar per un field 
 Un tree es pot ordenar per defecte per un field que no siga computat.
 Això es fa en **default_order**. Mirem un exemple per ordenar
 descendentment:
@@ -127,7 +203,7 @@ class banner_city_controller(http.Controller):
 En aquest cas, el CSS es podria fer un estil en CSS segons les
 instruccions de [El client Web Odoo](El_client_Web_Odoo "wikilink").
 
-El resultat és un banner amb un `<a>`{=html} que, de moment, no fa res.
+El resultat és un banner amb un `<a>` que, de moment, no fa res.
 Anem a donar-li funcionalitat a l\'enllaç. El primer és assignar-li un
 action:
 
@@ -138,35 +214,35 @@ action:
 
 Segons les instruccions de
 **addons/web/static/src/js/views/abstract_controller.js**, si fem un
-`<a>`{=html} amb un **type=\"action\"**, el JS d\'Odoo interpretarà que
+`<a>` amb un **type=\"action\"**, el JS d\'Odoo interpretarà que
 ha de cridar al backend a una funció d\'un model en concret. La resta de
 dades es fan com l\'exemple. La funció que diu **data-method** és una
 funció que ha d\'estar en el model que diu **data-model**.
 
-### Millores en les vistes form {#millores_en_les_vistes_form}
+### Millores en les vistes form 
 
 Per a que un form quede bé, es pot inclure la etiqueta
-**`<sheet>`{=html}**, que fa que no ocupe tota la pantalla encara que
+**`<sheet>`**, que fa que no ocupe tota la pantalla encara que
 siga panoràmica.
 
-Tot sheet ha de tindre **`<group>`{=html}** i dins els fields. Es poden
+Tot sheet ha de tindre **`<group>`** i dins els fields. Es poden
 fer els group que vullgam i poden tindre string per mostrar un títol.
 
 Si no utilitzem l\'etiquet group, els fields no tindran label, no
 obstant, coses com el class=\"oe_edit_only\" no funcionen en el group,
-per tant, cal utilitzar l\'etiqueta **`<label for="name">`{=html}**
+per tant, cal utilitzar l\'etiqueta **`<label for="name">`**
 
 Per facilitar la gestió, un form pot tindre pestanyes temàtiques. Es fa
-en **`<notebook>`{=html} `<page string="titol">`{=html}**
+en **`<notebook>` `<page string="titol">`**
 
 Es pot separar els grups amb
-**`<separator string="Description for Quotations"/>`{=html}**
+**`<separator string="Description for Quotations"/>`**
 
 Alguns **One2Many** donen una vista tree que no es adequada, per això es
 pot modificar el tree per defecte:
 
 ``` xml
-<field name="subscriptions" colspan="4" mode=”tree”>
+<field name="subscriptions" colspan="4">
    <tree>...</tree>
 </field>
 ```
@@ -185,7 +261,7 @@ Una altra opció és especificar la vista que insertarà en el field:
 Quant creem un One2many en el mode form (o tree editable) ens permet
 crear elements d\'aquesta relació. Per a aconseguir que, al crear-los,
 el camp many2one corresponga al pare des del que es crida, es pot fer
-amb el [context](Odoo#Context "wikilink"): Dins del field one2many que
+amb el context: Dins del field one2many que
 estem fent fiquem aquest codi:
 
 ``` xml
@@ -198,14 +274,14 @@ O este exemple per a dins d\'un action:
 <field name="context">{"default_doctor": True}</field>
 ```
 
-```{=mediawiki}
-{{nota|Aquesta sintaxi funciona per a passar per context valors per defecte a un form cridat amb un action. Pot ser en One2many, botons o menús}}
+```{tip}
+Aquesta sintaxi funciona per a passar per context valors per defecte a un form cridat amb un action. Pot ser en One2many, botons o menús
 ```
-```{=mediawiki}
-{{nota|'''active_id''' és una variable que apunta al id del element que està en aquest moment actiu. Com que estem en un formulari, és el que se està creant o modificant amb en formulari. En el cas de la creació, active_id no està encara apuntant a un element de la base de dades, però funciona internament, encara que en el field no diga res o diga False.}}
+```{tip}
+`active_id` és una variable que apunta al id del element que està en aquest moment actiu. Com que estem en un formulari, és el que se està creant o modificant amb en formulari. En el cas de la creació, active_id no està encara apuntant a un element de la base de dades, però funciona internament, encara que en el field no diga res o diga False.
 ```
-```{=mediawiki}
-{{nota|En Odoo 14 ja no cal fer-ho, però el manual és vàlid per a altres many2ones o altres valors per defecte}}
+```{tip}
+En Odoo 14 ja no cal fer-ho, però el manual és vàlid per a altres many2ones o altres valors per defecte
 ```
 **Domains en Many2ones**
 
@@ -232,9 +308,6 @@ Alguns camps, com ara les imatges, es poden mostrar utilitzant un
 Llista de [widgets d\'Odoo](widgets_d'Odoo "wikilink") disponibles per a
 camps dins de forms:
 
-```{=html}
-<div class="toccolours mw-collapsible mw-collapsed" style="overflow: hidden;">
-```
 ``` javascript
 instance.web.form.widgets = new instance.web.Registry({
     'char' : 'instance.web.form.FieldChar',
@@ -279,9 +352,7 @@ instance.web.form.widgets = new instance.web.Registry({
 Tret de:
 <https://github.com/odoo/odoo/blob/8.0/addons/web/static/src/js/view_form.js#L6355>
 
-```{=html}
-</div>
-```
+
 **Reescalar les imatges**
 
 Molt a sovint, tenim la necessitat de reescalar les imatges que
@@ -300,7 +371,11 @@ La funció pot ser una del model en el que està o un action. En el type
 cal indicar el tipus amb: **object, action, url, client** En l\'exemple
 anterior, el button és de tipus object. Aixó vol dir que crida a una
 funció del model al que represente el formulari que el conté.
-`{{nota|És important que el record sobre el que es pulsa un botó de tipus object estiga ja guardat, ja que si no existeix en la base de dades, el servidor no té la seua '''id''' i pot fer res. Per això, un botó polsat en fase de creació crida primer a la funció create(). }}`{=mediawiki}
+
+```{tip}
+És important que el record sobre el que es pulsa un botó de tipus object estiga ja guardat, ja que si no existeix en la base de dades, el servidor no té la seua '''id''' i pot fer res. Per això, un botó polsat en fase de creació crida primer a la funció create().
+```
+
 Per a fer un butó que cride a un altre formulari, s\'ha de fer en un
 tipus **action**. Amés, per ficar la id del **action** al que es vol
 cridar, cal ficar el prefixe i sufixe **%(\...)d**, com en l\'exemple:
@@ -314,8 +389,8 @@ ID de **l\'action** a executar als servidor, aquest li retorna un action
 per a que el client l\'execute. L\'action pot obrir una altra finestra o
 un *pop-up*. En qualsevol cas, aquest action executat en el client,
 demana la vista i les dades que vol mostrar i les mostra. Aquesta és la
-raó de la sintaxis **%(\...)d**. Ja que es tracta d\'un **[External
-Id](Odoo#External_Ids "wikilink")** a una action guardada en la base de
+raó de la sintaxis **%(\...)d**. 
+Ja que es tracta d\'un **External Id** a una action guardada en la base de
 dades.
 
 Els *buttons* poden tindre una icona. Odoo proporciona algunes que es
@@ -369,7 +444,7 @@ automàticament creat per el navegador a un rectangle. Això odoo ho pot
 fer per CSS amb la classe **class=\"oe_stat_button\"**. A continuació,
 se li posa una icona **icon=\"fa-star\"**.
 [3](https://es.slideshare.net/TaiebKristou/odoo-icon-smart-buttons). A
-partir d\'ahí, l\'etiqueta **`<button>`{=html}** pot contindre el
+partir d\'ahí, l\'etiqueta **`<button>`** pot contindre el
 contingut que desitgem. Per exemple, camps *computed* que mostren el
 resum del formulari que va a obrir.
 
@@ -386,7 +461,7 @@ resum del formulari que va a obrir.
             </div>
 ```
 
-#### Formularis dinàmics {#formularis_dinàmics}
+#### Formularis dinàmics 
 
 Els fields dels formularis permet modificar el seu comportament en
 funció de condicions. Per exemple, ocultar amb **invisible**, permetre
@@ -459,12 +534,8 @@ cal afegir:
 <field name="salary" readonly="1" force_save="1"/> 
 ```
 
-#### Workflows
 
-```{=mediawiki}
-{{nota|Els Workflows es consideren obsolets en la versió 11 d'Odoo. Es pot aconseguir el mateix en les variables '''status''' , el widget '''statusbar''' i l'atribut XML '''states'''. Per simplificar la programació, han considerat que no és necessari fer difeencies entre Workflows i altres canvis d'estat. }}
-```
-### Vistes Kanban {#vistes_kanban}
+### Vistes Kanban
 
 Les vistes kanban són per a mostrar el model en forma de \'cartes\'. Les
 vistes kanban se declaren amb una mescla de xml, html i plantilles
@@ -495,14 +566,11 @@ Per mostrar un Kanban, la vista de Odoo, obri un action Window, dins
 clava una caixa que ocupa tota la finestra i va recorreguent els records
 que es tenen que mostrant i dibuixant els widgets de cada record.
 
-```{=mediawiki}
-{{nota|A diferència en els trees o forms, els kanbans poden ser molt variats i han de deixar llibertat per ser dissenyats. És per això, que els desenvolupadors d'Odoo no han proporcionat unes etiquetes i atributs XML d'alt nivell com passa en els forms o trees, en els que no hem de preocupar-nos de la manera en que serà renderitzar, el CSS o cóm obté els fields de la base de dades. Al fer un Kanban, entrem al nivel de QWeb, per el que controlem plantilles, CSS i indicacions i funcions per al Javascript. Tot això està ocult en la resta de vistes, però en Kanban és impossible ocultar-ho.}}
+```{tip}
+A diferència en els trees o forms, els kanbans poden ser molt variats i han de deixar llibertat per ser dissenyats. És per això, que els desenvolupadors d'Odoo no han proporcionat unes etiquetes i atributs XML d'alt nivell com passa en els forms o trees, en els que no hem de preocupar-nos de la manera en que serà renderitzar, el CSS o cóm obté els fields de la base de dades. Al fer un Kanban, entrem al nivel de QWeb, per el que controlem plantilles, CSS i indicacions i funcions per al Javascript. Tot això està ocult en la resta de vistes, però en Kanban és impossible ocultar-ho.
 ```
 Exemple bàsic:
 
-```{=html}
-<div class="toccolours mw-collapsible mw-collapsed" style="overflow: hidden;">
-```
 ``` xml
 <record model="ir.ui.view" id="socio_kanban_view">
             <field name="name">cooperativa.socio</field>
@@ -542,9 +610,7 @@ Exemple bàsic:
         </record>
 ```
 
-```{=html}
-</div>
-```
+
 En l\'anterior vista kanban cal comentar les línies.
 
 Al principi es declaren els fields que han de ser mostrats. Si no es
@@ -556,7 +622,7 @@ demanats després, però no estan disponibles per a que el Javascript puga
 utilitzar-los.
 
 A continuació ve un template **Qweb** en el que cal definir una etiqueta
-**`<t t-name="kanban-box">`{=html}** que serà renderitzada una vegada
+**`<t t-name="kanban-box">`** que serà renderitzada una vegada
 per cada element del model.
 
 Dins del template, es declaren divs o el que necessitem per donar-li el
@@ -571,7 +637,7 @@ un color de fons. Les bàsiques són **oe_kanban_vignette** i
 Hi ha molts altres CSS que podem estudiar i utilitzar. Per exemple, els
 oe_kanban_image per a fer la imatge d\'una mida adequada o el
 oe_product_desc que ajuda a colocar el text al costat de la foto. En
-l\'exemple, usem uns **`<a>`{=html}** amb dos tipus: open i edit. Segons
+l\'exemple, usem uns **`<a>`** amb dos tipus: open i edit. Segons
 el que posem, al fer click ens obri el form en mode vista o edició.
 Aquests botons o enllaços poden tindre aquestes funcions:
 
@@ -582,7 +648,7 @@ Aquests botons o enllaços poden tindre aquestes funcions:
 
 Si ja volem fer un kanban més avançat, tenim aquestes opcions:
 
--   En la etiqueta **`<kanban>`{=html}**:
+-   En la etiqueta **`<kanban>`**:
     -   **default_group_by** per agrupar segons algun criteri al agrupar
         apareixen opcions per crear nous elements sense necessitat
         d\'entrar al formulari.
@@ -613,9 +679,7 @@ Si ja volem fer un kanban més avançat, tenim aquestes opcions:
 
 Un exemple més complet i correcte:
 
-```{=html}
-<div class="toccolours mw-collapsible mw-collapsed" style="overflow: hidden;">
-```
+
 ``` xml
       <record model="ir.ui.view" id="music_kanban_view">
             <field name="name">conservatori.music</field>
@@ -651,9 +715,6 @@ Un exemple més complet i correcte:
         </record>
 ```
 
-```{=html}
-</div>
-```
 **Forms dins de kanbans**:
 
 A partir de la versió 12 es pot introduir un form dins d\'un kanban,
@@ -683,7 +744,7 @@ identificador extern d\'una vista form en **quick_create_view**. Aquest
  </form>
 ```
 
-### Vistes search {#vistes_search}
+### Vistes search 
 
 Les vistes search tenen 3 tipus:
 
@@ -701,8 +762,8 @@ buscats.
 </search>
 ```
 
-```{=mediawiki}
-{{nota|Els fields han de ser guardats en la base de dades, encara que siguen de tipus '''computed'''}}
+```{tip}
+Els fields han de ser guardats en la base de dades, encara que siguen de tipus '''computed'''
 ```
 Les **field** poden tindre un **domain** per especificar quin tipus de
 búsqueda volem. Per exemple:
@@ -735,10 +796,10 @@ Per exemple:
                                              ('date', '&lt;=',datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))]"/>
 ```
 
-```{=mediawiki}
-{{nota|Els filtres sols poden comparar un field amb un valor específic. Així que si volem comparar dos fields cal fer una funció.}}
+```{tip}
+Els filtres sols poden comparar un field amb un valor específic. Així que si volem comparar dos fields cal fer una funció.
 ```
-#### Operadors per als domains: {#operadors_per_als_domains}
+#### Operadors per als domains: 
 
 \'like\': \[(\'input\', \'like\', \'open\')\] - Returns case sensitive
 (wildcards - \'%open%\') search.
@@ -837,7 +898,7 @@ En aquest exemple, filtra amb en **search_default_XXXX** que activa el
 filtre XXXX i, amés, fa que en els formularis tiguen un camp boolean a
 true.
 
-### Vistes Calendar {#vistes_calendar}
+### Vistes Calendar
 
 Si el recurs té un camp date o datetime. Permet editar els recursos
 ordenats per temps. L'exemple són els esdeveniments del mòdul de ventes.
@@ -871,7 +932,7 @@ ordenats per temps. L'exemple són els esdeveniments del mòdul de ventes.
         </record>
 ```
 
-### Vistes Graph {#vistes_graph}
+### Vistes Graph
 
 En general s\'utilitza per a veure agregacions sobre les dades a
 mostrar. Accepta els següents atributs:
@@ -911,6 +972,6 @@ atributs següents:
     </record>
 ```
 
-```{=mediawiki}
-{{nota|Les vistes graph en Odoo són molt limitades, sols accepten un element en les X i necessiten que els camps estiguen guardats en la base de dades}}
+```{tip}
+Les vistes graph en Odoo són molt limitades, sols accepten un element en les X i necessiten que els camps estiguen guardats en la base de dades
 ```

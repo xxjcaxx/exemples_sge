@@ -1,18 +1,20 @@
+# Reports
+
 El nou motor de reports utilitza una combinació de **QWeb, BootStrap i
 Wkhtmltopdf**.
 
-```{=mediawiki}
-{{nota|Pot ser que el wkhtmltopdf de la distribució no funcione. Cal anar a https://github.com/wkhtmltopdf/wkhtmltopdf/releases/ i descarregar el '''.deb''' de la versió estable més alta. S'instal·larà amb '''dpkg -i'''
+```{admonition} Consell
+:class: tip
 
-Amb '''wkhtmltopdf -V''' podem comprovar si la versió correcta s'ha instal·lat. }}
+Pot ser que el wkhtmltopdf de la distribució no funcione. Cal anar a https://github.com/wkhtmltopdf/wkhtmltopdf/releases/ i descarregar el '''.deb''' de la versió estable més alta. S'instal·larà amb '''dpkg -i'''
+
+Amb '''wkhtmltopdf -V''' podem comprovar si la versió correcta s'ha instal·lat. 
 ```
 Un report consta de dos elements:
 
 -   Un registre en la base de dades en el model:
     **ir.actions.report.xml** amb els paràmetres bàsics
--   Una vista
-    [Qweb](https://www.odoo.com/documentation/8.0/reference/qweb.html)
-    per al contingut.
+-   Una vista `Qweb`  per al contingut.
 
 Per exemple, en el xml:
 
@@ -70,11 +72,11 @@ Analitzem aquesta template:
 
 -   **external_layout**: Afegeix la capçalera i el peu per defecte de
     Odoo.
--   Dins de \'\'\'
-    ```{=html}
+-   Dins de
+    ```xml
     <div class="page">
     ```
-    \'\'\': Està el contingut del report.
+    Està el contingut del report.
 -   **id**: A de ser el mateix que el name del report.
 -   **docs**: Llista d\'objectes a imprimir. (Paregut a self)
 

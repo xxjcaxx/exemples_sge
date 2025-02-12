@@ -234,26 +234,7 @@ Aquesta ajuda és per que, com a alumnes, vos prepareu correctament per poder pr
      sshfs odoo@10.100.23.100:/var/lib/odoo ./odoo/
 
 
-**Accedir amb el navegador d\'arxius**
-
-Si tens ubuntu, el navegador d\'arxius pot acceptar una connexió SSH en
-el menú **ir\>lugar** i escribint
-    <ssh://>`<url o ip>`{=html}:`<port>`{=html}
-
-**Accedir de forma més còmoda**
-
-Si creem un fitxer **\~/.ssh/authorized_keys** amb la clau pública del
-nostre client SSH, per exemple: **.ssh/id_rsa.pub** podem entrar sense
-escriure contrasenya.
-
-Si accedim i escrivim [tmux](tmux "wikilink") o
-[screen](screen "wikilink") podem tindre una terminal subdividida i que
-no es tanca quant tanques la terminal SSH.
-
-Es recomana tindre una terminal per a controlar el servidor amb lletra
-més menuda i una altra per a la gestió dels fitxers.
-
-### Debug mode {#debug_mode}
+### Debug mode
 
 Odoo permet entrar en mode debug amb **\--debug**.
 
@@ -269,11 +250,11 @@ codi que ens interessa:
 Una vegada dins, es poden utilitzar els comandaments de pdb:
 <https://docs.python.org/3/library/pdb.html>
 
-## Posar en producció {#posar_en_producció}
+## Posar en producció
 
 <https://www.odoo.com/documentation/17.0/administration/install/deploy.html?highlight=workers>
 
-### Odoo per HTTPS {#odoo_per_https}
+### Odoo per HTTPS
 
 El servidor Odoo per defecte dona la seua web pel port 8069 i en HTTP
 sense capa de seguretat SSL.
@@ -578,10 +559,12 @@ manualment, podem executar:
 Executem el comandament psql de forma interactiva i amb l\'usuari odoo.
 L\'usuari postgres és l\'administrador.
 
-## Creació de una base de dades {#creació_de_una_base_de_dades}
+## Creació de una base de dades
 
-```{=mediawiki}
-{{nota|En general no cal fer aquest pas i és recomanable fer la base de dades per la interfície web.}}
+```{admonition} Atenció
+:class: tip
+
+En general no cal fer aquest pas i és recomanable fer la base de dades per la interfície web.
 ```
 En l\'usuari de odoo, creem una base de dades i li apliquem l\'esquema
 de dades de Odoo:
@@ -597,18 +580,15 @@ Per defecte, l\'usuari serà admin amb contrasenya admin.
 [Comandaments bàsics de
 postgreSQL](https://gist.github.com/Kartones/dd3ff5ec5ea238d4c546)
 
-## Errors documentats {#errors_documentats}
+## Errors documentats
 
-```{=html}
-<div style="background:#f88; padding:10px;">
-```
+```{admonition} Atenció
+:class: tip
+
 **Important** Abans de fer aquests comandaments, consulteu el final del
 fitxer de log, generalment en /var/log/odoo/odoo-server.log
-
-```{=html}
-</div>
 ```
-### Error amb el rol Odoo {#error_amb_el_rol_odoo}
+### Error amb el rol Odoo
 
 Si apareix un error similar a:
 
@@ -621,7 +601,7 @@ Cal fer el comandament:
 
 Això crea l\'usuari odoo amb permís de superusuari (-s)
 
-### Error amb UTF-8 {#error_amb_utf_8}
+### Error amb UTF-8 
 
 Moltes vegades, al instal·lar, no configura el template0 de la base de
 dades en utf-8.
@@ -647,7 +627,7 @@ els locales y després:
 
      pg_createcluster 9.4 main --start
 
-### Recuperar la contrasenya de l\'administrador {#recuperar_la_contrasenya_de_ladministrador}
+### Recuperar la contrasenya de l\'administrador
 
 **De l\'administrador d\'un base de dades:** Dins de la base de dades:
 
@@ -659,7 +639,7 @@ Si no pots administrar o crear noves bases de dades, cal modficar la
 línia **admin_passwd** de /etc/odoo/odoo.conf o .odoorc, depenent quin
 fitxer de configuració estem utilitzant.
 
-### Problemes en els repositoris oficials d\'ubuntu {#problemes_en_els_repositoris_oficials_dubuntu}
+### Problemes en els repositoris oficials d\'ubuntu
 
 En el cas de l\'IES, els repositoris oficials no funcionen bé per alguna
 interferència amb els de Lliurex. Cal canviar-los. Per exemple per els
@@ -670,7 +650,7 @@ de Caliu. Una manera és entrar en **vim** i executar aquest comandament:
 (Utilitzem \_ en compte de / en la subtitució perquè la / ja està en les
 URL.)
 
-### No connecta amb PostgreSQL {#no_connecta_amb_postgresql}
+### No connecta amb PostgreSQL 
 
 Pot ser perquè no está el servici en funcionament.
 

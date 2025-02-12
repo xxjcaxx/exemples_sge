@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Web Controllers {#web_controllers} &#8212; Apunts d&#39;Odoo</title>
+    <title>Web Controllers &#8212; Apunts d&#39;Odoo</title>
   
   
   
@@ -63,8 +63,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'web_controllers';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Arquitectura del client web {#arquitectura_del_client_web}" href="client_web.html" />
-    <link rel="prev" title="Wizard bàsic {#wizard_bàsic}" href="wizards.html" />
+    <link rel="next" title="Client Web" href="client_web.html" />
+    <link rel="prev" title="Wizards" href="wizards.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -171,22 +171,13 @@
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="instalarodoo.html">Instal·lar Odoo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="odoo.html">Desenvolupar per a Odoo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vista.html">Millores en les vistes tree {#millores_en_les_vistes_tree}</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vista.html">La vista</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accions_menus.html">Accions i menús</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reports.html">Reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wizards.html">Wizards</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Web Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client_web.html">Client Web</a></li>
 
-
-
-
-
-<li class="toctree-l1"><a class="reference internal" href="accions_menus.html">Accions i menús {#accions_i_menús}</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wizards.html">Wizard bàsic {#wizard_bàsic}</a></li>
-
-
-
-
-
-
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Web Controllers {#web_controllers}</a></li>
-<li class="toctree-l1"><a class="reference internal" href="client_web.html">Arquitectura del client web {#arquitectura_del_client_web}</a></li>
 
 
 
@@ -378,7 +369,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Web Controllers {#web_controllers}</h1>
+    <h1>Web Controllers</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -388,12 +379,12 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#passar-parametres-al-web-controller-passar-parametres-al-web-controller">Passar paràmetres al web controller {#passar_paràmetres_al_web_controller}</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cors-en-odoo-cors-en-odoo">CORS en Odoo {#cors_en_odoo}</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#passar-parametres-al-web-controller">Passar paràmetres al web controller</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cors-en-odoo">CORS en Odoo</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autenticacio">Autenticació</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#controllers-amb-json-controllers-amb-json">Controllers amb JSON {#controllers_amb_json}</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exemple-complet-exemple-complet">Exemple complet {#exemple_complet}</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fer-una-api-rest-fer-una-api-rest">Fer una API Rest {#fer_una_api_rest}</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#controllers-amb-json">Controllers amb JSON</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exemple-complet">Exemple complet</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fer-una-api-rest">Fer una API Rest</a></li>
 </ul>
 </li>
 </ul>
@@ -407,7 +398,9 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <p>En <a class="reference internal" href="#Odoo"><span class="xref myst">Odoo</span></a> hi ha moltes maneres de comunicar-se amb el
+  <section class="tex2jax_ignore mathjax_ignore" id="web-controllers">
+<h1>Web Controllers<a class="headerlink" href="#web-controllers" title="Link to this heading">#</a></h1>
+<p>En Odoo hi ha moltes maneres de comunicar-se amb el
 servidor:</p>
 <ul class="simple">
 <li><p>Entrant en el backend</p></li>
@@ -434,8 +427,6 @@ corresponent. No obstant, a l’hora del desplegament, es sol instal·lar
 un servidor web tipus Nginx per fer de proxy invers i implementar HTTPS
 o una web estàtica, per exemple.
 <a class="reference external" href="https://serverfault.com/questions/220046/why-is-setting-nginx-as-a-reverse-proxy-a-good-idea">1</a></p>
-<section class="tex2jax_ignore mathjax_ignore" id="web-controllers-web-controllers">
-<h1>Web Controllers {#web_controllers}<a class="headerlink" href="#web-controllers-web-controllers" title="Link to this heading">#</a></h1>
 <p>Quan fem un mòdul en scaffold, es crea el fitxer
 controllers/controllers.py, el qual està comentat, però que té un
 exemple molt útil de controlador.</p>
@@ -466,6 +457,10 @@ directament en Python.</p>
 funciona sense complicacions, podem excriure en una terminal:</p>
 <p><code class="docutils literal notranslate"><span class="pre">curl -i -X POST -H &quot;Content-Type: application/json&quot; -d &quot;{}&quot; localhost:8069/school/courses/json</span></code></p>
 <p>Com es veu, sols hem enviat un JSON buit.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>JSON també és HTTP, podem fer un route de tipus http que retorne un JSON, però Odoo facilita molt el tractament de les dades si fiquem directament json en el type.</p>
+</div>
 <p>Una altra cosa que cal mirar en l’exemple és que no estic generant un
 JSON, sols retornant un array de noms. Odoo, a través del decorador que
 diu que és JSON ja el formatarà per a que retorne un JSON correcte. En
@@ -478,8 +473,8 @@ s’està realizant. Té métodes i atributs útils com <strong>request.env</str
 <p><strong>sudo()</strong> és necessari si fem que no es necessite autentificació. No
 obstant, açò és per provar. En producció sempre necessitarem
 autentificació.</p>
-<section id="passar-parametres-al-web-controller-passar-parametres-al-web-controller">
-<h2>Passar paràmetres al web controller {#passar_paràmetres_al_web_controller}<a class="headerlink" href="#passar-parametres-al-web-controller-passar-parametres-al-web-controller" title="Link to this heading">#</a></h2>
+<section id="passar-parametres-al-web-controller">
+<h2>Passar paràmetres al web controller<a class="headerlink" href="#passar-parametres-al-web-controller" title="Link to this heading">#</a></h2>
 <p>Odoo permet passar paràmetres de la forma tradicional del GET o el POST
 (amb ?) o com es fa en REST, com a part de la URL.</p>
 <p>En el cas tradicional:</p>
@@ -510,8 +505,8 @@ json com aquest:</p>
 </pre></div>
 </div>
 </section>
-<section id="cors-en-odoo-cors-en-odoo">
-<h2>CORS en Odoo {#cors_en_odoo}<a class="headerlink" href="#cors-en-odoo-cors-en-odoo" title="Link to this heading">#</a></h2>
+<section id="cors-en-odoo">
+<h2>CORS en Odoo<a class="headerlink" href="#cors-en-odoo" title="Link to this heading">#</a></h2>
 <p>Odoo no permet peticions Ajax que no vinguen del mateix origen que ell.
 Això ho podem canviar en cada <strong>route</strong> amb <strong>cors=’*</strong>’</p>
 <p>Si volem permetre CORS en tot odoo, el millor és instal·lar Ngingx,
@@ -553,15 +548,15 @@ token amb dades aleatòries i enviar-ho al JSON de resposta si l’usuari
 fa login. A partir d’aquest moment es pot demanar aquest token en totes
 les peticions posteriors.</p>
 </section>
-<section id="controllers-amb-json-controllers-amb-json">
-<h2>Controllers amb JSON {#controllers_amb_json}<a class="headerlink" href="#controllers-amb-json-controllers-amb-json" title="Link to this heading">#</a></h2>
+<section id="controllers-amb-json">
+<h2>Controllers amb JSON<a class="headerlink" href="#controllers-amb-json" title="Link to this heading">#</a></h2>
 <p>Com es veu en l’exemple anterior, el client ha d’enviar un JSON en un
 format determinat i el servidor també el retorna. Odoo necessita que el
 json tinga el format</p>
 <p><code class="docutils literal notranslate"><span class="pre">{&quot;jsonrpc&quot;: &quot;2.0&quot;, &quot;params&quot;:{...}}</span></code></p>
 <p><a class="reference external" href="https://www.youtube.com/watch?v=wGvuRbCyytk&amp;amp;list=PL5ESsgnHGfa8d3EetmuUA8quawtJjEiH4&amp;amp;index=19&amp;amp;t=713s">https://www.youtube.com/watch?v=wGvuRbCyytk&amp;list=PL5ESsgnHGfa8d3EetmuUA8quawtJjEiH4&amp;index=19&amp;t=713s</a></p>
-<section id="exemple-complet-exemple-complet">
-<h3>Exemple complet {#exemple_complet}<a class="headerlink" href="#exemple-complet-exemple-complet" title="Link to this heading">#</a></h3>
+<section id="exemple-complet">
+<h3>Exemple complet<a class="headerlink" href="#exemple-complet" title="Link to this heading">#</a></h3>
 <p>Este és el controller:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>     <span class="nd">@http</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/terraform/terraform/create/travel&#39;</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="s1">&#39;public&#39;</span><span class="p">,</span> <span class="n">cors</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;json&#39;</span><span class="p">)</span>
      <span class="k">def</span><span class="w"> </span><span class="nf">terraform_model_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">player</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
@@ -584,8 +579,8 @@ Date:<span class="w"> </span>Fri,<span class="w"> </span><span class="m">04</spa
 </pre></div>
 </div>
 </section>
-<section id="fer-una-api-rest-fer-una-api-rest">
-<h3>Fer una API Rest {#fer_una_api_rest}<a class="headerlink" href="#fer-una-api-rest-fer-una-api-rest" title="Link to this heading">#</a></h3>
+<section id="fer-una-api-rest">
+<h3>Fer una API Rest<a class="headerlink" href="#fer-una-api-rest" title="Link to this heading">#</a></h3>
 <p>En general, Odoo i la seua documentació estan pensats per a que
 utilitzes el seu framework de client web junt en el backend. No obstant,
 si volem fer un client web o mòbil que es connecte a Odoo com si fora
@@ -674,7 +669,7 @@ retornar el JSON, que ha de ser construit dins de la funció.</p>
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Wizard bàsic {#wizard_bàsic}</p>
+        <p class="prev-next-title">Wizards</p>
       </div>
     </a>
     <a class="right-next"
@@ -682,7 +677,7 @@ retornar el JSON, que ha de ser construit dins de la funció.</p>
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Arquitectura del client web {#arquitectura_del_client_web}</p>
+        <p class="prev-next-title">Client Web</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -703,12 +698,12 @@ retornar el JSON, que ha de ser construit dins de la funció.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#passar-parametres-al-web-controller-passar-parametres-al-web-controller">Passar paràmetres al web controller {#passar_paràmetres_al_web_controller}</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cors-en-odoo-cors-en-odoo">CORS en Odoo {#cors_en_odoo}</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#passar-parametres-al-web-controller">Passar paràmetres al web controller</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cors-en-odoo">CORS en Odoo</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autenticacio">Autenticació</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#controllers-amb-json-controllers-amb-json">Controllers amb JSON {#controllers_amb_json}</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exemple-complet-exemple-complet">Exemple complet {#exemple_complet}</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fer-una-api-rest-fer-una-api-rest">Fer una API Rest {#fer_una_api_rest}</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#controllers-amb-json">Controllers amb JSON</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exemple-complet">Exemple complet</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fer-una-api-rest">Fer una API Rest</a></li>
 </ul>
 </li>
 </ul>

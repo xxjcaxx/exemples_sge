@@ -1,6 +1,6 @@
 # Instal·lar Odoo
 
-[Odoo](Odoo "wikilink") pot ser instal·lat en qualsevol sistema
+Odoo pot ser instal·lat en qualsevol sistema
 operatiu. No obstant, es desenvolupa pensant en Ubuntu o Debian i és el
 sistema en el que anem a treballar.
 
@@ -11,12 +11,12 @@ que arranque a l\'inici a les més simples que són desplegar un
 **docker** amb tot funcionant. [Manual technical training
 Odoo](https://github.com/odoo/technical-training/tree/12.0-99-sysadmin).
 
-## Instal·lar en Debian i Ubuntu {#installar_en_debian_i_ubuntu}
+## Instal·lar en Debian i Ubuntu
 
 Abans de res, cal preparar un poc el sistema:
 
 En el cas de Ubuntu o Debian, que és el que ens interessa,
-[Odoo](Odoo "wikilink") proporciona uns repositoris anomenats
+Odoo proporciona uns repositoris anomenats
 **Nightly**, que poden ser afegits al **sources.list** per instal·lar de
 manera automàtica tot. Aquests respositoris són actualitzats cada nit.
 Per tant, és possible que al llarg del temps, algunes funcions o arxius
@@ -55,11 +55,11 @@ l\'Odoo.
 
 A continuació, cal anar a la direcció en el navegador:
 
-[`http://`](http://)`<ip o url>`{=html}`:8069`
+    http://<ip o url>:8069
 
 [Asciinema del procés](https://asciinema.org/a/122875).
 
-## Configuració de la ruta dels mòduls {#configuració_de_la_ruta_dels_mòduls}
+## Configuració de la ruta dels mòduls
 
 Com que la instalació d\'Odoo crea lúsuari **odoo**, que és el que tenim
 que utilitzar per al desenvolupament, anem a donar-li una contrasenya:
@@ -67,8 +67,10 @@ que utilitzar per al desenvolupament, anem a donar-li una contrasenya:
     $ sudo passwd odoo
     $ sudo usermod -s /bin/bash odoo
 
-```{=mediawiki}
-{{nota|A partir d'aquest moments, tots els comandaments s'han de fer amb l'usuari odoo.}}
+```{admonition} Atenció
+:class: warning
+ 
+A partir d'aquest moments, tots els comandaments s'han de fer amb l'usuari odoo.
 ```
 La configuració del servidor Odoo té una opció que es diu
 **addons-path**. Nosaltres poden afegir més rutes per als nostres addons
@@ -85,10 +87,12 @@ al comandament. Els comandaments són queda, per tant:
      $ odoo scaffold proves /var/lib/odoo/modules
      $ odoo --addons-path="/var/lib/odoo/modules,/usr/lib/python3/dist-packages/odoo/addons" --save
 
-```{=mediawiki}
-{{nota|L'opció --save guarda la configuració en $HOME/.odoorc, que és un fitxer per a l'usuari odoo. Si volem que siga per a tots els usuaris que puguen executar el servidor odoo, es pot ficar en el fixter de /etc/odoo}}
+```{admonition} Nota
+:class: tip
+ 
+L'opció --save guarda la configuració en $HOME/.odoorc, que és un fitxer per a l'usuari odoo. Si volem que siga per a tots els usuaris que puguen executar el servidor odoo, es pot ficar en el fixter de /etc/odoo
 ```
-## Depurar Odoo {#depurar_odoo}
+## Depurar Odoo
 
 Per crear mòduls o vorer els problemes que estan passant, cal llegir els
 fitxers de log, però hi ha una manera més eficient de fer-ho. Si
@@ -140,21 +144,8 @@ Per saber més, pots anar a l\'ajuda:
 O a aquesta web:
 <https://www.odoo.com/documentation/12.0/reference/cmdline.html>
 
-### Recarregar automàticament {#recarregar_automàticament}
 
-Cada vegada que modifiquem els fitxers d\'un mòdul cal reiniciar i
-actualitzar en **-d empresa -u modul**. Però per fer-ho més ràpid, podem
-afegir **\--auto-reload**. Aquesta opció detecta canvis en els arxius i
-reinicia el servidor. Per exemple:
-
-     $ odoo -d empresa -u modul --dev=reload
-
-Encara que pot ser que necessites instal·lar **pyinotify**:
-
-     $ sudo apt-get install python-pyinotify
-     $ sudo apt-get install python-watchdog 
-
-### Millorar l\'eixida de Log {#millorar_leixida_de_log}
+### Millorar l\'eixida de Log
 
 Per afegir als nostres mètodes una eixida de log i facilitar la
 depuració, es pot utilitzar el api de Odoo:
@@ -180,9 +171,6 @@ Per dins de les funcions:
     _logger.critical("The name '" + str(record.get('name')) + "' is not okay for us!")
 ```
 
-```{=mediawiki}
-{{nota|Podem directament entrar en una terminal afegint '''shell''' al comandament.}}
-```
 ### Opcions de log {#opcions_de_log}
 
 Per defecte, Odoo llança el seu log a un fitxer a **/var/log/odoo/**,
@@ -207,10 +195,12 @@ comandament les següents opcions:
 `                       'debug_sql', 'error', 'debug', 'debug_rpc_answer',`\
 `                       'notset'].`
 
-### Preparar l\'entorn de treball per a SGE {#preparar_lentorn_de_treball_per_a_sge}
+### Preparar l\'entorn de treball per a SGE 
 
-```{=mediawiki}
-{{nota|Aquesta ajuda és per que, com a alumnes, vos prepareu correctament per poder programar de manera cómoda en Odoo. No obstant, es poden traure idees per al treball professional o en altres entorns}}
+```{admonition} Nota
+:class: tip
+ 
+Aquesta ajuda és per que, com a alumnes, vos prepareu correctament per poder programar de manera cómoda en Odoo. No obstant, es poden traure idees per al treball professional o en altres entorns
 ```
 -   Instal·lar el contenidor o la màquina virtual Ubuntu Server
 -   Crear un usuari per poder accedir fàcilment per SSH les primeres
@@ -240,74 +230,11 @@ comandament les següents opcions:
         programa **PyCharm**.
     -   PyCharm també té una terminal que pot entrar per SSH.
 -   Una alternativa al navegador d\'arxius és connectar per sshfs:
-
-```{=html}
-<!-- -->
-```
      
      sshfs odoo@10.100.23.100:/var/lib/odoo ./odoo/
 
-#### Accedir des de casa {#accedir_des_de_casa}
 
-```{=mediawiki}
-{{nota|Aquesta part del manual sols està orientada als alumnes del curs, encara que pot ser útil per a qualsevol que vulga en sa casa tindre un contenidor o una màquina virtual amb Odoo i no vulga obrir els ports del router.}}
-```
--   Donar-se d\'alta en <https://ngrok.com>
--   Dins del contenidor, descarregar en wget l\'enllaç que dona ngrok
-    per al seu programa. En el cas nostre és aquest comandament:
-
-```{=html}
-<!-- -->
-```
-     $ wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
-     $ unzip ngrok-stable-linux-amd64.zip
-
--   Dins del contenidor executar ngrok de forma que no es tanque quant
-    tanques la connexió ssh. Per a que funcione cal iniciar-lo dins
-    d\'un [screen](screen "wikilink") o [tmux](tmux "wikilink") o
-    **nohup**:
-
-```{=html}
-<!-- -->
-```
-     $ nohup ./ngrok tcp 22
-
--   Això ha obert una connexió al port 22 per a l\'ssh.
--   Per connectar des de casa:
-
-```{=html}
-<!-- -->
-```
-     $ ssh -L 8069:10.20.250.1:8069 lliurex@0.tcp.ngrok.io -p 18489
-
--   Cadascun ha de modificar la IP 10.20.250.1 per la del contenidor
-    propi, l\'usuari i el port que diguen en la web de ngrok en
-    l\'apartat *status*.
--   Ara tens una terminal SSH i un accés per localhost:8069 a la web
-    d\'Odoo.
-
-[Asciinema amb el procés](https://asciinema.org/a/138986)
-
-**Accedir amb el navegador d\'arxius**
-
-Si tens ubuntu, el navegador d\'arxius pot acceptar una connexió SSH en
-el menú **ir\>lugar** i escribint
-<ssh://>`<url o ip>`{=html}:`<port>`{=html}
-
-**Accedir de forma més còmoda**
-
-Si creem un fitxer **\~/.ssh/authorized_keys** amb la clau pública del
-nostre client SSH, per exemple: **.ssh/id_rsa.pub** podem entrar sense
-escriure contrasenya.
-
-Si accedim i escrivim [tmux](tmux "wikilink") o
-[screen](screen "wikilink") podem tindre una terminal subdividida i que
-no es tanca quant tanques la terminal SSH.
-
-Es recomana tindre una terminal per a controlar el servidor amb lletra
-més menuda i una altra per a la gestió dels fitxers.
-
-### Debug mode {#debug_mode}
+### Debug mode
 
 Odoo permet entrar en mode debug amb **\--debug**.
 
@@ -323,11 +250,11 @@ codi que ens interessa:
 Una vegada dins, es poden utilitzar els comandaments de pdb:
 <https://docs.python.org/3/library/pdb.html>
 
-## Posar en producció {#posar_en_producció}
+## Posar en producció
 
 <https://www.odoo.com/documentation/17.0/administration/install/deploy.html?highlight=workers>
 
-### Odoo per HTTPS {#odoo_per_https}
+### Odoo per HTTPS
 
 El servidor Odoo per defecte dona la seua web pel port 8069 i en HTTP
 sense capa de seguretat SSL.
@@ -632,10 +559,12 @@ manualment, podem executar:
 Executem el comandament psql de forma interactiva i amb l\'usuari odoo.
 L\'usuari postgres és l\'administrador.
 
-## Creació de una base de dades {#creació_de_una_base_de_dades}
+## Creació de una base de dades
 
-```{=mediawiki}
-{{nota|En general no cal fer aquest pas i és recomanable fer la base de dades per la interfície web.}}
+```{admonition} Atenció
+:class: tip
+
+En general no cal fer aquest pas i és recomanable fer la base de dades per la interfície web.
 ```
 En l\'usuari de odoo, creem una base de dades i li apliquem l\'esquema
 de dades de Odoo:
@@ -651,18 +580,15 @@ Per defecte, l\'usuari serà admin amb contrasenya admin.
 [Comandaments bàsics de
 postgreSQL](https://gist.github.com/Kartones/dd3ff5ec5ea238d4c546)
 
-## Errors documentats {#errors_documentats}
+## Errors documentats
 
-```{=html}
-<div style="background:#f88; padding:10px;">
-```
+```{admonition} Atenció
+:class: tip
+
 **Important** Abans de fer aquests comandaments, consulteu el final del
 fitxer de log, generalment en /var/log/odoo/odoo-server.log
-
-```{=html}
-</div>
 ```
-### Error amb el rol Odoo {#error_amb_el_rol_odoo}
+### Error amb el rol Odoo
 
 Si apareix un error similar a:
 
@@ -675,7 +601,7 @@ Cal fer el comandament:
 
 Això crea l\'usuari odoo amb permís de superusuari (-s)
 
-### Error amb UTF-8 {#error_amb_utf_8}
+### Error amb UTF-8 
 
 Moltes vegades, al instal·lar, no configura el template0 de la base de
 dades en utf-8.
@@ -701,7 +627,7 @@ els locales y després:
 
      pg_createcluster 9.4 main --start
 
-### Recuperar la contrasenya de l\'administrador {#recuperar_la_contrasenya_de_ladministrador}
+### Recuperar la contrasenya de l\'administrador
 
 **De l\'administrador d\'un base de dades:** Dins de la base de dades:
 
@@ -713,7 +639,7 @@ Si no pots administrar o crear noves bases de dades, cal modficar la
 línia **admin_passwd** de /etc/odoo/odoo.conf o .odoorc, depenent quin
 fitxer de configuració estem utilitzant.
 
-### Problemes en els repositoris oficials d\'ubuntu {#problemes_en_els_repositoris_oficials_dubuntu}
+### Problemes en els repositoris oficials d\'ubuntu
 
 En el cas de l\'IES, els repositoris oficials no funcionen bé per alguna
 interferència amb els de Lliurex. Cal canviar-los. Per exemple per els
@@ -724,7 +650,7 @@ de Caliu. Una manera és entrar en **vim** i executar aquest comandament:
 (Utilitzem \_ en compte de / en la subtitució perquè la / ja està en les
 URL.)
 
-### No connecta amb PostgreSQL {#no_connecta_amb_postgresql}
+### No connecta amb PostgreSQL 
 
 Pot ser perquè no está el servici en funcionament.
 

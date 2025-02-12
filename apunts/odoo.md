@@ -11,12 +11,6 @@ construir l'aplicació:
     classes, per les quals la capa ORM d'Odoo n'efectuarà el mapat sobre
     el SGBD PostgreSQL
 
-    ```{figure} imgs/Odooarch.png
-    :scale: 100 %
-    :alt: Arquitectura per capes
-
-    Arquitectura per capes
-    ```
 -   Una arquitectura **MVC**
     ([model-vista-controlador](http://es.wikipedia.org/wiki/Modelo_Vista_Controlador))
     en la qual el model resideix en les dades de les classes dissenyades
@@ -144,8 +138,6 @@ Model-Vista-Controlador. D\'aquesta manera, un mòdul pot tindre:
     static/description/icon.png
 
 #### Estructura de fitxers d\'un mòdul 
-
-![](03_module_gen_view.png "03_module_gen_view.png"){width="600"}
 
 -   Tots el mòduls estan en un directori definit en l\'opció
     **\--addons-path** o el fitxer de configuració. Poden ser més d\'un
@@ -1045,54 +1037,6 @@ El que hem vist en esta secció és la definició d'una acció en un XML com a p
 Per saber més sobre les vistes i cómo millorar-les, consulta l\'article
 de **La vista en Odoo**
 
-Les vistes són la manera en la que es representen els models. En cas de
-que no declarem les vistes, es poden referenciar per el seu tipus i Odoo
-generarà una vista de llista o formulari estandar per poder vorer els
-registres de cada model. No obstant, quasi sempre volem personalitzar
-les vistes i en aquest cas, es poden referenciar per un identificador.
-
-Les vistes tenen una prioritat i, si no s\'especifica el identificador
-de la que volem mostrar, es mostrarà la que més prioritat tinga.
-
-``` xml
-<record model="ir.ui.view" id="view_id">
-    <field name="name">view.name</field>
-    <field name="model">object_name</field>
-    <field name="priority" eval="16"/>
-    <field name="arch" type="xml">
-        <!-- view content: <form>, <tree>, <graph>, ... -->
-    </field>
-</record>
-```
-
-```{tip}
-Les vistes es guarden en el model '''ir.ui.view'''. Tots els elements de interficie tenen en el seu nom ir.ui (Information Repository, User Interface). Els menús a ir.ui.menu o les accions a '''ir.actions.window'''
-```
-Exemple de vista form:
-
-``` xml
-
-  <record model="ir.ui.view" id="course_form_view">
-            <field name="name">course.form</field>
-            <field name="model">openacademy.course</field>
-            <field name="arch" type="xml">
-                <form string="Course Form">
-                    <sheet>
-                        <group>
-                            <field name="name"/>
-                            <field name="description"/>
-                        </group>
-                    </sheet>
-                </form>
-            </field>
-        </record>
-```
-
-Encara que Odoo ja proporciona un tree i un form per defecte, la vista
-cal millorar-la quasi sempre. Totes les vistes tenen fields que poden
-tindre widgets diferents. En les vistes form, podem adaptar molt
-l\'aspecte amb grups de fields, pestanyes, camps ocults
-condicionalment\...
 
 ## Herència
 

@@ -1,7 +1,6 @@
-```{=mediawiki}
-{{nota| Aquest article forma part del curs d'Odoo, el qual té com a pàgina principal e inicial la de [[Odoo]]}}
-```
-En [Odoo](Odoo "wikilink") hi ha moltes maneres de comunicar-se amb el
+# Web Controllers
+
+En Odoo hi ha moltes maneres de comunicar-se amb el
 servidor:
 
 -   Entrant en el backend
@@ -31,7 +30,6 @@ un servidor web tipus Nginx per fer de proxy invers i implementar HTTPS
 o una web estàtica, per exemple.
 [1](https://serverfault.com/questions/220046/why-is-setting-nginx-as-a-reverse-proxy-a-good-idea)
 
-# Web Controllers {#web_controllers}
 
 Quan fem un mòdul en scaffold, es crea el fitxer
 controllers/controllers.py, el qual està comentat, però que té un
@@ -74,9 +72,10 @@ funciona sense complicacions, podem excriure en una terminal:
 
 Com es veu, sols hem enviat un JSON buit.
 
-```{=mediawiki}
-{{nota| JSON també és HTTP, podem fer un route de tipus http que retorne un JSON, però Odoo facilita molt el tractament de les dades si fiquem directament json en el type.}}
+```{tip}
+JSON també és HTTP, podem fer un route de tipus http que retorne un JSON, però Odoo facilita molt el tractament de les dades si fiquem directament json en el type.
 ```
+
 Una altra cosa que cal mirar en l\'exemple és que no estic generant un
 JSON, sols retornant un array de noms. Odoo, a través del decorador que
 diu que és JSON ja el formatarà per a que retorne un JSON correcte. En
@@ -92,7 +91,7 @@ s\'està realizant. Té métodes i atributs útils com **request.env**, que
 obstant, açò és per provar. En producció sempre necessitarem
 autentificació.
 
-## Passar paràmetres al web controller {#passar_paràmetres_al_web_controller}
+## Passar paràmetres al web controller
 
 Odoo permet passar paràmetres de la forma tradicional del GET o el POST
 (amb ?) o com es fa en REST, com a part de la URL.
@@ -135,7 +134,7 @@ json com aquest:
  {"jsonrpc":"2.0","method":"call","params":{"user":"${user}","password":"${pass}"}}
 ```
 
-## CORS en Odoo {#cors_en_odoo}
+## CORS en Odoo
 
 Odoo no permet peticions Ajax que no vinguen del mateix origen que ell.
 Això ho podem canviar en cada **route** amb **cors=\'\***\'
@@ -189,7 +188,7 @@ token amb dades aleatòries i enviar-ho al JSON de resposta si l\'usuari
 fa login. A partir d\'aquest moment es pot demanar aquest token en totes
 les peticions posteriors.
 
-## Controllers amb JSON {#controllers_amb_json}
+## Controllers amb JSON
 
 Com es veu en l\'exemple anterior, el client ha d\'enviar un JSON en un
 format determinat i el servidor també el retorna. Odoo necessita que el
@@ -199,7 +198,7 @@ json tinga el format
 
 <https://www.youtube.com/watch?v=wGvuRbCyytk&list=PL5ESsgnHGfa8d3EetmuUA8quawtJjEiH4&index=19&t=713s>
 
-### Exemple complet {#exemple_complet}
+### Exemple complet
 
 Este és el controller:
 
@@ -226,7 +225,7 @@ Date: Fri, 04 Dec 2020 08:15:09 GMT
 {"jsonrpc": "2.0", "id": null, "result": {"id": 4, "name": "Pedro Hdisadlufa -> Fmeeiponovi", "player": [1, "Pedro"], "origin_planet": [8316, "Hdisadlufa"], "destiny_planet": [8317, "Fmeeiponovi"], "distance": 0.1, "percent": 0.18482222222222222, "launch_time": "2020-12-04 08:15:09", "display_name": "Pedro Hdisadlufa -> Fmeeiponovi", "create_uid": [4, "Public user"], "create_date": "2020-12-04 08:15:09", "write_uid": [4, "Public user"], "write_date": "2020-12-04 08:15:09", "__last_update": "2020-12-04 08:15:09"}}
 ```
 
-### Fer una API Rest {#fer_una_api_rest}
+### Fer una API Rest
 
 En general, Odoo i la seua documentació estan pensats per a que
 utilitzes el seu framework de client web junt en el backend. No obstant,

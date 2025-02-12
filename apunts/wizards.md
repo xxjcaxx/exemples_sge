@@ -1,11 +1,10 @@
-Els wizards d\'[Odoo](Odoo "wikilink") permeten fer un asistent
+# Wizards
+
+Els wizards d\'Odoo permeten fer un asistent
 interactiu per a que l\'usuari complete una tasca. Com que no ha
 d\'agafar les dades directament en un formulari, si no que el va ajudant
 a completar-ho, no pot ser guardat en la base de dades fins al final.
 
-```{=mediawiki}
-{{nota| Aquest article forma part del curs d'Odoo, el qual té com a pàgina principal e inicial la de [[Odoo]]}}
-```
 Els wizards en Odoo se fan a partir de models que estenen la classe
 **TransientModel** en compte de *Model*. Aquesta classe és molt
 pareguda, però:
@@ -62,7 +61,7 @@ cicle de vida d\'un wizard serà el següent:
     pot retornar un action per mostrar les instàncies creades o per
     refrescar la vista que l\'ha cridat.
 
-## Wizard bàsic {#wizard_bàsic}
+## Wizard bàsic
 
 A continuació anem a veure un exemple de wizard que sols mostra un
 formulari i crea una instància d\'un model a partir de les dades del
@@ -127,8 +126,8 @@ s\'ha creat un action indicant el **src_model** sobre el que treballa i
 el model del wizard que utilitza. Els action que criden a wizard tenen
 l\'atribut **target** a **new** per a que llance una finestra emergent.
 
-```{=mediawiki}
-{{nota| '''binding_model''' és el model on es pot llançar el wizard. Amb això només ja apareix en el menú superior d'accions. Però podem fer un botó que el cride de forma més intuïtiva. En alguns tutorials el trobareu com res_model, però és per a versions anteriors a la 13. }}
+```{tip}
+`binding_model` és el model on es pot llançar el wizard. Amb això només ja apareix en el menú superior d'accions. Però podem fer un botó que el cride de forma més intuïtiva. En alguns tutorials el trobareu com res_model, però és per a versions anteriors a la 13. 
 ```
 ``` xml
  <button name="%(launch_mmog_fortress_wizard)d" type="action" string="Launch attack" class="oe_highlight" />
@@ -138,7 +137,7 @@ Si volem, podem ficar un botó que cride al action del wizard. Observem
 la sintaxi del name, que és igual sempre que el button siga de tipus
 action, ja que és l\'anomenat **XML id**.
 
-## Wizard amb assistent {#wizard_amb_assistent}
+## Wizard amb assistent
 
 En aquest exemple anem a fer un wizard amb assistent. Per començar, cal
 crear un camp **state** amb varis valors possibles:
@@ -199,8 +198,8 @@ I uns botons que van fent que passe d\'un estar a un altre:
 Després es pot fer que el formulari tinga un aspecte diferent depèn del
 valor de **state**.
 
-```{=mediawiki}
-{{nota|En l'anterior exemple els botons per a passar al següent estat s'oculten. Si volem deshabilitar-los podem crear un duplicat amb els states inversos i amb la classe "oe_highlight disabled"}}
+```{tip}
+En l'anterior exemple els botons per a passar al següent estat s'oculten. Si volem deshabilitar-los podem crear un duplicat amb els states inversos i amb la classe "oe_highlight disabled"
 ```
 Els wizards poden tornar a recarregar la vista des de la que són
 cridats:
@@ -230,7 +229,7 @@ return {
 }
 ```
 
-## Wizard amb dades per context {#wizard_amb_dades_per_context}
+## Wizard amb dades per context
 
 En ocasions, necessitem que el wizard obtinga informació de qui l\'ha
 cridat. En els exemples hem vist que obtenim el active_id, és a di, el
@@ -260,7 +259,7 @@ Eixa informació pot ser llegida amb aquestes instruccions:
  city = self.env.context.get('city_context')
 ```
 
-## X2many en Wizards {#x2many_en_wizards}
+## X2many en Wizards
 
 Els **Many2one** en wizards són simples, ja que es tracta d\'una relació
 de dins del wizard cap a un model permanent. El problema està en els
@@ -270,8 +269,7 @@ relacions són impossibles o no recomanables, aleshores cal crear altres
 *transientmodels* auxiliars que representen als originals per
 implementar les relacions.
 
-### Amb One2many {#amb_one2many}
-
+### Amb One2many
 En el següent exemple anem a veure cóm implementar un wizard per a un
 viatge en el que tindrem una llista de ciutats disponibles en funció
 d\'un origen i unes carreteres. Observem primer el transientModel de
@@ -295,7 +293,10 @@ class travel_wizard(models.TransientModel):
 Com es veu, obté la ciutat d\'origen per context i cal filtrar les
 ciutats disponibles per al destí en funció d\'un field One2many que
 tenim que omplir amb la informació de l\'origen.
-`{{nota|En realitat és millor fer-ho en un Many2many, després ho emplicarem.}}`{=mediawiki}
+
+```{tip}
+En realitat és millor fer-ho en un Many2many, després ho emplicarem
+```
 
 Mirem també el transientModel de les ciutats per a cities_available:
 
@@ -386,7 +387,7 @@ aplicar el filtre:
 Aprofita la funció **context.get** de QWeb per obtindre el context i
 aplicar el filtre.
 
-### Amb Many2many {#amb_many2many}
+### Amb Many2many
 
 Anem a veure el mateix exemple implementat en **Many2many computed**. En
 primer lloc, la definició del field:
@@ -443,7 +444,7 @@ Podem implementar la funció seüent:
         }
 ```
 
-## Onchange en Wizards {#onchange_en_wizards}
+## Onchange en Wizards
 
 En principi els Onchange funcionen igual que sempre. És a dir, poden
 modificar el valor dels fields o retornar un domain o un warning. No
@@ -529,11 +530,9 @@ Si volem notificar sense molestar massa, es pot cridar a una
 
 Pot ser de molts tipus i no tanca el wizard, per tant, es pot continuar.
 
-## Exemple Complet de Wizards {#exemple_complet_de_wizards}
+## Exemple Complet de Wizards 
 
-```{=html}
-<div class="toccolours mw-collapsible mw-collapsed" style="overflow: hidden;">
-```
+
 El codi complet de l\'exemple està a:
 [1](https://github.com/xxjcaxx/sge18-19/tree/master/wizards)
 
@@ -736,8 +735,4 @@ El formulari del wizard també és molt senzill:
                 </form>
             </field>
         </record>
-```
-
-```{=html}
-</div>
 ```

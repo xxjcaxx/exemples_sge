@@ -1,4 +1,4 @@
-**Pàgina principal: [Odoo](Odoo "wikilink")**
+# Client Web
 
 En la secció de la vista i de l\'herència en la vista hem pogut
 modificar la forma en que [Odoo](Odoo "wikilink") mostra o gestiona la
@@ -57,10 +57,8 @@ Reflexionem sobre el tipus de modificació que necessitem:
 -   Fer una web des de 0 amb les dades d\'Odoo: Utilitzar els [Web
     controllers](https://www.odoo.com/documentation/12.0/reference/http.html#reference-http-controllers)
 
-# Arquitectura del client web {#arquitectura_del_client_web}
-
-![Arquitectura MVC](Mvc_client.png "Arquitectura MVC"){width="312"} El
-**WebClient** d\'Odoo es construeix amb mòduls, de la mateixa manera que
+# Arquitectura del client web
+El **WebClient** d\'Odoo es construeix amb mòduls, de la mateixa manera que
 els mòduls per al \'servidor\'. Sols que en els mòduls per ampliar el
 client web es modifiquen altres arxius més que els típics dels models de
 python o els xml de la vista.
@@ -96,10 +94,10 @@ i imatges. Això ha d\'estar en el directori **static** del mòdul:
 El server no manipula aquesta informació, però la processa en certa
 manera i l\'envia a client.
 
-```{=mediawiki}
-{{nota|Com que els CSS i JS no són processades pel servidor, no cal reiniciar el servidor per veure els canvis, sols refrescar el navegador. Això no sempre funciona, ja que el servidor pot ser que no processe els assets o que la cau del navegador no actualitze el JS o el XML.}}
+```{tip}
+Com que els CSS i JS no són processades pel servidor, no cal reiniciar el servidor per veure els canvis, sols refrescar el navegador. Això no sempre funciona, ja que el servidor pot ser que no processe els assets o que la cau del navegador no actualitze el JS o el XML.
 ```
-# Enviant el client al navegador {#enviant_el_client_al_navegador}
+# Enviant el client al navegador 
 
 Cada vegada que refresquem, s\'envia el client sencer. Això vol dir
 molts CSS, moltes línies de Javascript de molt fitxers distints i molt
@@ -118,7 +116,7 @@ compressió de totes eixes dades de la següent manera:
 Tot això fa difícil de fer debug amb el client. Per això es recomana
 ficar **?debug=1** a la URL per demanar que no minimitze.
 
-# Els [Assets](https://www.odoo.com/documentation/15.0/developer/reference/frontend/assets.html) {#els_assets}
+# Els Assets
 
 El client d\'Odoo és molt complex i necessita tindre Javascript, HTML i
 CSS de molts fitxers distints. Gestionar això permetent que qualsevol
@@ -145,7 +143,9 @@ vista](Odoo#Her.C3.A8ncia_en_la_vista "wikilink"):
 ```
 
 Observem que afegeix coses al Asset del Backend, concretament al final.
-`{{nota|Aquesta és la manera general d'afegir funcionalitats o estils. Però tal vegada el nostre widget no necessita ser carregat sempre i estem afegint una càrrega constant a la xarxa. Per això pot ser interessant afegir la llibreria sols quan es crea el widget en temps d'execució. Odoo proporciona formes de carrega llibreries i CSS de forma dinàmica (lazyload en Qweb template engine). }}`{=mediawiki}
+
+> Aquesta és la manera general d'afegir funcionalitats o estils. Però tal vegada el nostre widget no necessita ser carregat sempre i estem afegint una càrrega constant a la xarxa. Per això pot ser interessant afegir la llibreria sols quan es crea el widget en temps d'execució. Odoo proporciona formes de carrega llibreries i CSS de forma dinàmica (lazyload en Qweb template engine).
+
 
 En cas de ser en **Odoo 15**, s\'ha d\'afegir al manifest:
 
@@ -165,7 +165,7 @@ En cas de ser en **Odoo 15**, s\'ha d\'afegir al manifest:
 },
 ```
 
-## Afegir CSS al nostre mòdul {#afegir_css_al_nostre_mòdul}
+## Afegir CSS al nostre mòdul
 
 Abans d\'entrar en la creació de Widgets, pot ser interessant observar
 cóm els **bundles** es poden ampliar d\'una forma simple per modificar o
@@ -196,7 +196,7 @@ I per últim, sols cal utilitzar la classe css:
 <field name="bookings" limit="10" class="reserves_tree">
 ```
 
-# Arquitectura dels mòduls en Javascript {#arquitectura_dels_mòduls_en_javascript}
+# Arquitectura dels mòduls en Javascript 
 
 De la mateixa manera que hem vist per introduir un CSS personalitzat en
 Odoo, es pot introduir un Javascript. Aquest serà afegit al final del
@@ -218,9 +218,9 @@ part del DOM, ja que no podem saber si està carregada o quan es
 carregarà. Abans de fer partxes que solucionen mal els problemes, cal
 estudiar cóm ho fa Odoo.
 
-```{=mediawiki}
-{{nota|Els mòduls simplifiquen la programació de les webs grans. Els mòduls oculten la complexitat de la programació de les distintes parts lògiques d’un programa. Els mòduls ofereixen una interfície en la que interactuen amb la resta de mòduls. Un programa modular és més fàcilment ampliable i reutilitzable.
-En els mòduls cal aconseguir tindre la major independència al aconseguit el menor '''acoblament''' i la major '''cohesió'''. L’acoblament és la excessiva dependència d’un mòdul respecte a altres i la cohesió és la íntima relació entre els elements interns del mòdul. [https://developer.mozilla.org/es/docs/Web/JavaScript/Introducci%C3%B3n_a_JavaScript_orientado_a_objetos]}}
+```{tip}
+Els mòduls simplifiquen la programació de les webs grans. Els mòduls oculten la complexitat de la programació de les distintes parts lògiques d’un programa. Els mòduls ofereixen una interfície en la que interactuen amb la resta de mòduls. Un programa modular és més fàcilment ampliable i reutilitzable.
+En els mòduls cal aconseguir tindre la major independència al aconseguit el menor '''acoblament''' i la major '''cohesió'''. L’acoblament és la excessiva dependència d’un mòdul respecte a altres i la cohesió és la íntima relació entre els elements interns del mòdul. [https://developer.mozilla.org/es/docs/Web/JavaScript/Introducci%C3%B3n_a_JavaScript_orientado_a_objetos]
 ```
 <https://www.odoo.com/documentation/15.0/developer/reference/frontend/framework_overview.html>
 
@@ -230,7 +230,7 @@ Odoo suporta tres maneres de fer codi Javascript:
 -   Amb mòduls natius ES6.
 -   Amb el seu propi sistema de mòduls:
 
-## Mòduls JS segons Odoo {#mòduls_js_segons_odoo}
+## Mòduls JS segons Odoo
 
 Javascript fins a ES6 no tenia una manera definida de fer mòduls. Per
 tant, cada programador utilitzaba un patró de disseny diferent. En Odoo
@@ -257,8 +257,8 @@ odoo.define('module.B', function (require) {
 });
 ```
 
-```{=mediawiki}
-{{nota|La tècnica d’utilitzar una funció com a mòdul és anomenada '''patró mòdul''' i aconsegueix que les variables definides dins de la funció es comporten com a variables '''privades''' i sols es puga accedir a les variables i mètodes '''públics''' definits en el '''return''' de la funció.}}
+```{tip}
+La tècnica d’utilitzar una funció com a mòdul és anomenada '''patró mòdul''' i aconsegueix que les variables definides dins de la funció es comporten com a variables '''privades''' i sols es puga accedir a les variables i mètodes '''públics''' definits en el '''return''' de la funció.
 ```
 El mètode **odoo.define** accepta tres arguments:
 
@@ -277,8 +277,8 @@ define() de la classe global Odoo, la qual necessita el nom del mòdul,
 dependències i una funció que retorne una variable o un diccionari de
 variables. Aquestes variables són les classes que exporta el mòdul.
 
-```{=mediawiki}
-{{nota|Si es pot traure una analogía amb el backend python d'Odoo, el require() és com el '''self.env[]''' i permet delarar dependències sense necessitat de saber l'ordre en que carrega tot. }}
+```{tip}
+Si es pot traure una analogía amb el backend python d'Odoo, el require() és com el '''self.env[]''' i permet delarar dependències sense necessitat de saber l'ordre en que carrega tot. 
 ```
 Hi ha una altra manera de cridar a la funció define i és ficant els
 mòduls dels que depèn com a segon argument:
@@ -306,7 +306,7 @@ Si alguna cosa falla, el client pot donar aquests missatges d\'error:
 -   Non loaded modules: Modules who depend on a missing or a failed
     module
 
-## Utilitzar mòduls natius ES6 en Odoo {#utilitzar_mòduls_natius_es6_en_odoo}
+## Utilitzar mòduls natius ES6 en Odoo 
 
 La documentació oficial recomana fer els nous mòduls d\'aquesta manera.
 No obstant, Odoo els transformarà en el seu sistema de mòduls al fer el
@@ -343,8 +343,8 @@ De fet en Odoo 15 diuen que el core de la web ja està totalment reescrit
 en OWL, amés de la vista graph, per exemple. Per al 16 es preveu que
 tots els fields i vistes adopten el nou framework.
 
-```{=mediawiki}
-{{nota| La primera pregunta que un desenvolupador web es fa al veure que Odoo està desenvolupant el seu framework és perquè no utilitzen Angular, Vue o React o qualsevol altre framework madur. Els desenvolupadors d'Odoo la responen en cada article: Necessiten que siga més lleugera, adaptada totalment a Odoo i no dependre d'altres. Semblen bons motius i si tenen raó o no es veurà en les pròximes versions. }}
+```{tip}
+La primera pregunta que un desenvolupador web es fa al veure que Odoo està desenvolupant el seu framework és perquè no utilitzen Angular, Vue o React o qualsevol altre framework madur. Els desenvolupadors d'Odoo la responen en cada article: Necessiten que siga més lleugera, adaptada totalment a Odoo i no dependre d'altres. Semblen bons motius i si tenen raó o no es veurà en les pròximes versions. 
 ```
 OWL és un framework web menut (\<20KB) que té els elements d\'un
 framework modern:
@@ -374,7 +374,7 @@ aconseguir amb OWL:
 Aquest manual es centra sobretot en l\'última opció i anem a començar
 per ella.
 
-## Crear un component d\'Odoo en OWL {#crear_un_component_dodoo_en_owl}
+## Crear un component d\'Odoo en OWL
 
 Abans de començar, cal fer l\'estructura de directoris i fitxers i un
 xml per afegir el nostre Javascript al bundle:
@@ -420,22 +420,22 @@ Click Me! [<t t-esc="state.value"/>]
 </button>`;
 ```
 
-## Modificar components en OWL {#modificar_components_en_owl}
+## Modificar components en OWL 
 
 <https://codingdodo.com/owl-in-odoo-14-extend-and-patch-existing-owl-components/>
 
-## Crear nous Widgets en OWL {#crear_nous_widgets_en_owl}
+## Crear nous Widgets en OWL 
 
-## Crear noves vistes en OWL {#crear_noves_vistes_en_owl}
+## Crear noves vistes en OWL
 
 <https://codingdodo.com/odoo-javascript-101-classes-and-mvc-architecture/>
 <https://codingdodo.com/odoo-15-javascript-reference/>
 
-## Hooks en OWL {#hooks_en_owl}
+## Hooks en OWL 
 
 <https://www.cybrosys.com/blog/hooks-in-odoo-owl-framework>
 
-# Classes Javascript en Odoo {#classes_javascript_en_odoo}
+# Classes Javascript en Odoo
 
 En Javascript no hi ha una manera estàndard tampoc de crear classes,
 però proporciona mecanismes per simular l\'efecte. Odoo utilitza la
@@ -480,9 +480,6 @@ Aquestes són les técniques que utilitzen en Odoo per a les classes:
 
 **Més sobre classes en Javascript/Odoo:**
 
-```{=html}
-<div class="toccolours mw-collapsible mw-collapsed" style="overflow: hidden;">
-```
 Per fer herència:
 
 ``` javascript
@@ -533,20 +530,15 @@ Hamster.include({
 });
 ```
 
-```{=html}
-</div>
-```
 [Manual Oficial Javascript
 Reference](https://www.odoo.com/documentation/12.0/reference/javascript_reference.html)
 [technical training](https://github.com/gdeb/technical-training) [Video
 Odoo JS Framework (2017)](https://www.youtube.com/watch?v=u-6aLi1oqcw)
 [Video JS Framework (2018)](https://www.youtube.com/watch?v=e3YOpQBJL_A)
 
-# Widgets personalitzats {#widgets_personalitzats}
+# Widgets personalitzats 
 
-![Esquema recomanat per comunicar widgets entre sí.
-([1](https://www.odoo.com/es_ES/slides/slide/the-odoo-js-framework-569))](Odoocomunicacionscomponentesjs.png "Esquema recomanat per comunicar widgets entre sí. (1)"){width="400"}
-`{{nota|A partir d'Odoo 9, el client web ha canviat substancialment. Aixì que no podem fiar-nos de tutorial basats en aquest. De fet, el propi manual oficial d'Odoo no està actualitzat i no funciona. }}`{=mediawiki}
+> A partir d'Odoo 9, el client web ha canviat substancialment. Aixì que no podem fiar-nos de tutorial basats en aquest. De fet, el propi manual oficial d'Odoo no està actualitzat i no funciona.
 
 El Widget és la manera que té Odoo de mostrar les dades i gestionar-les
 de forma estàndard en tota la interfície.
@@ -571,9 +563,10 @@ d\'Odoo i està definida en el mòdul **web.Widget** concretament en
     dalt de la modificació i aquesta és enregistrada per ser enviada a
     la base dades si cal.
 
-```{=mediawiki}
-{{nota|Els desenvolupadors d'Odoo han fet que els widgets no siguen els que gestionen les seues dades. Per obtindrer-les, el model de la vista demanarà les dades a la base de dades i el controlador demanarà a la vista que renderitze el widget amb el valor obtingut de la base de dades. Per escriure en la base de dades, el widget sols envia un trigger que és arreplegat pels pares cap a dalt fins que arriba al controlador que li demana al model que envíe les dades al servidor.}}
+```{tip}
+Els desenvolupadors d'Odoo han fet que els widgets no siguen els que gestionen les seues dades. Per obtindrer-les, el model de la vista demanarà les dades a la base de dades i el controlador demanarà a la vista que renderitze el widget amb el valor obtingut de la base de dades. Per escriure en la base de dades, el widget sols envia un trigger que és arreplegat pels pares cap a dalt fins que arriba al controlador que li demana al model que envíe les dades al servidor.
 ```
+
 La comunicació entre widgets es produeix amb **events** si és d\'un
 widget fill a un pare i amb **funcions públiques** si és d\'un pare a un
 fill. Quan un widget pare inicialitza un widget fill, el fill no ha de
@@ -593,7 +586,7 @@ del widget amb **xmlDependencies**:
     xmlDependencies: ['/myaddon/path/to/my/file.xml'], 
 ```
 
-## Widgets Fields {#widgets_fields}
+## Widgets Fields 
 
 Quasi tot el que es mostra en la interfície web està format per Widgets.
 Per tant, hi ha de moltes maneres. Alguns són elements bàsics de la
@@ -718,9 +711,7 @@ següents exemples tenen comentaris per explicar qué està passant:
 
 **Exemple de Widget field simple: Widget comptador:**
 
-```{=html}
-<div class="toccolours mw-collapsible mw-collapsed" style="overflow: hidden;">
-```
+
 ``` javascript
 console.log('Creacio del widget');
 odoo.define('model.module', function(require) {
@@ -784,14 +775,9 @@ var contador = FieldInteger.extend({
 });
 ```
 
-```{=html}
-</div>
-```
+
 **Exemple de Widget field complex: Widget galeria:**
 
-```{=html}
-<div class="toccolours mw-collapsible mw-collapsed" style="overflow: hidden;">
-```
 Aquest widget fa ús del [RPC](Odoo#RPC "wikilink") per carregar en temps
 de renderitzat unes imatges. En aquest cas no està seguint les
 recomanacions de Odoo que diuen que el field no deuria gestionar les
@@ -942,9 +928,6 @@ var galeria = AbstractField.extend({
 });
 ```
 
-```{=html}
-</div>
-```
 ## RPC
 
 Observem el mètode **\_fetchRecord()** de
@@ -997,7 +980,7 @@ de **JQuery**. Això perment utilitzar la funció **\$.when** i
 [video A Single Page](https://www.youtube.com/watch?v=H-iFhOh1tOE) [Codi
 del video](https://github.com/dbo-odoo/odoo-js-demo)
 
-# Qweb Templates {#qweb_templates}
+# Qweb Templates 
 
 Si volem tindre un html personalitzat en el nostre widget, cal escriure
 en un XML la plantilla. S\'utilitza el llenguatge **QWeb**. Aquestes
@@ -1073,7 +1056,7 @@ opcions:
     plantilla és el nom de la plantilla i **Elements** és un diccionari
     amb els valors que es tenen que mostrar.
 
-# Vistes Personalitzades {#vistes_personalitzades}
+# Vistes Personalitzades
 
 Les vistes en Odoo són un **widget** més encarregat de mostrar la
 informació en la finestra sencera. Aquest widget cridarà a tots els que
@@ -1095,9 +1078,10 @@ Per tant, la vista Javascript:
 4.  Una vegada afegit el controlador, la classe **view** no és
     necessària.
 
-```{=mediawiki}
-{{nota| Es recomana estudiar l'arxiu: odoo/addons/web/static/src/js/views/abstract_view.js }}
-```
+
+> Es recomana estudiar l'arxiu: odoo/addons/web/static/src/js/views/abstract_view.js }}
+
+
 El **controlador**, dins del Javascript, s\'encarrega de servir els
 esdeveniments que arriven dels fills i del model/renderer i cridar als
 mètodes apropiats. Tot el que té a veure amb la relació entre el

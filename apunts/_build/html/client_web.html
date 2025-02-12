@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Arquitectura del client web {#arquitectura_del_client_web} &#8212; Apunts d&#39;Odoo</title>
+    <title>Client Web &#8212; Apunts d&#39;Odoo</title>
   
   
   
@@ -64,7 +64,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Usar Jupyter en Odoo." href="Jupyter%20y%20Odoo.html" />
-    <link rel="prev" title="Web Controllers {#web_controllers}" href="web_controllers.html" />
+    <link rel="prev" title="Web Controllers" href="web_controllers.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -171,22 +171,13 @@
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="instalarodoo.html">Instal·lar Odoo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="odoo.html">Desenvolupar per a Odoo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vista.html">Millores en les vistes tree {#millores_en_les_vistes_tree}</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vista.html">La vista</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accions_menus.html">Accions i menús</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reports.html">Reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wizards.html">Wizards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web_controllers.html">Web Controllers</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Client Web</a></li>
 
-
-
-
-
-<li class="toctree-l1"><a class="reference internal" href="accions_menus.html">Accions i menús {#accions_i_menús}</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wizards.html">Wizard bàsic {#wizard_bàsic}</a></li>
-
-
-
-
-
-
-<li class="toctree-l1"><a class="reference internal" href="web_controllers.html">Web Controllers {#web_controllers}</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Arquitectura del client web {#arquitectura_del_client_web}</a></li>
 
 
 
@@ -378,7 +369,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Arquitectura del client web {#arquitectura_del_client_web}</h1>
+    <h1>Client Web</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -388,33 +379,34 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Arquitectura del client web {#arquitectura_del_client_web}</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#enviant-el-client-al-navegador-enviant-el-client-al-navegador">Enviant el client al navegador {#enviant_el_client_al_navegador}</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#els-assets-els-assets">Els Assets {#els_assets}</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#afegir-css-al-nostre-modul-afegir-css-al-nostre-modul">Afegir CSS al nostre mòdul {#afegir_css_al_nostre_mòdul}</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Client Web</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura-del-client-web">Arquitectura del client web</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#enviant-el-client-al-navegador">Enviant el client al navegador</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#els-assets">Els Assets</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#afegir-css-al-nostre-modul">Afegir CSS al nostre mòdul</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura-dels-moduls-en-javascript-arquitectura-dels-moduls-en-javascript">Arquitectura dels mòduls en Javascript {#arquitectura_dels_mòduls_en_javascript}</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moduls-js-segons-odoo-moduls-js-segons-odoo">Mòduls JS segons Odoo {#mòduls_js_segons_odoo}</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#utilitzar-moduls-natius-es6-en-odoo-utilitzar-moduls-natius-es6-en-odoo">Utilitzar mòduls natius ES6 en Odoo {#utilitzar_mòduls_natius_es6_en_odoo}</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura-dels-moduls-en-javascript">Arquitectura dels mòduls en Javascript</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moduls-js-segons-odoo">Mòduls JS segons Odoo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#utilitzar-moduls-natius-es6-en-odoo">Utilitzar mòduls natius ES6 en Odoo</a></li>
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#owl">OWL</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-un-component-d-odoo-en-owl-crear-un-component-dodoo-en-owl">Crear un component d’Odoo en OWL {#crear_un_component_dodoo_en_owl}</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modificar-components-en-owl-modificar-components-en-owl">Modificar components en OWL {#modificar_components_en_owl}</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-nous-widgets-en-owl-crear-nous-widgets-en-owl">Crear nous Widgets en OWL {#crear_nous_widgets_en_owl}</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-noves-vistes-en-owl-crear-noves-vistes-en-owl">Crear noves vistes en OWL {#crear_noves_vistes_en_owl}</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hooks-en-owl-hooks-en-owl">Hooks en OWL {#hooks_en_owl}</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-un-component-d-odoo-en-owl">Crear un component d’Odoo en OWL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modificar-components-en-owl">Modificar components en OWL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-nous-widgets-en-owl">Crear nous Widgets en OWL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-noves-vistes-en-owl">Crear noves vistes en OWL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hooks-en-owl">Hooks en OWL</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#classes-javascript-en-odoo-classes-javascript-en-odoo">Classes Javascript en Odoo {#classes_javascript_en_odoo}</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#widgets-personalitzats-widgets-personalitzats">Widgets personalitzats {#widgets_personalitzats}</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#widgets-fields-widgets-fields">Widgets Fields {#widgets_fields}</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#classes-javascript-en-odoo">Classes Javascript en Odoo</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#widgets-personalitzats">Widgets personalitzats</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#widgets-fields">Widgets Fields</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rpc">RPC</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#qweb-templates-qweb-templates">Qweb Templates {#qweb_templates}</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#vistes-personalitzades-vistes-personalitzades">Vistes Personalitzades {#vistes_personalitzades}</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#qweb-templates">Qweb Templates</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#vistes-personalitzades">Vistes Personalitzades</a></li>
 </ul>
 
             </nav>
@@ -427,7 +419,8 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <p><strong>Pàgina principal: <a class="reference internal" href="#Odoo"><span class="xref myst">Odoo</span></a></strong></p>
+  <section class="tex2jax_ignore mathjax_ignore" id="client-web">
+<h1>Client Web<a class="headerlink" href="#client-web" title="Link to this heading">#</a></h1>
 <p>En la secció de la vista i de l’herència en la vista hem pogut
 modificar la forma en que <a class="reference internal" href="#Odoo"><span class="xref myst">Odoo</span></a> mostra o gestiona la
 base de dades amb el client web. La gestió de la vista es limita a crear
@@ -480,10 +473,10 @@ vista.</p></li>
 <li><p>Fer una web des de 0 amb les dades d’Odoo: Utilitzar els <a class="reference external" href="https://www.odoo.com/documentation/12.0/reference/http.html#reference-http-controllers">Web
 controllers</a></p></li>
 </ul>
-<section class="tex2jax_ignore mathjax_ignore" id="arquitectura-del-client-web-arquitectura-del-client-web">
-<h1>Arquitectura del client web {#arquitectura_del_client_web}<a class="headerlink" href="#arquitectura-del-client-web-arquitectura-del-client-web" title="Link to this heading">#</a></h1>
-<p><img alt="Arquitectura MVC" src="Mvc_client.png" />{width=”312”} El
-<strong>WebClient</strong> d’Odoo es construeix amb mòduls, de la mateixa manera que
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="arquitectura-del-client-web">
+<h1>Arquitectura del client web<a class="headerlink" href="#arquitectura-del-client-web" title="Link to this heading">#</a></h1>
+<p>El <strong>WebClient</strong> d’Odoo es construeix amb mòduls, de la mateixa manera que
 els mòduls per al ‘servidor’. Sols que en els mòduls per ampliar el
 client web es modifiquen altres arxius més que els típics dels models de
 python o els xml de la vista.</p>
@@ -515,9 +508,13 @@ i imatges. Això ha d’estar en el directori <strong>static</strong> del mòdul
 </ul>
 <p>El server no manipula aquesta informació, però la processa en certa
 manera i l’envia a client.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Com que els CSS i JS no són processades pel servidor, no cal reiniciar el servidor per veure els canvis, sols refrescar el navegador. Això no sempre funciona, ja que el servidor pot ser que no processe els assets o que la cau del navegador no actualitze el JS o el XML.</p>
+</div>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="enviant-el-client-al-navegador-enviant-el-client-al-navegador">
-<h1>Enviant el client al navegador {#enviant_el_client_al_navegador}<a class="headerlink" href="#enviant-el-client-al-navegador-enviant-el-client-al-navegador" title="Link to this heading">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="enviant-el-client-al-navegador">
+<h1>Enviant el client al navegador<a class="headerlink" href="#enviant-el-client-al-navegador" title="Link to this heading">#</a></h1>
 <p>Cada vegada que refresquem, s’envia el client sencer. Això vol dir
 molts CSS, moltes línies de Javascript de molt fitxers distints i molt
 de HTML i XML. Per evitar saturar la xarxa, el servidor fa una
@@ -535,8 +532,8 @@ navegador és capaç de descomprimir.</p></li>
 <p>Tot això fa difícil de fer debug amb el client. Per això es recomana
 ficar <strong>?debug=1</strong> a la URL per demanar que no minimitze.</p>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="els-assets-els-assets">
-<h1>Els <a class="reference external" href="https://www.odoo.com/documentation/15.0/developer/reference/frontend/assets.html">Assets</a> {#els_assets}<a class="headerlink" href="#els-assets-els-assets" title="Link to this heading">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="els-assets">
+<h1>Els Assets<a class="headerlink" href="#els-assets" title="Link to this heading">#</a></h1>
 <p>El client d’Odoo és molt complex i necessita tindre Javascript, HTML i
 CSS de molts fitxers distints. Gestionar això permetent que qualsevol
 puga fer un mòdul per afegir més implica una gestió d’aquests enllaços
@@ -559,8 +556,10 @@ vista</span></a>:</p>
 <span class="nt">&lt;/template&gt;</span>
 </pre></div>
 </div>
-<p>Observem que afegeix coses al Asset del Backend, concretament al final.
-<code class="docutils literal notranslate"><span class="pre">{{nota|Aquesta</span> <span class="pre">és</span> <span class="pre">la</span> <span class="pre">manera</span> <span class="pre">general</span> <span class="pre">d'afegir</span> <span class="pre">funcionalitats</span> <span class="pre">o</span> <span class="pre">estils.</span> <span class="pre">Però</span> <span class="pre">tal</span> <span class="pre">vegada</span> <span class="pre">el</span> <span class="pre">nostre</span> <span class="pre">widget</span> <span class="pre">no</span> <span class="pre">necessita</span> <span class="pre">ser</span> <span class="pre">carregat</span> <span class="pre">sempre</span> <span class="pre">i</span> <span class="pre">estem</span> <span class="pre">afegint</span> <span class="pre">una</span> <span class="pre">càrrega</span> <span class="pre">constant</span> <span class="pre">a</span> <span class="pre">la</span> <span class="pre">xarxa.</span> <span class="pre">Per</span> <span class="pre">això</span> <span class="pre">pot</span> <span class="pre">ser</span> <span class="pre">interessant</span> <span class="pre">afegir</span> <span class="pre">la</span> <span class="pre">llibreria</span> <span class="pre">sols</span> <span class="pre">quan</span> <span class="pre">es</span> <span class="pre">crea</span> <span class="pre">el</span> <span class="pre">widget</span> <span class="pre">en</span> <span class="pre">temps</span> <span class="pre">d'execució.</span> <span class="pre">Odoo</span> <span class="pre">proporciona</span> <span class="pre">formes</span> <span class="pre">de</span> <span class="pre">carrega</span> <span class="pre">llibreries</span> <span class="pre">i</span> <span class="pre">CSS</span> <span class="pre">de</span> <span class="pre">forma</span> <span class="pre">dinàmica</span> <span class="pre">(lazyload</span> <span class="pre">en</span> <span class="pre">Qweb</span> <span class="pre">template</span> <span class="pre">engine).</span> <span class="pre">}}</span></code>{=mediawiki}</p>
+<p>Observem que afegeix coses al Asset del Backend, concretament al final.</p>
+<blockquote>
+<div><p>Aquesta és la manera general d’afegir funcionalitats o estils. Però tal vegada el nostre widget no necessita ser carregat sempre i estem afegint una càrrega constant a la xarxa. Per això pot ser interessant afegir la llibreria sols quan es crea el widget en temps d’execució. Odoo proporciona formes de carrega llibreries i CSS de forma dinàmica (lazyload en Qweb template engine).</p>
+</div></blockquote>
 <p>En cas de ser en <strong>Odoo 15</strong>, s’ha d’afegir al manifest:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;assets&#39;</span><span class="p">:</span> <span class="p">{</span>
     <span class="s1">&#39;web.assets_backend&#39;</span><span class="p">:</span> <span class="p">[</span>
@@ -577,8 +576,8 @@ vista</span></a>:</p>
 <span class="p">},</span>
 </pre></div>
 </div>
-<section id="afegir-css-al-nostre-modul-afegir-css-al-nostre-modul">
-<h2>Afegir CSS al nostre mòdul {#afegir_css_al_nostre_mòdul}<a class="headerlink" href="#afegir-css-al-nostre-modul-afegir-css-al-nostre-modul" title="Link to this heading">#</a></h2>
+<section id="afegir-css-al-nostre-modul">
+<h2>Afegir CSS al nostre mòdul<a class="headerlink" href="#afegir-css-al-nostre-modul" title="Link to this heading">#</a></h2>
 <p>Abans d’entrar en la creació de Widgets, pot ser interessant observar
 cóm els <strong>bundles</strong> es poden ampliar d’una forma simple per modificar o
 afegir CSS.</p>
@@ -603,8 +602,8 @@ cas, sols fem un per a fer la lletra mès menuda:</p>
 </div>
 </section>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="arquitectura-dels-moduls-en-javascript-arquitectura-dels-moduls-en-javascript">
-<h1>Arquitectura dels mòduls en Javascript {#arquitectura_dels_mòduls_en_javascript}<a class="headerlink" href="#arquitectura-dels-moduls-en-javascript-arquitectura-dels-moduls-en-javascript" title="Link to this heading">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="arquitectura-dels-moduls-en-javascript">
+<h1>Arquitectura dels mòduls en Javascript<a class="headerlink" href="#arquitectura-dels-moduls-en-javascript" title="Link to this heading">#</a></h1>
 <p>De la mateixa manera que hem vist per introduir un CSS personalitzat en
 Odoo, es pot introduir un Javascript. Aquest serà afegit al final del
 bundle i serà executat pel navegador. No obstant, el Javascript no és
@@ -624,6 +623,11 @@ tan simple con afegir un parell d’instruccions Jquery per modificar una
 part del DOM, ja que no podem saber si està carregada o quan es
 carregarà. Abans de fer partxes que solucionen mal els problemes, cal
 estudiar cóm ho fa Odoo.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Els mòduls simplifiquen la programació de les webs grans. Els mòduls oculten la complexitat de la programació de les distintes parts lògiques d’un programa. Els mòduls ofereixen una interfície en la que interactuen amb la resta de mòduls. Un programa modular és més fàcilment ampliable i reutilitzable.
+En els mòduls cal aconseguir tindre la major independència al aconseguit el menor ‘’’acoblament’’’ i la major ‘’’cohesió’’’. L’acoblament és la excessiva dependència d’un mòdul respecte a altres i la cohesió és la íntima relació entre els elements interns del mòdul. [<a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Introducci%C3%B3n_a_JavaScript_orientado_a_objetos">https://developer.mozilla.org/es/docs/Web/JavaScript/Introducción_a_JavaScript_orientado_a_objetos</a>]</p>
+</div>
 <p><a class="reference external" href="https://www.odoo.com/documentation/15.0/developer/reference/frontend/framework_overview.html">https://www.odoo.com/documentation/15.0/developer/reference/frontend/framework_overview.html</a></p>
 <p>Odoo suporta tres maneres de fer codi Javascript:</p>
 <ul class="simple">
@@ -631,8 +635,8 @@ estudiar cóm ho fa Odoo.</p>
 <li><p>Amb mòduls natius ES6.</p></li>
 <li><p>Amb el seu propi sistema de mòduls:</p></li>
 </ul>
-<section id="moduls-js-segons-odoo-moduls-js-segons-odoo">
-<h2>Mòduls JS segons Odoo {#mòduls_js_segons_odoo}<a class="headerlink" href="#moduls-js-segons-odoo-moduls-js-segons-odoo" title="Link to this heading">#</a></h2>
+<section id="moduls-js-segons-odoo">
+<h2>Mòduls JS segons Odoo<a class="headerlink" href="#moduls-js-segons-odoo" title="Link to this heading">#</a></h2>
 <p>Javascript fins a ES6 no tenia una manera definida de fer mòduls. Per
 tant, cada programador utilitzaba un patró de disseny diferent. En Odoo
 han optat per utilitzar una tècnica anomenada AMD (Asynchronous Module
@@ -656,6 +660,10 @@ funció deguem observar aquest exemple:</p>
 <span class="p">});</span>
 </pre></div>
 </div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>La tècnica d’utilitzar una funció com a mòdul és anomenada ‘’’patró mòdul’’’ i aconsegueix que les variables definides dins de la funció es comporten com a variables ‘’’privades’’’ i sols es puga accedir a les variables i mètodes ‘’’públics’’’ definits en el ‘’’return’’’ de la funció.</p>
+</div>
 <p>El mètode <strong>odoo.define</strong> accepta tres arguments:</p>
 <ul class="simple">
 <li><p><strong>moduleName</strong>: El nom del mòdul. Es recomana seguir la mateixa
@@ -672,6 +680,10 @@ Javascript.</p></li>
 define() de la classe global Odoo, la qual necessita el nom del mòdul,
 dependències i una funció que retorne una variable o un diccionari de
 variables. Aquestes variables són les classes que exporta el mòdul.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Si es pot traure una analogía amb el backend python d’Odoo, el require() és com el ‘’’self.env[]’’’ i permet delarar dependències sense necessitat de saber l’ordre en que carrega tot.</p>
+</div>
 <p>Hi ha una altra manera de cridar a la funció define i és ficant els
 mòduls dels que depèn com a segon argument:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">odoo</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="s1">&#39;module.Something&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;module.A&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;module.B&#39;</span><span class="p">],</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">require</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -697,8 +709,8 @@ dependent modules) is not loaded.</p></li>
 module</p></li>
 </ul>
 </section>
-<section id="utilitzar-moduls-natius-es6-en-odoo-utilitzar-moduls-natius-es6-en-odoo">
-<h2>Utilitzar mòduls natius ES6 en Odoo {#utilitzar_mòduls_natius_es6_en_odoo}<a class="headerlink" href="#utilitzar-moduls-natius-es6-en-odoo-utilitzar-moduls-natius-es6-en-odoo" title="Link to this heading">#</a></h2>
+<section id="utilitzar-moduls-natius-es6-en-odoo">
+<h2>Utilitzar mòduls natius ES6 en Odoo<a class="headerlink" href="#utilitzar-moduls-natius-es6-en-odoo" title="Link to this heading">#</a></h2>
 <p>La documentació oficial recomana fer els nous mòduls d’aquesta manera.
 No obstant, Odoo els transformarà en el seu sistema de mòduls al fer el
 bundle. Per això cal afegir un comentari en la primera línia:</p>
@@ -731,6 +743,10 @@ conviure, però s’espera que OWL siga adoptat completament en el futur.
 De fet en Odoo 15 diuen que el core de la web ja està totalment reescrit
 en OWL, amés de la vista graph, per exemple. Per al 16 es preveu que
 tots els fields i vistes adopten el nou framework.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>La primera pregunta que un desenvolupador web es fa al veure que Odoo està desenvolupant el seu framework és perquè no utilitzen Angular, Vue o React o qualsevol altre framework madur. Els desenvolupadors d’Odoo la responen en cada article: Necessiten que siga més lleugera, adaptada totalment a Odoo i no dependre d’altres. Semblen bons motius i si tenen raó o no es veurà en les pròximes versions.</p>
+</div>
 <p>OWL és un framework web menut (&lt;20KB) que té els elements d’un
 framework modern:</p>
 <ul class="simple">
@@ -757,8 +773,8 @@ diferència de l’anterior)</p></li>
 </ul>
 <p>Aquest manual es centra sobretot en l’última opció i anem a començar
 per ella.</p>
-<section id="crear-un-component-d-odoo-en-owl-crear-un-component-dodoo-en-owl">
-<h2>Crear un component d’Odoo en OWL {#crear_un_component_dodoo_en_owl}<a class="headerlink" href="#crear-un-component-d-odoo-en-owl-crear-un-component-dodoo-en-owl" title="Link to this heading">#</a></h2>
+<section id="crear-un-component-d-odoo-en-owl">
+<h2>Crear un component d’Odoo en OWL<a class="headerlink" href="#crear-un-component-d-odoo-en-owl" title="Link to this heading">#</a></h2>
 <p>Abans de començar, cal fer l’estructura de directoris i fitxers i un
 xml per afegir el nostre Javascript al bundle:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>  <span class="s1">&#39;assets&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -799,25 +815,25 @@ aquest codi:</p>
 </pre></div>
 </div>
 </section>
-<section id="modificar-components-en-owl-modificar-components-en-owl">
-<h2>Modificar components en OWL {#modificar_components_en_owl}<a class="headerlink" href="#modificar-components-en-owl-modificar-components-en-owl" title="Link to this heading">#</a></h2>
+<section id="modificar-components-en-owl">
+<h2>Modificar components en OWL<a class="headerlink" href="#modificar-components-en-owl" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://codingdodo.com/owl-in-odoo-14-extend-and-patch-existing-owl-components/">https://codingdodo.com/owl-in-odoo-14-extend-and-patch-existing-owl-components/</a></p>
 </section>
-<section id="crear-nous-widgets-en-owl-crear-nous-widgets-en-owl">
-<h2>Crear nous Widgets en OWL {#crear_nous_widgets_en_owl}<a class="headerlink" href="#crear-nous-widgets-en-owl-crear-nous-widgets-en-owl" title="Link to this heading">#</a></h2>
+<section id="crear-nous-widgets-en-owl">
+<h2>Crear nous Widgets en OWL<a class="headerlink" href="#crear-nous-widgets-en-owl" title="Link to this heading">#</a></h2>
 </section>
-<section id="crear-noves-vistes-en-owl-crear-noves-vistes-en-owl">
-<h2>Crear noves vistes en OWL {#crear_noves_vistes_en_owl}<a class="headerlink" href="#crear-noves-vistes-en-owl-crear-noves-vistes-en-owl" title="Link to this heading">#</a></h2>
+<section id="crear-noves-vistes-en-owl">
+<h2>Crear noves vistes en OWL<a class="headerlink" href="#crear-noves-vistes-en-owl" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://codingdodo.com/odoo-javascript-101-classes-and-mvc-architecture/">https://codingdodo.com/odoo-javascript-101-classes-and-mvc-architecture/</a>
 <a class="reference external" href="https://codingdodo.com/odoo-15-javascript-reference/">https://codingdodo.com/odoo-15-javascript-reference/</a></p>
 </section>
-<section id="hooks-en-owl-hooks-en-owl">
-<h2>Hooks en OWL {#hooks_en_owl}<a class="headerlink" href="#hooks-en-owl-hooks-en-owl" title="Link to this heading">#</a></h2>
+<section id="hooks-en-owl">
+<h2>Hooks en OWL<a class="headerlink" href="#hooks-en-owl" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://www.cybrosys.com/blog/hooks-in-odoo-owl-framework">https://www.cybrosys.com/blog/hooks-in-odoo-owl-framework</a></p>
 </section>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="classes-javascript-en-odoo-classes-javascript-en-odoo">
-<h1>Classes Javascript en Odoo {#classes_javascript_en_odoo}<a class="headerlink" href="#classes-javascript-en-odoo-classes-javascript-en-odoo" title="Link to this heading">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="classes-javascript-en-odoo">
+<h1>Classes Javascript en Odoo<a class="headerlink" href="#classes-javascript-en-odoo" title="Link to this heading">#</a></h1>
 <p>En Javascript no hi ha una manera estàndard tampoc de crear classes,
 però proporciona mecanismes per simular l’efecte. Odoo utilitza la
 tècnica de <a class="reference external" href="https://johnresig.com/blog/simple-javascript-inheritance/">John
@@ -907,10 +923,11 @@ Reference</a>
 Odoo JS Framework (2017)</a>
 <a class="reference external" href="https://www.youtube.com/watch?v=e3YOpQBJL_A">Video JS Framework (2018)</a></p>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="widgets-personalitzats-widgets-personalitzats">
-<h1>Widgets personalitzats {#widgets_personalitzats}<a class="headerlink" href="#widgets-personalitzats-widgets-personalitzats" title="Link to this heading">#</a></h1>
-<p><img alt="Esquema recomanat per comunicar widgets entre sí.(1)" src="Odoocomunicacionscomponentesjs.png" />{width=”400”}
-<code class="docutils literal notranslate"><span class="pre">{{nota|A</span> <span class="pre">partir</span> <span class="pre">d'Odoo</span> <span class="pre">9,</span> <span class="pre">el</span> <span class="pre">client</span> <span class="pre">web</span> <span class="pre">ha</span> <span class="pre">canviat</span> <span class="pre">substancialment.</span> <span class="pre">Aixì</span> <span class="pre">que</span> <span class="pre">no</span> <span class="pre">podem</span> <span class="pre">fiar-nos</span> <span class="pre">de</span> <span class="pre">tutorial</span> <span class="pre">basats</span> <span class="pre">en</span> <span class="pre">aquest.</span> <span class="pre">De</span> <span class="pre">fet,</span> <span class="pre">el</span> <span class="pre">propi</span> <span class="pre">manual</span> <span class="pre">oficial</span> <span class="pre">d'Odoo</span> <span class="pre">no</span> <span class="pre">està</span> <span class="pre">actualitzat</span> <span class="pre">i</span> <span class="pre">no</span> <span class="pre">funciona.</span> <span class="pre">}}</span></code>{=mediawiki}</p>
+<section class="tex2jax_ignore mathjax_ignore" id="widgets-personalitzats">
+<h1>Widgets personalitzats<a class="headerlink" href="#widgets-personalitzats" title="Link to this heading">#</a></h1>
+<blockquote>
+<div><p>A partir d’Odoo 9, el client web ha canviat substancialment. Aixì que no podem fiar-nos de tutorial basats en aquest. De fet, el propi manual oficial d’Odoo no està actualitzat i no funciona.</p>
+</div></blockquote>
 <p>El Widget és la manera que té Odoo de mostrar les dades i gestionar-les
 de forma estàndard en tota la interfície.</p>
 <p>La classe Widget és una de les més importants en el framework Javascript
@@ -933,6 +950,10 @@ modifiquem el valor d’un <strong>widget field</strong>, aquest informa cap a
 dalt de la modificació i aquesta és enregistrada per ser enviada a
 la base dades si cal.</p></li>
 </ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Els desenvolupadors d’Odoo han fet que els widgets no siguen els que gestionen les seues dades. Per obtindrer-les, el model de la vista demanarà les dades a la base de dades i el controlador demanarà a la vista que renderitze el widget amb el valor obtingut de la base de dades. Per escriure en la base de dades, el widget sols envia un trigger que és arreplegat pels pares cap a dalt fins que arriba al controlador que li demana al model que envíe les dades al servidor.</p>
+</div>
 <p>La comunicació entre widgets es produeix amb <strong>events</strong> si és d’un
 widget fill a un pare i amb <strong>funcions públiques</strong> si és d’un pare a un
 fill. Quan un widget pare inicialitza un widget fill, el fill no ha de
@@ -949,8 +970,8 @@ del widget amb <strong>xmlDependencies</strong>:</p>
 <span class="w">    </span><span class="nx">xmlDependencies</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;/myaddon/path/to/my/file.xml&#39;</span><span class="p">],</span><span class="w"> </span>
 </pre></div>
 </div>
-<section id="widgets-fields-widgets-fields">
-<h2>Widgets Fields {#widgets_fields}<a class="headerlink" href="#widgets-fields-widgets-fields" title="Link to this heading">#</a></h2>
+<section id="widgets-fields">
+<h2>Widgets Fields<a class="headerlink" href="#widgets-fields" title="Link to this heading">#</a></h2>
 <p>Quasi tot el que es mostra en la interfície web està format per Widgets.
 Per tant, hi ha de moltes maneres. Alguns són elements bàsics de la
 interfície. Altres contenen informació de la base de dades, altres són
@@ -1327,8 +1348,8 @@ de <strong>JQuery</strong>. Això perment utilitzar la funció <strong>$.when</s
 del video</a></p>
 </section>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="qweb-templates-qweb-templates">
-<h1>Qweb Templates {#qweb_templates}<a class="headerlink" href="#qweb-templates-qweb-templates" title="Link to this heading">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="qweb-templates">
+<h1>Qweb Templates<a class="headerlink" href="#qweb-templates" title="Link to this heading">#</a></h1>
 <p>Si volem tindre un html personalitzat en el nostre widget, cal escriure
 en un XML la plantilla. S’utilitza el llenguatge <strong>QWeb</strong>. Aquestes
 plantilles permeten al Javascript renderitzar un Widget.</p>
@@ -1394,8 +1415,8 @@ plantilla és el nom de la plantilla i <strong>Elements</strong> és un dicciona
 amb els valors que es tenen que mostrar.</p></li>
 </ul>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="vistes-personalitzades-vistes-personalitzades">
-<h1>Vistes Personalitzades {#vistes_personalitzades}<a class="headerlink" href="#vistes-personalitzades-vistes-personalitzades" title="Link to this heading">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="vistes-personalitzades">
+<h1>Vistes Personalitzades<a class="headerlink" href="#vistes-personalitzades" title="Link to this heading">#</a></h1>
 <p>Les vistes en Odoo són un <strong>widget</strong> més encarregat de mostrar la
 informació en la finestra sencera. Aquest widget cridarà a tots els que
 composen la vista. Cada vista agafa un <strong>XML</strong> en el camp anomenat
@@ -1414,6 +1435,9 @@ retorna un controlador amb uns subwidgets anomenats <strong>renderer</strong> i
 <li><p>Una vegada afegit el controlador, la classe <strong>view</strong> no és
 necessària.</p></li>
 </ol>
+<blockquote>
+<div><p>Es recomana estudiar l’arxiu: odoo/addons/web/static/src/js/views/abstract_view.js }}</p>
+</div></blockquote>
 <p>El <strong>controlador</strong>, dins del Javascript, s’encarrega de servir els
 esdeveniments que arriven dels fills i del model/renderer i cridar als
 mètodes apropiats. Tot el que té a veure amb la relació entre el
@@ -1476,7 +1500,7 @@ complet</a></p>
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Web Controllers {#web_controllers}</p>
+        <p class="prev-next-title">Web Controllers</p>
       </div>
     </a>
     <a class="right-next"
@@ -1505,33 +1529,34 @@ complet</a></p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Arquitectura del client web {#arquitectura_del_client_web}</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#enviant-el-client-al-navegador-enviant-el-client-al-navegador">Enviant el client al navegador {#enviant_el_client_al_navegador}</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#els-assets-els-assets">Els Assets {#els_assets}</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#afegir-css-al-nostre-modul-afegir-css-al-nostre-modul">Afegir CSS al nostre mòdul {#afegir_css_al_nostre_mòdul}</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Client Web</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura-del-client-web">Arquitectura del client web</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#enviant-el-client-al-navegador">Enviant el client al navegador</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#els-assets">Els Assets</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#afegir-css-al-nostre-modul">Afegir CSS al nostre mòdul</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura-dels-moduls-en-javascript-arquitectura-dels-moduls-en-javascript">Arquitectura dels mòduls en Javascript {#arquitectura_dels_mòduls_en_javascript}</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moduls-js-segons-odoo-moduls-js-segons-odoo">Mòduls JS segons Odoo {#mòduls_js_segons_odoo}</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#utilitzar-moduls-natius-es6-en-odoo-utilitzar-moduls-natius-es6-en-odoo">Utilitzar mòduls natius ES6 en Odoo {#utilitzar_mòduls_natius_es6_en_odoo}</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura-dels-moduls-en-javascript">Arquitectura dels mòduls en Javascript</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moduls-js-segons-odoo">Mòduls JS segons Odoo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#utilitzar-moduls-natius-es6-en-odoo">Utilitzar mòduls natius ES6 en Odoo</a></li>
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#owl">OWL</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-un-component-d-odoo-en-owl-crear-un-component-dodoo-en-owl">Crear un component d’Odoo en OWL {#crear_un_component_dodoo_en_owl}</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modificar-components-en-owl-modificar-components-en-owl">Modificar components en OWL {#modificar_components_en_owl}</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-nous-widgets-en-owl-crear-nous-widgets-en-owl">Crear nous Widgets en OWL {#crear_nous_widgets_en_owl}</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-noves-vistes-en-owl-crear-noves-vistes-en-owl">Crear noves vistes en OWL {#crear_noves_vistes_en_owl}</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hooks-en-owl-hooks-en-owl">Hooks en OWL {#hooks_en_owl}</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-un-component-d-odoo-en-owl">Crear un component d’Odoo en OWL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modificar-components-en-owl">Modificar components en OWL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-nous-widgets-en-owl">Crear nous Widgets en OWL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-noves-vistes-en-owl">Crear noves vistes en OWL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hooks-en-owl">Hooks en OWL</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#classes-javascript-en-odoo-classes-javascript-en-odoo">Classes Javascript en Odoo {#classes_javascript_en_odoo}</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#widgets-personalitzats-widgets-personalitzats">Widgets personalitzats {#widgets_personalitzats}</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#widgets-fields-widgets-fields">Widgets Fields {#widgets_fields}</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#classes-javascript-en-odoo">Classes Javascript en Odoo</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#widgets-personalitzats">Widgets personalitzats</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#widgets-fields">Widgets Fields</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rpc">RPC</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#qweb-templates-qweb-templates">Qweb Templates {#qweb_templates}</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#vistes-personalitzades-vistes-personalitzades">Vistes Personalitzades {#vistes_personalitzades}</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#qweb-templates">Qweb Templates</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#vistes-personalitzades">Vistes Personalitzades</a></li>
 </ul>
 
   </nav></div>
