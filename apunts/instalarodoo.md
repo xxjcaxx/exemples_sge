@@ -214,15 +214,20 @@ Però sols quan ja existeix la base de dades i el mòdul està instal·lat. Per�
 ```json
         "commands": [
             {
-            
                 "name": "$(triangle-right) Run Odoo",
                 "color": "purple",
                 "singleInstance": true,
-                "command": "docker-compose stop odoo && docker-compose up -d odoo && docker logs odoo -f", // This is executed in the terminal.
-
+                "command": "docker-compose down && docker-compose up -d && docker logs odoo -f", 
+            },
+            {
+                "name": "$(triangle-right) Rerun Odoo",
+                "color": "purple",
+                "singleInstance": true,
+                "command": "docker-compose restart odoo && docker logs odoo -f", 
             },
         ],
 ```
+El primer `Command` ho reinicia tot, tant la base de dades com Odoo i elimina els contenidors per recrear-los. Això pot solucionar alguns problemes. Però en principi, el segon reinicia només el contenidor Odoo sense recrear-ho. És més ràpid i també actualitza la base de dades. 
 
 
 ## Instal·lar en Debian i Ubuntu
