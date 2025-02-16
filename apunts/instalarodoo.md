@@ -200,6 +200,30 @@ Per fer un mòdul nou:
     docker exec -ti odoo chmod 777 -R /mnt/extra-addons/proves
 
 
+El comandament amb `--dev=all` no actualitza la base de dades, per tant, la creació de noves vistes, nous models o fields no s'actualitzarà i donarà errades. Una solució és afegir al comandament:
+
+```yaml
+    command: >
+      -- --dev=all
+      -d basededades
+      -u modul
+```
+
+Però sols quan ja existeix la base de dades i el mòdul està instal·lat. Però sols s'executarà quan arranquem el Docker, per tant, cal fer un `docker-compose down` i tornar a arrancar els contenidors de nou. Això suposa molta feina, així que ho podem simplificar afegint a `Visual Studio code` una extensió com `VS Code Action Buttons` i configurant el seu `json` així:
+
+```json
+        "commands": [
+            {
+            
+                "name": "$(triangle-right) Run Odoo",
+                "color": "purple",
+                "singleInstance": true,
+                "command": "docker-compose stop odoo && docker-compose up -d odoo && docker logs odoo -f", // This is executed in the terminal.
+
+            },
+        ],
+```
+
 
 ## Instal·lar en Debian i Ubuntu
 
