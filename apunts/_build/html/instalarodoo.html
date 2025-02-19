@@ -176,7 +176,8 @@
 <li class="toctree-l1"><a class="reference internal" href="reports.html">Reports</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wizards.html">Wizards</a></li>
 <li class="toctree-l1"><a class="reference internal" href="web_controllers.html">Web Controllers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="client_web.html">Arquitectura del client web {#arquitectura_del_client_web}</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client_web.html">Client Web</a></li>
+
 
 
 
@@ -378,9 +379,16 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installar-en-debian-i-ubuntu">Instal·lar en Debian i Ubuntu</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracio-de-la-ruta-dels-moduls">Configuració de la ruta dels mòduls</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#depurar-odoo">Depurar Odoo</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installar-amb-docker">Instal·lar Amb Docker</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#amb-docker-compose">Amb Docker Compose</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mode-desenvolupador-en-docker">Mode desenvolupador en Docker</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installar-en-debian-i-ubuntu">Instal·lar en Debian i Ubuntu</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracio-de-la-ruta-dels-moduls">Configuració de la ruta dels mòduls</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#depurar-odoo">Depurar Odoo</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#millorar-l-eixida-de-log">Millorar l’eixida de Log</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#opcions-de-log-opcions-de-log">Opcions de log {#opcions_de_log}</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preparar-l-entorn-de-treball-per-a-sge">Preparar l’entorn de treball per a SGE</a></li>
@@ -391,7 +399,6 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#odoo-per-https">Odoo per HTTPS</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#en-docker-en-docker">En Docker {#en_docker}</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creacio-de-una-base-de-dades">Creació de una base de dades</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#errors-documentats">Errors documentats</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-amb-el-rol-odoo">Error amb el rol Odoo</a></li>
@@ -422,8 +429,175 @@ sistema en el que anem a treballar.</p>
 una base de dades postgreSQL. Hi ha moltes maneres d’instal·lar Odoo,
 de les més avançades que són descarregar per <em>git</em> el repositori i fer
 que arranque a l’inici a les més simples que són desplegar un
-<strong>docker</strong> amb tot funcionant. <a class="reference external" href="https://github.com/odoo/technical-training/tree/12.0-99-sysadmin">Manual technical training
+<strong>docker</strong> amb tot funcionant.</p>
+<p><a class="reference external" href="https://github.com/odoo/technical-training/tree/12.0-99-sysadmin">Manual technical training
 Odoo</a>.</p>
+<section id="installar-amb-docker">
+<h2>Instal·lar Amb Docker<a class="headerlink" href="#installar-amb-docker" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://registry.hub.docker.com/_/odoo/">Documentació oficial</a></p>
+<p>Desplegar Odoo amb Docker permet instal·lar i gestionar el sistema de manera més senzilla, sense necessitat de configurar manualment dependències o bases de dades. Docker encapsula Odoo en un <em>contenidor</em>, que és com una caixa autosuficient amb tot el necessari per a funcionar, fent que siga més fàcil d’executar en qualsevol servidor o ordinador sense problemes de compatibilitat. Això també facilita la creació d’entorns de desenvolupament i producció consistents, permet actualitzacions i proves sense risc d’afectar el sistema principal i optimitza l’ús de recursos. A més, amb Docker és possible desplegar Odoo junt amb altres serveis necessaris, com PostgreSQL, amb un sol fitxer de configuració.</p>
+<div class="danger admonition">
+<p class="admonition-title">Atenció</p>
+<p>En classe treballarem finalment amb Docker Compose, el text següent serveix per entendre la configuració final, però no cal fer-los en el treball diari. La configuració definitiva la farem amb Docker Compose.</p>
+</div>
+<p>En Docker és molt sencill desplegar Odoo, tan sols fa falta aquests
+comandaments:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># apt install docker.io
+# docker run -d --restart=&quot;always&quot; -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo --name db postgres:9.4
+# docker run --restart=&quot;always&quot; -p 8069:8069 --name odoo --link db:db -t odoo
+# docker stop odoo
+# docker start -a odoo
+</pre></div>
+</div>
+<p>El primer comandament instal·la el servei Docker. El segon instal·la un
+docker PostgreSQL amb una base de dades anomenada <em>odoo</em> i de
+contrasenya odoo. El tercer crea un docker Odoo vinculat a l’anterior
+base de dades. Per entrar sols cal anar a la <strong>direcció de
+l’amfitrió:8069</strong> ja que el comandament indica que es redireccione per
+[Iptables] el port 8069 al del contenidor.</p>
+<p>Si fem <strong>ctrl-C</strong> eixim sense parar el contenidor. si volem tornar a
+entrar per veure els errors:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># docker attach odoo
+</pre></div>
+</div>
+<p><strong>Creació de mòduls</strong></p>
+<p>Per a fer els nostres mòduls podem crear-los en un directori fora del
+docker i executar-lo d’aquesta manera:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># docker run -v /path/to/addons:/mnt/extra-addons -p 8069:8069 --name odoo --link db:db -t odoo
+</pre></div>
+</div>
+<p>Mentre estem fent nous mòduls, necessitem reiniciar el servici i
+arrancar-lo actualitzant un mòdul. Primer deguem parar el docker,
+després iniciar-lo indicant que vols entrar a la consola i finalment
+actualitzar el mòdul.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># docker stop odoo
+# docker start -a odoo
+# docker exec odoo odoo --config /etc/odoo/odoo.conf -u nommodul -d nombasededades -r odoo -w odoo --db_host 172.17.0.2 --db_port 5432
+</pre></div>
+</div>
+<p><strong>Creació de mòduls, mètode 1</strong></p>
+<p>Com es veu, el últim comandament és un poc complicat. Per tant, anem a
+fer les coses totalment bé. Per a aixó necessitem un fitxer propi de
+configuració d’Odoo al que anomenarem <strong>odoo.conf</strong>. Podem utilitzar
+aquesta plantilla:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># docker exec odoo cat /etc/odoo/odoo.conf &gt; odoo.conf
+</pre></div>
+</div>
+<p>El que s’ha fet és copiar el fitxer que té el docker per defecte. Si
+l’analitzem, no diu bé on està la base de dades, ja que aquesta
+informació la passem amb el paràmetre <strong>–link</strong> del <strong>docker run</strong>.
+Nosaltres tenim que crear un directori i ficar dins el fitxer, editar-lo
+i afegir aquesta informació:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>db_user = odoo
+db_password = odoo
+db_host = 172.17.0.2
+db_port = 5432
+</pre></div>
+</div>
+<p>Ara ja podem arrancar el contenidor amb tot:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># docker stop odoo
+# docker run --volumes-from odoo -v /home/jose/modules/:/mnt/extra-addons -v /home/jose/config/:/etc/odoo -p 8069:8069 --name odoo2 --link db:db -t odoo
+</pre></div>
+</div>
+<p>Observem que tenim un directori per als nostres mòduls, un altre amb el
+fitxer de configuració, la redirecció del port, el nom del nou mòdul,
+l’enllaç a la base de dades i el tipus de container.</p>
+<p>Per últim, mentre tenim en marxa el servei, en una altra terminal podem
+executar:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># docker exec odoo odoo -u nommodul -d nombasededades
+</pre></div>
+</div>
+<section id="amb-docker-compose">
+<h3>Amb Docker Compose<a class="headerlink" href="#amb-docker-compose" title="Link to this heading">#</a></h3>
+<p>El mètode anterior suposa l’execució d’un <strong>docker run</strong> molt complex.
+Per evitar equivocar-nos, podem per un <a class="reference external" href="https://docs.docker.com/compose/">docker
+compose</a> com aquest:</p>
+<div class="highlight-yml notranslate"><div class="highlight"><pre><span></span>services:
+  odoo:
+    container_name: odoo
+    image: odoo:18.0
+    depends_on:
+      - db
+    ports:
+      - &quot;8069:8069&quot;
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./addons:/mnt/extra-addons
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo
+    command: --dev=all
+    tty: true
+
+  db:
+    container_name: postgresql
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data
+
+volumes:
+  odoo-web-data:
+  odoo-db-data:
+</pre></div>
+</div>
+<p>Observem que declarem dos servicis i el <strong>odoo</strong> depen del <strong>db</strong>. També
+cal dir quina xarxa utilitzen i la resta de dades que posem normalment
+en el <strong>run</strong>.</p>
+<p>Això ha d’estar en un directori dins d’un fitxer anomenat
+<strong>docker-compose.yml</strong> i sols cal executar cada vegada:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>docker-compose up -d
+</pre></div>
+</div>
+<p>Per a que funcione correctament, necessitem un fitxer <code class="docutils literal notranslate"><span class="pre">odoo.conf</span></code> que podem extreure d’un contenidor sense el volumen de <code class="docutils literal notranslate"><span class="pre">./config</span></code>.</p>
+<div class="tip admonition">
+<p class="admonition-title">Permisos</p>
+<p>Si no funciona el comandament pot ser perquè el nostre usuari no està al grup <code class="docutils literal notranslate"><span class="pre">docker</span></code>. ho solucionem amb:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sudo usermod -aG docker $USER
+newgrp docker
+</pre></div>
+</div>
+</div>
+<p>Si volem entrar en la base de dades postgreSQL per a fer coses
+manualment, podem executar:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>docker exec -ti postgresql psql proves -U odoo
+</pre></div>
+</div>
+<p>Executem el comandament psql de forma interactiva a la base de dades proves i amb l’usuari odoo.</p>
+<section id="mode-desenvolupador-en-docker">
+<h4>Mode desenvolupador en Docker<a class="headerlink" href="#mode-desenvolupador-en-docker" title="Link to this heading">#</a></h4>
+<p>Com es pot veure, hem configurat un directori per als mòduls. En aquest directori farem els <code class="docutils literal notranslate"><span class="pre">scaffold</span></code>. Amés hem afegit al comandament <code class="docutils literal notranslate"><span class="pre">--dev=all</span></code>. Això simplifica molt el desenvolupament, ja que tots els canvis provoquen un reinici del servidor i actualització dels mòduls.</p>
+<p>L’opció <code class="docutils literal notranslate"><span class="pre">--dev</span> <span class="pre">&lt;feature,feature,...,feature&gt;</span></code> en Odoo permet activar diverses característiques útils per al desenvolupament. Aquesta opció <strong>no s’ha d’usar en producció</strong>, ja que està pensada exclusivament per a facilitar la tasca dels desenvolupadors. A continuació, s’expliquen les opcions disponibles:</p>
+<ul class="simple">
+<li><p><strong>all</strong>: Activa totes les funcionalitats de desenvolupament descrites a continuació.</p></li>
+<li><p><strong>xml</strong>: Carrega les plantilles <em>QWeb</em> directament des dels fitxers XML en lloc de la base de dades. Si una plantilla es modifica en la base de dades, no es tornarà a carregar des del fitxer XML fins a la pròxima actualització o reinici. A més, les plantilles no es tradueixen quan s’usa aquesta opció.</p></li>
+<li><p><strong>reload</strong>: Reinicia el servidor automàticament quan es detecta un canvi en un fitxer Python.</p></li>
+<li><p><strong>qweb</strong>: Permet interrompre l’execució d’una plantilla <em>QWeb</em> si un node conté <code class="docutils literal notranslate"><span class="pre">t-debug=&quot;debugger&quot;</span></code>, la qual cosa facilita la depuració.</p></li>
+<li><p><strong>(i)p(u)db</strong>: Activa un depurador de Python (com <code class="docutils literal notranslate"><span class="pre">pdb</span></code>, <code class="docutils literal notranslate"><span class="pre">ipdb</span></code> o <code class="docutils literal notranslate"><span class="pre">pudb</span></code>) quan es produeix un error inesperat, abans de registrar-lo en els logs i retornar-lo.</p></li>
+<li><p><strong>werkzeug</strong>: Mostra la traça completa de l’error en la pàgina web quan es produeix una excepció, cosa molt útil per a identificar problemes en el codi.</p></li>
+</ul>
+<p>Aquesta opció és molt útil durant el desenvolupament, ja que facilita la depuració de codi, la càrrega en calent de fitxers i la revisió d’errors de manera més visual.</p>
+<p>Per veure els logs podem fer:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>docker logs odoo -f
+</pre></div>
+</div>
+<div class="tip admonition">
+<p class="admonition-title">Colors en la terminal</p>
+<p>Els logs es veuen en color gràcies a posar <code class="docutils literal notranslate"><span class="pre">tty:true</span></code> en el fitxer de configuració.</p>
+</div>
+<p>Per fer un mòdul nou:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>docker exec -ti odoo  odoo scaffold proves /mnt/extra-addons
+docker exec -ti odoo chmod 777 -R /mnt/extra-addons/proves
+</pre></div>
+</div>
+</section>
+</section>
+</section>
 <section id="installar-en-debian-i-ubuntu">
 <h2>Instal·lar en Debian i Ubuntu<a class="headerlink" href="#installar-en-debian-i-ubuntu" title="Link to this heading">#</a></h2>
 <p>Abans de res, cal preparar un poc el sistema:</p>
@@ -465,9 +639,8 @@ l’Odoo.</p>
 </pre></div>
 </div>
 <p><a class="reference external" href="https://asciinema.org/a/122875">Asciinema del procés</a>.</p>
-</section>
 <section id="configuracio-de-la-ruta-dels-moduls">
-<h2>Configuració de la ruta dels mòduls<a class="headerlink" href="#configuracio-de-la-ruta-dels-moduls" title="Link to this heading">#</a></h2>
+<h3>Configuració de la ruta dels mòduls<a class="headerlink" href="#configuracio-de-la-ruta-dels-moduls" title="Link to this heading">#</a></h3>
 <p>Com que la instalació d’Odoo crea lúsuari <strong>odoo</strong>, que és el que tenim
 que utilitzar per al desenvolupament, anem a donar-li una contrasenya:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ sudo passwd odoo
@@ -499,7 +672,7 @@ al comandament. Els comandaments són queda, per tant:</p>
 </div>
 </section>
 <section id="depurar-odoo">
-<h2>Depurar Odoo<a class="headerlink" href="#depurar-odoo" title="Link to this heading">#</a></h2>
+<h3>Depurar Odoo<a class="headerlink" href="#depurar-odoo" title="Link to this heading">#</a></h3>
 <p>Per crear mòduls o vorer els problemes que estan passant, cal llegir els
 fitxers de log, però hi ha una manera més eficient de fer-ho. Si
 observem el comandament que, realment, està executant odoo:</p>
@@ -544,6 +717,7 @@ depurar.</a></p>
 </div>
 <p>O a aquesta web:
 <a class="reference external" href="https://www.odoo.com/documentation/12.0/reference/cmdline.html">https://www.odoo.com/documentation/12.0/reference/cmdline.html</a></p>
+</section>
 <section id="millorar-l-eixida-de-log">
 <h3>Millorar l’eixida de Log<a class="headerlink" href="#millorar-l-eixida-de-log" title="Link to this heading">#</a></h3>
 <p>Per afegir als nostres mètodes una eixida de log i facilitar la
@@ -655,22 +829,26 @@ sense capa de seguretat SSL.</p>
 <p>Per fer que tinga eixa seguretat, necessitem utilitzar un servidor web
 que faça de proxy i proporcione la connectivitat per HTTPS.</p>
 <p>Situació inicial:</p>
-<p><code class="docutils literal notranslate"><span class="pre">  ------------             ------------</span></code><br />
-<code class="docutils literal notranslate"><span class="pre">  |          |         8069|          |</span></code><br />
-<code class="docutils literal notranslate"><span class="pre">  |  Client  |&lt;-----------&gt;| Server   | </span></code><br />
-<code class="docutils literal notranslate"><span class="pre">  |          |             | Odoo     |</span></code><br />
-<code class="docutils literal notranslate"><span class="pre">  ------------             ------------</span></code></p>
-<p>Situació que busquem:</p>
-<p><code class="docutils literal notranslate"><span class="pre">  ------------             --------------------</span></code><br />
-<code class="docutils literal notranslate"><span class="pre">  |          |         443 |                  |</span></code><br />
-<code class="docutils literal notranslate"><span class="pre">  |  Client  |&lt;-----------&gt;| Nginx &lt;--┐       |</span></code><br />
-<code class="docutils literal notranslate"><span class="pre">  |          |             |          |       |</span></code><br />
-<code class="docutils literal notranslate"><span class="pre">  ------------             |          |8069   |</span></code><br />
-<code class="docutils literal notranslate"><span class="pre">                           |          v       |</span></code><br />
-<code class="docutils literal notranslate"><span class="pre">                           |        ------    |</span></code><br />
-<code class="docutils literal notranslate"><span class="pre">                           |        |Odoo|    |</span></code><br />
-<code class="docutils literal notranslate"><span class="pre">                           |        ------    |</span></code><br />
-<code class="docutils literal notranslate"><span class="pre">                           --------------------</span></code></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> ------------             ------------
+|          |         8069|          |
+|  Client  |&lt;-----------&gt;| Server   |
+|          |             | Odoo     |
+------------             ------------
+
+Situació que busquem:
+
+------------             --------------------
+|          |         443 |                  |
+|  Client  |&lt;-----------&gt;| Nginx &lt;--┐       |
+|          |             |          |       |
+------------             |          |8069   |
+                         |          v       |
+                         |        ------    |
+                         |        |Odoo|    |
+                         |        ------    |
+                         --------------------
+</pre></div>
+</div>
 <p>Tots els servicis que utilitzen SSL necessiten un certificat. En una
 situació ideal, tenim un certificat signat per una entitat
 certificadora. Si no, tenim que crear en nostre autosignat.</p>
@@ -770,170 +948,6 @@ server {
 modificar-lo per a que no afecte al port 80 d’Odoo.</p>
 <p>Ara es reinicien tanmt Odoo com nginx</p>
 </section>
-</section>
-<section id="en-docker-en-docker">
-<h2>En Docker {#en_docker}<a class="headerlink" href="#en-docker-en-docker" title="Link to this heading">#</a></h2>
-<p>Aquest manual està originalment escrit per a Ubuntu 18.04</p>
-<p><a class="reference external" href="https://www.odoo.com/documentation/11.0/setup/install.html#setup-install-docker">Documentació
-oficial</a>
-<a class="reference external" href="http://falconsolutions.cl/todo-sobre-de-docker-y-odoo-erp/">Article sobre Docker i
-Odoo</a></p>
-<p>En Docker és molt sencill desplegar Odoo, tan sols fa falta aquests
-comandaments:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># apt install docker.io
-# docker run -d --restart=&quot;always&quot; -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo --name db postgres:9.4
-# docker run --restart=&quot;always&quot; -p 8069:8069 --name odoo --link db:db -t odoo
-# docker stop odoo
-# docker start -a odoo
-</pre></div>
-</div>
-<p>El primer comandament instal·la el servei Docker. El segon instal·la un
-docker PostgreSQL amb una base de dades anomenada <em>odoo</em> i de
-contrasenya odoo. El tercer crea un docker Odoo vinculat a l’anterior
-base de dades. Per entrar sols cal anar a la <strong>direcció de
-l’amfitrió:8069</strong> ja que el comandament indica que es redireccione per
-[Iptables] el port 8069 al del contenidor.</p>
-<p>Resultat d’iptables:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># iptables -L
-Chain INPUT (policy ACCEPT)
-target     prot opt source               destination         
-
-Chain FORWARD (policy ACCEPT)
-target     prot opt source               destination         
-DOCKER-USER  all  --  anywhere             anywhere            
-DOCKER-ISOLATION  all  --  anywhere             anywhere            
-ACCEPT     all  --  anywhere             anywhere             ctstate RELATED,ESTABLISHED
-DOCKER     all  --  anywhere             anywhere            
-ACCEPT     all  --  anywhere             anywhere            
-ACCEPT     all  --  anywhere             anywhere            
-
-Chain OUTPUT (policy ACCEPT)
-target     prot opt source               destination         
-
-Chain DOCKER (1 references)
-target     prot opt source               destination         
-ACCEPT     tcp  --  anywhere             172.17.0.3           tcp dpt:8069
-
-Chain DOCKER-ISOLATION (1 references)
-target     prot opt source               destination         
-RETURN     all  --  anywhere             anywhere            
-
-Chain DOCKER-USER (1 references)
-target     prot opt source               destination         
-RETURN     all  --  anywhere             anywhere           
-</pre></div>
-</div>
-<p>Si fem <strong>ctrl-C</strong> eixim sense parar el contenidor. si volem tornar a
-entrar per veure els errors:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># docker attach odoo
-</pre></div>
-</div>
-<p><strong>Creació de mòduls</strong></p>
-<p>Per a fer els nostres mòduls podem crear-los en un directori fora del
-docker i executar-lo d’aquesta manera:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># docker run -v /path/to/addons:/mnt/extra-addons -p 8069:8069 --name odoo --link db:db -t odoo
-</pre></div>
-</div>
-<p>Mentre estem fent nous mòduls, necessitem reiniciar el servici i
-arrancar-lo actualitzant un mòdul. Primer deguem parar el docker,
-després iniciar-lo indicant que vols entrar a la consola i finalment
-actualitzar el mòdul.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># docker stop odoo
-# docker start -a odoo
-# docker exec odoo odoo --config /etc/odoo/odoo.conf -u nommodul -d nombasededades -r odoo -w odoo --db_host 172.17.0.2 --db_port 5432
-</pre></div>
-</div>
-<p><strong>Creació de mòduls, mètode 1</strong></p>
-<p>Com es veu, el últim comandament és un poc complicat. Per tant, anem a
-fer les coses totalment bé. Per a aixó necessitem un fitxer propi de
-configuració d’Odoo al que anomenarem <strong>odoo.conf</strong>. Podem utilitzar
-aquesta plantilla:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># docker exec odoo cat /etc/odoo/odoo.conf &gt; odoo.conf
-</pre></div>
-</div>
-<p>El que s’ha fet és copiar el fitxer que té el docker per defecte. Si
-l’analitzem, no diu bé on està la base de dades, ja que aquesta
-informació la passem amb el paràmetre <strong>–link</strong> del <strong>docker run</strong>.
-Nosaltres tenim que crear un directori i ficar dins el fitxer, editar-lo
-i afegir aquesta informació:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>db_user = odoo
-db_password = odoo
-db_host = 172.17.0.2
-db_port = 5432
-</pre></div>
-</div>
-<p>Ara ja podem arrancar el contenidor amb tot:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># docker stop odoo
-# docker run --volumes-from odoo -v /home/jose/modules/:/mnt/extra-addons -v /home/jose/config/:/etc/odoo -p 8069:8069 --name odoo2 --link db:db -t odoo
-</pre></div>
-</div>
-<p>Observem que tenim un directori per als nostres mòduls, un altre amb el
-fitxer de configuració, la redirecció del port, el nom del nou mòdul,
-l’enllaç a la base de dades i el tipus de container.</p>
-<p>Per últim, mentre tenim en marxa el servei, en una altra terminal podem
-executar:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># docker exec odoo odoo -u nommodul -d nombasededades
-</pre></div>
-</div>
-<p><strong>Creació de mòduls, mètode 2</strong></p>
-<p>El mètode anterior suposa l’execució d’un <strong>docker run</strong> molt complex.
-Per evitar equivocar-nos, podem per un <a class="reference external" href="https://docs.docker.com/compose/">docker
-compose</a> com aquest:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>version: &#39;2&#39;
-services:
-  db:
-    container_name: db
-    image: postgres:9.4
-    network_mode: bridge
-    environment:
-      - POSTGRES_PASSWORD=odoo
-      - POSTGRES_USER=odoo
-      - PGDATA=/var/lib/postgresql/data/pgdata
-    volumes:
-      - odoo-db-data:/var/lib/postgresql/data/pgdata
-  odoo:
-    container_name: odoo
-    image: odoo
-    network_mode: bridge
-    depends_on:
-      - db
-    ports:
-      - &quot;8069:8069&quot;
-    volumes:
-      - odoo-web-data:/var/lib/odoo
-      - /home/jose/config:/etc/odoo
-      - /home/jose/modules:/mnt/extra-addons
-
-volumes:
-  odoo-web-data:
-  odoo-db-data:
-</pre></div>
-</div>
-<p>Observem que declarem dos servicis i el <strong>odoo</strong> depen del <strong>db</strong>. També
-cal dir quina xarxa utilitzen i la resta de dades que posem normalment
-en el <strong>run</strong>.</p>
-<p>Això ha d’estar en un directori dins d’un fitxer anomenat
-<strong>docker-compose.yml</strong> i sols cal executar cada vegada:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># docker-compose up
-</pre></div>
-</div>
-<p>Cal dir que. d’aquesta manera, el servici es para quan fem ctrl+c, per
-tant, per a actualitzar un mòdul podem executar el docker exec en una
-alta terminal.</p>
-<p><strong>Altres coses</strong></p>
-<p>Per a llançar més dockers amb odoo:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># docker run -p 8070:8069 --name odoo2 --link db:db -t odoo
-# docker run -p 8071:8069 --name odoo3 --link db:db -t odoo
-</pre></div>
-</div>
-<p>Si volem entrar en la base de dades postgreSQL per a fer coses
-manualment, podem executar:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># docker exec -ti db psql -U odoo
-# docker exec -ti db psql -U postgres
-</pre></div>
-</div>
-<p>Executem el comandament psql de forma interactiva i amb l’usuari odoo.
-L’usuari postgres és l’administrador.</p>
 </section>
 <section id="creacio-de-una-base-de-dades">
 <h2>Creació de una base de dades<a class="headerlink" href="#creacio-de-una-base-de-dades" title="Link to this heading">#</a></h2>
@@ -1121,9 +1135,16 @@ seguridad</a>.</p></li>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installar-en-debian-i-ubuntu">Instal·lar en Debian i Ubuntu</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracio-de-la-ruta-dels-moduls">Configuració de la ruta dels mòduls</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#depurar-odoo">Depurar Odoo</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installar-amb-docker">Instal·lar Amb Docker</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#amb-docker-compose">Amb Docker Compose</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mode-desenvolupador-en-docker">Mode desenvolupador en Docker</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installar-en-debian-i-ubuntu">Instal·lar en Debian i Ubuntu</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracio-de-la-ruta-dels-moduls">Configuració de la ruta dels mòduls</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#depurar-odoo">Depurar Odoo</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#millorar-l-eixida-de-log">Millorar l’eixida de Log</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#opcions-de-log-opcions-de-log">Opcions de log {#opcions_de_log}</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preparar-l-entorn-de-treball-per-a-sge">Preparar l’entorn de treball per a SGE</a></li>
@@ -1134,7 +1155,6 @@ seguridad</a>.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#odoo-per-https">Odoo per HTTPS</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#en-docker-en-docker">En Docker {#en_docker}</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creacio-de-una-base-de-dades">Creació de una base de dades</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#errors-documentats">Errors documentats</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-amb-el-rol-odoo">Error amb el rol Odoo</a></li>

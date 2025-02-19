@@ -103,7 +103,7 @@ El mètode anterior suposa l\'execució d\'un **docker run** molt complex.
 Per evitar equivocar-nos, podem per un [docker
 compose](https://docs.docker.com/compose/) com aquest:
 
-```yml
+```yaml
 services:
   odoo:
     container_name: odoo

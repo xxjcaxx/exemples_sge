@@ -1192,7 +1192,6 @@ a l'objecte res.partner. Fixem-nos en el contingut del mòdul account:
 
 ``` python
     class res_partner(Model.model):
-    _name = 'res.partner'
     _inherit = 'res.partner'
     debit_limit = fields.float('Payable limit')
     ...

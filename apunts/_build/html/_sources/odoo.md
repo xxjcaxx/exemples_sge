@@ -11,12 +11,6 @@ construir l'aplicació:
     classes, per les quals la capa ORM d'Odoo n'efectuarà el mapat sobre
     el SGBD PostgreSQL
 
-    ```{figure} imgs/Odooarch.png
-    :scale: 100 %
-    :alt: Arquitectura per capes
-
-    Arquitectura per capes
-    ```
 -   Una arquitectura **MVC**
     ([model-vista-controlador](http://es.wikipedia.org/wiki/Modelo_Vista_Controlador))
     en la qual el model resideix en les dades de les classes dissenyades
@@ -144,8 +138,6 @@ Model-Vista-Controlador. D\'aquesta manera, un mòdul pot tindre:
     static/description/icon.png
 
 #### Estructura de fitxers d\'un mòdul 
-
-![](03_module_gen_view.png "03_module_gen_view.png"){width="600"}
 
 -   Tots el mòduls estan en un directori definit en l\'opció
     **\--addons-path** o el fitxer de configuració. Poden ser més d\'un

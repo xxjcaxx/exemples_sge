@@ -8,8 +8,198 @@ Odoo, en esencia, és un servidor web fet en python que es connecta amb
 una base de dades postgreSQL. Hi ha moltes maneres d\'instal·lar Odoo,
 de les més avançades que són descarregar per *git* el repositori i fer
 que arranque a l\'inici a les més simples que són desplegar un
-**docker** amb tot funcionant. [Manual technical training
+**docker** amb tot funcionant. 
+
+[Manual technical training
 Odoo](https://github.com/odoo/technical-training/tree/12.0-99-sysadmin).
+
+## Instal·lar Amb Docker
+
+[Documentació oficial](https://registry.hub.docker.com/_/odoo/)
+
+Desplegar Odoo amb Docker permet instal·lar i gestionar el sistema de manera més senzilla, sense necessitat de configurar manualment dependències o bases de dades. Docker encapsula Odoo en un *contenidor*, que és com una caixa autosuficient amb tot el necessari per a funcionar, fent que siga més fàcil d’executar en qualsevol servidor o ordinador sense problemes de compatibilitat. Això també facilita la creació d’entorns de desenvolupament i producció consistents, permet actualitzacions i proves sense risc d’afectar el sistema principal i optimitza l’ús de recursos. A més, amb Docker és possible desplegar Odoo junt amb altres serveis necessaris, com PostgreSQL, amb un sol fitxer de configuració.
+
+```{admonition} Atenció
+:class: danger
+
+En classe treballarem finalment amb Docker Compose, el text següent serveix per entendre la configuració final, però no cal fer-los en el treball diari. La configuració definitiva la farem amb Docker Compose. 
+```
+
+En Docker és molt sencill desplegar Odoo, tan sols fa falta aquests
+comandaments:
+
+    # apt install docker.io
+    # docker run -d --restart="always" -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo --name db postgres:9.4
+    # docker run --restart="always" -p 8069:8069 --name odoo --link db:db -t odoo
+    # docker stop odoo
+    # docker start -a odoo
+
+El primer comandament instal·la el servei Docker. El segon instal·la un
+docker PostgreSQL amb una base de dades anomenada *odoo* i de
+contrasenya odoo. El tercer crea un docker Odoo vinculat a l\'anterior
+base de dades. Per entrar sols cal anar a la **direcció de
+l\'amfitrió:8069** ja que el comandament indica que es redireccione per
+\[Iptables\] el port 8069 al del contenidor.   
+
+Si fem **ctrl-C** eixim sense parar el contenidor. si volem tornar a
+entrar per veure els errors:
+
+    # docker attach odoo
+
+
+**Creació de mòduls**
+
+Per a fer els nostres mòduls podem crear-los en un directori fora del
+docker i executar-lo d\'aquesta manera:
+
+    # docker run -v /path/to/addons:/mnt/extra-addons -p 8069:8069 --name odoo --link db:db -t odoo
+
+Mentre estem fent nous mòduls, necessitem reiniciar el servici i
+arrancar-lo actualitzant un mòdul. Primer deguem parar el docker,
+després iniciar-lo indicant que vols entrar a la consola i finalment
+actualitzar el mòdul.
+
+    # docker stop odoo
+    # docker start -a odoo
+    # docker exec odoo odoo --config /etc/odoo/odoo.conf -u nommodul -d nombasededades -r odoo -w odoo --db_host 172.17.0.2 --db_port 5432
+
+**Creació de mòduls, mètode 1**
+
+Com es veu, el últim comandament és un poc complicat. Per tant, anem a
+fer les coses totalment bé. Per a aixó necessitem un fitxer propi de
+configuració d\'Odoo al que anomenarem **odoo.conf**. Podem utilitzar
+aquesta plantilla:
+
+    # docker exec odoo cat /etc/odoo/odoo.conf > odoo.conf
+
+El que s\'ha fet és copiar el fitxer que té el docker per defecte. Si
+l\'analitzem, no diu bé on està la base de dades, ja que aquesta
+informació la passem amb el paràmetre **\--link** del **docker run**.
+Nosaltres tenim que crear un directori i ficar dins el fitxer, editar-lo
+i afegir aquesta informació:
+
+    db_user = odoo
+    db_password = odoo
+    db_host = 172.17.0.2
+    db_port = 5432
+
+Ara ja podem arrancar el contenidor amb tot:
+
+    # docker stop odoo
+    # docker run --volumes-from odoo -v /home/jose/modules/:/mnt/extra-addons -v /home/jose/config/:/etc/odoo -p 8069:8069 --name odoo2 --link db:db -t odoo
+
+Observem que tenim un directori per als nostres mòduls, un altre amb el
+fitxer de configuració, la redirecció del port, el nom del nou mòdul,
+l\'enllaç a la base de dades i el tipus de container.
+
+Per últim, mentre tenim en marxa el servei, en una altra terminal podem
+executar:
+
+    # docker exec odoo odoo -u nommodul -d nombasededades
+
+### Amb Docker Compose
+
+El mètode anterior suposa l\'execució d\'un **docker run** molt complex.
+Per evitar equivocar-nos, podem per un [docker
+compose](https://docs.docker.com/compose/) com aquest:
+
+```yml
+services:
+  odoo:
+    container_name: odoo
+    image: odoo:18.0
+    depends_on:
+      - db
+    ports:
+      - "8069:8069"
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./addons:/mnt/extra-addons
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo
+    command: --dev=all
+    tty: true
+
+  db:
+    container_name: postgresql
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data
+
+volumes:
+  odoo-web-data:
+  odoo-db-data:
+```
+
+Observem que declarem dos servicis i el **odoo** depen del **db**. També
+cal dir quina xarxa utilitzen i la resta de dades que posem normalment
+en el **run**.
+
+Això ha d\'estar en un directori dins d\'un fitxer anomenat
+**docker-compose.yml** i sols cal executar cada vegada:
+
+    docker-compose up -d
+
+Per a que funcione correctament, necessitem un fitxer `odoo.conf` que podem extreure d'un contenidor sense el volumen de `./config`. 
+
+
+
+```{admonition} Permisos
+:class: tip
+
+Si no funciona el comandament pot ser perquè el nostre usuari no està al grup `docker`. ho solucionem amb:
+
+    sudo usermod -aG docker $USER
+    newgrp docker
+```
+
+Si volem entrar en la base de dades postgreSQL per a fer coses
+manualment, podem executar:
+
+    docker exec -ti postgresql psql proves -U odoo
+
+
+Executem el comandament psql de forma interactiva a la base de dades proves i amb l\'usuari odoo. 
+
+#### Mode desenvolupador en Docker
+
+Com es pot veure, hem configurat un directori per als mòduls. En aquest directori farem els `scaffold`. Amés hem afegit al comandament `--dev=all`. Això simplifica molt el desenvolupament, ja que tots els canvis provoquen un reinici del servidor i actualització dels mòduls. 
+
+L'opció `--dev <feature,feature,...,feature>` en Odoo permet activar diverses característiques útils per al desenvolupament. Aquesta opció **no s'ha d'usar en producció**, ja que està pensada exclusivament per a facilitar la tasca dels desenvolupadors. A continuació, s'expliquen les opcions disponibles:  
+
+- **all**: Activa totes les funcionalitats de desenvolupament descrites a continuació.  
+- **xml**: Carrega les plantilles *QWeb* directament des dels fitxers XML en lloc de la base de dades. Si una plantilla es modifica en la base de dades, no es tornarà a carregar des del fitxer XML fins a la pròxima actualització o reinici. A més, les plantilles no es tradueixen quan s’usa aquesta opció.  
+- **reload**: Reinicia el servidor automàticament quan es detecta un canvi en un fitxer Python. 
+- **qweb**: Permet interrompre l’execució d’una plantilla *QWeb* si un node conté `t-debug="debugger"`, la qual cosa facilita la depuració.  
+- **(i)p(u)db**: Activa un depurador de Python (com `pdb`, `ipdb` o `pudb`) quan es produeix un error inesperat, abans de registrar-lo en els logs i retornar-lo.  
+- **werkzeug**: Mostra la traça completa de l’error en la pàgina web quan es produeix una excepció, cosa molt útil per a identificar problemes en el codi.  
+
+Aquesta opció és molt útil durant el desenvolupament, ja que facilita la depuració de codi, la càrrega en calent de fitxers i la revisió d’errors de manera més visual.
+
+Per veure els logs podem fer:
+
+    docker logs odoo -f
+
+
+```{admonition} Colors en la terminal
+:class: tip
+
+Els logs es veuen en color gràcies a posar `tty:true` en el fitxer de configuració.
+```
+
+Per fer un mòdul nou:
+
+    docker exec -ti odoo  odoo scaffold proves /mnt/extra-addons
+    docker exec -ti odoo chmod 777 -R /mnt/extra-addons/proves
+
+
 
 ## Instal·lar en Debian i Ubuntu
 
@@ -59,7 +249,7 @@ A continuació, cal anar a la direcció en el navegador:
 
 [Asciinema del procés](https://asciinema.org/a/122875).
 
-## Configuració de la ruta dels mòduls
+### Configuració de la ruta dels mòduls
 
 Com que la instalació d\'Odoo crea lúsuari **odoo**, que és el que tenim
 que utilitzar per al desenvolupament, anem a donar-li una contrasenya:
@@ -92,7 +282,7 @@ al comandament. Els comandaments són queda, per tant:
  
 L'opció --save guarda la configuració en $HOME/.odoorc, que és un fitxer per a l'usuari odoo. Si volem que siga per a tots els usuaris que puguen executar el servidor odoo, es pot ficar en el fixter de /etc/odoo
 ```
-## Depurar Odoo
+### Depurar Odoo
 
 Per crear mòduls o vorer els problemes que estan passant, cal llegir els
 fitxers de log, però hi ha una manera més eficient de fer-ho. Si
@@ -264,24 +454,24 @@ que faça de proxy i proporcione la connectivitat per HTTPS.
 
 Situació inicial:
 
-`  ------------             ------------`\
-`  |          |         8069|          |`\
-`  |  Client  |<----------->| Server   | `\
-`  |          |             | Odoo     |`\
-`  ------------             ------------`
+     ------------             ------------
+    |          |         8069|          |
+    |  Client  |<----------->| Server   |
+    |          |             | Odoo     |
+    ------------             ------------
 
-Situació que busquem:
+    Situació que busquem:
 
-`  ------------             --------------------`\
-`  |          |         443 |                  |`\
-`  |  Client  |<----------->| Nginx <--┐       |`\
-`  |          |             |          |       |`\
-`  ------------             |          |8069   |`\
-`                           |          v       |`\
-`                           |        ------    |`\
-`                           |        |Odoo|    |`\
-`                           |        ------    |`\
-`                           --------------------`
+    ------------             --------------------
+    |          |         443 |                  |
+    |  Client  |<----------->| Nginx <--┐       |
+    |          |             |          |       |
+    ------------             |          |8069   |
+                             |          v       |
+                             |        ------    |
+                             |        |Odoo|    |
+                             |        ------    |
+                             --------------------
 
 Tots els servicis que utilitzen SSL necessiten un certificat. En una
 situació ideal, tenim un certificat signat per una entitat
@@ -385,179 +575,8 @@ modificar-lo per a que no afecte al port 80 d\'Odoo.
 
 Ara es reinicien tanmt Odoo com nginx
 
-## En Docker {#en_docker}
 
-Aquest manual està originalment escrit per a Ubuntu 18.04
 
-[Documentació
-oficial](https://www.odoo.com/documentation/11.0/setup/install.html#setup-install-docker)
-[Article sobre Docker i
-Odoo](http://falconsolutions.cl/todo-sobre-de-docker-y-odoo-erp/)
-
-En Docker és molt sencill desplegar Odoo, tan sols fa falta aquests
-comandaments:
-
-    # apt install docker.io
-    # docker run -d --restart="always" -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo --name db postgres:9.4
-    # docker run --restart="always" -p 8069:8069 --name odoo --link db:db -t odoo
-    # docker stop odoo
-    # docker start -a odoo
-
-El primer comandament instal·la el servei Docker. El segon instal·la un
-docker PostgreSQL amb una base de dades anomenada *odoo* i de
-contrasenya odoo. El tercer crea un docker Odoo vinculat a l\'anterior
-base de dades. Per entrar sols cal anar a la **direcció de
-l\'amfitrió:8069** ja que el comandament indica que es redireccione per
-\[Iptables\] el port 8069 al del contenidor.
-
-Resultat d\'iptables:
-
-    # iptables -L
-    Chain INPUT (policy ACCEPT)
-    target     prot opt source               destination         
-
-    Chain FORWARD (policy ACCEPT)
-    target     prot opt source               destination         
-    DOCKER-USER  all  --  anywhere             anywhere            
-    DOCKER-ISOLATION  all  --  anywhere             anywhere            
-    ACCEPT     all  --  anywhere             anywhere             ctstate RELATED,ESTABLISHED
-    DOCKER     all  --  anywhere             anywhere            
-    ACCEPT     all  --  anywhere             anywhere            
-    ACCEPT     all  --  anywhere             anywhere            
-
-    Chain OUTPUT (policy ACCEPT)
-    target     prot opt source               destination         
-
-    Chain DOCKER (1 references)
-    target     prot opt source               destination         
-    ACCEPT     tcp  --  anywhere             172.17.0.3           tcp dpt:8069
-
-    Chain DOCKER-ISOLATION (1 references)
-    target     prot opt source               destination         
-    RETURN     all  --  anywhere             anywhere            
-
-    Chain DOCKER-USER (1 references)
-    target     prot opt source               destination         
-    RETURN     all  --  anywhere             anywhere           
-
-Si fem **ctrl-C** eixim sense parar el contenidor. si volem tornar a
-entrar per veure els errors:
-
-    # docker attach odoo
-
-**Creació de mòduls**
-
-Per a fer els nostres mòduls podem crear-los en un directori fora del
-docker i executar-lo d\'aquesta manera:
-
-    # docker run -v /path/to/addons:/mnt/extra-addons -p 8069:8069 --name odoo --link db:db -t odoo
-
-Mentre estem fent nous mòduls, necessitem reiniciar el servici i
-arrancar-lo actualitzant un mòdul. Primer deguem parar el docker,
-després iniciar-lo indicant que vols entrar a la consola i finalment
-actualitzar el mòdul.
-
-    # docker stop odoo
-    # docker start -a odoo
-    # docker exec odoo odoo --config /etc/odoo/odoo.conf -u nommodul -d nombasededades -r odoo -w odoo --db_host 172.17.0.2 --db_port 5432
-
-**Creació de mòduls, mètode 1**
-
-Com es veu, el últim comandament és un poc complicat. Per tant, anem a
-fer les coses totalment bé. Per a aixó necessitem un fitxer propi de
-configuració d\'Odoo al que anomenarem **odoo.conf**. Podem utilitzar
-aquesta plantilla:
-
-    # docker exec odoo cat /etc/odoo/odoo.conf > odoo.conf
-
-El que s\'ha fet és copiar el fitxer que té el docker per defecte. Si
-l\'analitzem, no diu bé on està la base de dades, ja que aquesta
-informació la passem amb el paràmetre **\--link** del **docker run**.
-Nosaltres tenim que crear un directori i ficar dins el fitxer, editar-lo
-i afegir aquesta informació:
-
-    db_user = odoo
-    db_password = odoo
-    db_host = 172.17.0.2
-    db_port = 5432
-
-Ara ja podem arrancar el contenidor amb tot:
-
-    # docker stop odoo
-    # docker run --volumes-from odoo -v /home/jose/modules/:/mnt/extra-addons -v /home/jose/config/:/etc/odoo -p 8069:8069 --name odoo2 --link db:db -t odoo
-
-Observem que tenim un directori per als nostres mòduls, un altre amb el
-fitxer de configuració, la redirecció del port, el nom del nou mòdul,
-l\'enllaç a la base de dades i el tipus de container.
-
-Per últim, mentre tenim en marxa el servei, en una altra terminal podem
-executar:
-
-    # docker exec odoo odoo -u nommodul -d nombasededades
-
-**Creació de mòduls, mètode 2**
-
-El mètode anterior suposa l\'execució d\'un **docker run** molt complex.
-Per evitar equivocar-nos, podem per un [docker
-compose](https://docs.docker.com/compose/) com aquest:
-
-    version: '2'
-    services:
-      db:
-        container_name: db
-        image: postgres:9.4
-        network_mode: bridge
-        environment:
-          - POSTGRES_PASSWORD=odoo
-          - POSTGRES_USER=odoo
-          - PGDATA=/var/lib/postgresql/data/pgdata
-        volumes:
-          - odoo-db-data:/var/lib/postgresql/data/pgdata
-      odoo:
-        container_name: odoo
-        image: odoo
-        network_mode: bridge
-        depends_on:
-          - db
-        ports:
-          - "8069:8069"
-        volumes:
-          - odoo-web-data:/var/lib/odoo
-          - /home/jose/config:/etc/odoo
-          - /home/jose/modules:/mnt/extra-addons
-
-    volumes:
-      odoo-web-data:
-      odoo-db-data:
-
-Observem que declarem dos servicis i el **odoo** depen del **db**. També
-cal dir quina xarxa utilitzen i la resta de dades que posem normalment
-en el **run**.
-
-Això ha d\'estar en un directori dins d\'un fitxer anomenat
-**docker-compose.yml** i sols cal executar cada vegada:
-
-    # docker-compose up
-
-Cal dir que. d\'aquesta manera, el servici es para quan fem ctrl+c, per
-tant, per a actualitzar un mòdul podem executar el docker exec en una
-alta terminal.
-
-**Altres coses**
-
-Per a llançar més dockers amb odoo:
-
-    # docker run -p 8070:8069 --name odoo2 --link db:db -t odoo
-    # docker run -p 8071:8069 --name odoo3 --link db:db -t odoo
-
-Si volem entrar en la base de dades postgreSQL per a fer coses
-manualment, podem executar:
-
-    # docker exec -ti db psql -U odoo
-    # docker exec -ti db psql -U postgres
-
-Executem el comandament psql de forma interactiva i amb l\'usuari odoo.
-L\'usuari postgres és l\'administrador.
 
 ## Creació de una base de dades
 
