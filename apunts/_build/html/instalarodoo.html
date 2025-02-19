@@ -512,38 +512,38 @@ executar:</p>
 <p>El mètode anterior suposa l’execució d’un <strong>docker run</strong> molt complex.
 Per evitar equivocar-nos, podem per un <a class="reference external" href="https://docs.docker.com/compose/">docker
 compose</a> com aquest:</p>
-<div class="highlight-yml notranslate"><div class="highlight"><pre><span></span>services:
-  odoo:
-    container_name: odoo
-    image: odoo:18.0
-    depends_on:
-      - db
-    ports:
-      - &quot;8069:8069&quot;
-    volumes:
-      - odoo-web-data:/var/lib/odoo
-      - ./config:/etc/odoo
-      - ./addons:/mnt/extra-addons
-    environment:
-      - HOST=db
-      - USER=odoo
-      - PASSWORD=odoo
-    command: --dev=all
-    tty: true
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">odoo</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">odoo</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">odoo:18.0</span>
+<span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db</span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8069:8069&quot;</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">odoo-web-data:/var/lib/odoo</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./config:/etc/odoo</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./addons:/mnt/extra-addons</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HOST=db</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">USER=odoo</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PASSWORD=odoo</span>
+<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--dev=all</span>
+<span class="w">    </span><span class="nt">tty</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 
-  db:
-    container_name: postgresql
-    image: postgres:15
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=odoo
-      - POSTGRES_PASSWORD=odoo
-    volumes:
-      - odoo-db-data:/var/lib/postgresql/data
+<span class="w">  </span><span class="nt">db</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres:15</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">POSTGRES_DB=postgres</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">POSTGRES_USER=odoo</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">POSTGRES_PASSWORD=odoo</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">odoo-db-data:/var/lib/postgresql/data</span>
 
-volumes:
-  odoo-web-data:
-  odoo-db-data:
+<span class="nt">volumes</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">odoo-web-data</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">odoo-db-data</span><span class="p">:</span>
 </pre></div>
 </div>
 <p>Observem que declarem dos servicis i el <strong>odoo</strong> depen del <strong>db</strong>. També
@@ -571,7 +571,7 @@ manualment, podem executar:</p>
 <p>Executem el comandament psql de forma interactiva a la base de dades proves i amb l’usuari odoo.</p>
 <section id="mode-desenvolupador-en-docker">
 <h4>Mode desenvolupador en Docker<a class="headerlink" href="#mode-desenvolupador-en-docker" title="Link to this heading">#</a></h4>
-<p>Com es pot veure, hem configurat un directori per als mòduls. En aquest directori farem els <code class="docutils literal notranslate"><span class="pre">scaffold</span></code>. Amés hem afegit al comandament <code class="docutils literal notranslate"><span class="pre">--dev=all</span></code>. Això simplifica molt el desenvolupament, ja que tots els canvis provoquen un reinici del servidor i actualització dels mòduls.</p>
+<p>Com es pot veure, hem configurat un directori per als mòduls. En aquest directori farem els <code class="docutils literal notranslate"><span class="pre">scaffold</span></code>. Amés hem afegit al comandament <code class="docutils literal notranslate"><span class="pre">--dev=all</span></code>. Això simplifica molt el desenvolupament, ja que tots els canvis provoquen un reinici del servidor i actualització d’algunes parts dels mòduls.</p>
 <p>L’opció <code class="docutils literal notranslate"><span class="pre">--dev</span> <span class="pre">&lt;feature,feature,...,feature&gt;</span></code> en Odoo permet activar diverses característiques útils per al desenvolupament. Aquesta opció <strong>no s’ha d’usar en producció</strong>, ja que està pensada exclusivament per a facilitar la tasca dels desenvolupadors. A continuació, s’expliquen les opcions disponibles:</p>
 <ul class="simple">
 <li><p><strong>all</strong>: Activa totes les funcionalitats de desenvolupament descrites a continuació.</p></li>
@@ -581,7 +581,33 @@ manualment, podem executar:</p>
 <li><p><strong>(i)p(u)db</strong>: Activa un depurador de Python (com <code class="docutils literal notranslate"><span class="pre">pdb</span></code>, <code class="docutils literal notranslate"><span class="pre">ipdb</span></code> o <code class="docutils literal notranslate"><span class="pre">pudb</span></code>) quan es produeix un error inesperat, abans de registrar-lo en els logs i retornar-lo.</p></li>
 <li><p><strong>werkzeug</strong>: Mostra la traça completa de l’error en la pàgina web quan es produeix una excepció, cosa molt útil per a identificar problemes en el codi.</p></li>
 </ul>
-<p>Aquesta opció és molt útil durant el desenvolupament, ja que facilita la depuració de codi, la càrrega en calent de fitxers i la revisió d’errors de manera més visual.</p>
+<p>Aquesta opció és molt útil durant el desenvolupament, ja que facilita la depuració de codi, la càrrega en calent de fitxers i la revisió d’errors de manera més visual. No obstant está limitada en certs aspectes. Per exemple, torna a executar el Python però no crea nous models o fields. Tampoc actualitza tot els XML, sols el contingut de les vistes en <code class="docutils literal notranslate"><span class="pre">ir.ui.view</span></code> que ja s’han enregistrat actualitzant el mòdul. Per tant, no sempre serveix i menys en les etapes inicials de la creació de mòduls.</p>
+<p>Com que el comandament amb <code class="docutils literal notranslate"><span class="pre">--dev=all</span></code> no actualitza la base de dades, la creació de noves vistes, nous models o fields no s’actualitzarà i donarà errades. Una solució és afegir al comandament:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
+<span class="w">      </span><span class="no">-- --dev=all</span>
+<span class="w">      </span><span class="no">-d basededades</span>
+<span class="w">      </span><span class="no">-u modul</span>
+</pre></div>
+</div>
+<p>Però sols quan ja existeix la base de dades i el mòdul està instal·lat. Amés, sols s’executarà quan arranquem el Docker, per tant, cal fer un <code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">down</span></code> i tornar a arrancar els contenidors de nou. Això suposa molta feina, així que ho podem simplificar afegint a <code class="docutils literal notranslate"><span class="pre">Visual</span> <span class="pre">Studio</span> <span class="pre">code</span></code> una extensió com <code class="docutils literal notranslate"><span class="pre">VS</span> <span class="pre">Code</span> <span class="pre">Action</span> <span class="pre">Buttons</span></code> i configurant el seu <code class="docutils literal notranslate"><span class="pre">json</span></code> així:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="w">        </span><span class="nt">&quot;commands&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$(triangle-right) Run Odoo&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;color&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;purple&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;singleInstance&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;docker-compose down &amp;&amp; docker-compose up -d &amp;&amp; docker logs odoo -f&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$(triangle-right) Rerun Odoo&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;color&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;purple&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;singleInstance&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;docker-compose restart odoo &amp;&amp; docker logs odoo -f&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">        </span><span class="p">],</span>
+</pre></div>
+</div>
+<p>El primer <code class="docutils literal notranslate"><span class="pre">Command</span></code> ho reinicia tot, tant la base de dades com Odoo i elimina els contenidors per recrear-los. Això pot solucionar alguns problemes. Però en principi, el segon reinicia només el contenidor Odoo sense recrear-ho. És més ràpid i també actualitza la base de dades. El comandament el podem utilitzar en una terminal si no volem fer els botons o estem en un entorn on hi ha interfície gràfica.</p>
+<p>En <strong>Pycharm</strong> és encara més sencill perquè es poden crear en <code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">&gt;</span> <span class="pre">Edit</span> <span class="pre">configurations...</span></code> creant un nou <code class="docutils literal notranslate"><span class="pre">Shell</span> <span class="pre">Script</span></code> amb els comandaments anteriors.</p>
 <p>Per veure els logs podem fer:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>docker logs odoo -f
 </pre></div>
@@ -594,6 +620,20 @@ manualment, podem executar:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>docker exec -ti odoo  odoo scaffold proves /mnt/extra-addons
 docker exec -ti odoo chmod 777 -R /mnt/extra-addons/proves
 </pre></div>
+</div>
+<div class="tip admonition">
+<p class="admonition-title">Shell</p>
+<p>Si volem executar el <code class="docutils literal notranslate"><span class="pre">shell</span></code> de Odoo podem ejecutar el comandament:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>docker-compose exec odoo odoo shell -d proves --db_host db --db_password odoo
+</pre></div>
+</div>
+<p>Ací estem diguen que execute al contenidor odoo el comandament odoo especificant la base de dades i el host i password de postgres. És necessari especificar la base de dades perquè Docker Compose crea múltiples contenidors Docker basant-se en la configuració del fitxer <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code>. En aquest cas, hi ha diversos contenidors en execució, un que corre <strong>Odoo</strong>, un altre que corre <strong>PostgreSQL</strong>, i possiblement altres més.</p>
+<p>Cada contenidor és una màquina virtual separada amb la seua pròpia adreça IP, per la qual cosa si executes aquesta comanda:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>docker exec -it odoo_odoo_1 bash -c &quot;odoo shell -d postgres&quot;
+</pre></div>
+</div>
+<p>Odoo intentarà connectar-se a la base de dades <strong>usant <code class="docutils literal notranslate"><span class="pre">localhost</span></code></strong>, però en aquest context, <code class="docutils literal notranslate"><span class="pre">localhost</span></code> es refereix al propi contenidor d’Odoo, no al de PostgreSQL.</p>
+<p>Per a solucionar-ho, has d’indicar explícitament el <strong>host de la base de dades</strong> i la <strong>contrasenya</strong> en la comanda</p>
 </div>
 </section>
 </section>

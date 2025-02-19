@@ -227,6 +227,28 @@ Per fer un mòdul nou:
     docker exec -ti odoo  odoo scaffold proves /mnt/extra-addons
     docker exec -ti odoo chmod 777 -R /mnt/extra-addons/proves
 
+
+```{admonition} Shell
+:class: tip
+
+Si volem executar el `shell` de Odoo podem ejecutar el comandament:
+
+
+    docker-compose exec odoo odoo shell -d proves --db_host db --db_password odoo
+
+
+Ací estem diguen que execute al contenidor odoo el comandament odoo especificant la base de dades i el host i password de postgres. És necessari especificar la base de dades perquè Docker Compose crea múltiples contenidors Docker basant-se en la configuració del fitxer `docker-compose.yml`. En aquest cas, hi ha diversos contenidors en execució, un que corre **Odoo**, un altre que corre **PostgreSQL**, i possiblement altres més.  
+
+Cada contenidor és una màquina virtual separada amb la seua pròpia adreça IP, per la qual cosa si executes aquesta comanda:  
+
+
+    docker exec -it odoo_odoo_1 bash -c "odoo shell -d postgres"
+
+  
+Odoo intentarà connectar-se a la base de dades **usant `localhost`**, però en aquest context, `localhost` es refereix al propi contenidor d’Odoo, no al de PostgreSQL.  
+
+Per a solucionar-ho, has d’indicar explícitament el **host de la base de dades** i la **contrasenya** en la comanda
+```
     
 
 ## Instal·lar en Debian i Ubuntu

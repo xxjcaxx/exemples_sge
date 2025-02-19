@@ -103,7 +103,7 @@ El mètode anterior suposa l\'execució d\'un **docker run** molt complex.
 Per evitar equivocar-nos, podem per un [docker
 compose](https://docs.docker.com/compose/) com aquest:
 
-```yml
+```yaml
 services:
   odoo:
     container_name: odoo
@@ -149,8 +149,6 @@ Això ha d\'estar en un directori dins d\'un fitxer anomenat
 
 Per a que funcione correctament, necessitem un fitxer `odoo.conf` que podem extreure d'un contenidor sense el volumen de `./config`. 
 
-
-
 ```{admonition} Permisos
 :class: tip
 
@@ -170,7 +168,7 @@ Executem el comandament psql de forma interactiva a la base de dades proves i am
 
 #### Mode desenvolupador en Docker
 
-Com es pot veure, hem configurat un directori per als mòduls. En aquest directori farem els `scaffold`. Amés hem afegit al comandament `--dev=all`. Això simplifica molt el desenvolupament, ja que tots els canvis provoquen un reinici del servidor i actualització dels mòduls. 
+Com es pot veure, hem configurat un directori per als mòduls. En aquest directori farem els `scaffold`. Amés hem afegit al comandament `--dev=all`. Això simplifica molt el desenvolupament, ja que tots els canvis provoquen un reinici del servidor i actualització d'algunes parts dels mòduls. 
 
 L'opció `--dev <feature,feature,...,feature>` en Odoo permet activar diverses característiques útils per al desenvolupament. Aquesta opció **no s'ha d'usar en producció**, ja que està pensada exclusivament per a facilitar la tasca dels desenvolupadors. A continuació, s'expliquen les opcions disponibles:  
 
@@ -181,12 +179,42 @@ L'opció `--dev <feature,feature,...,feature>` en Odoo permet activar diverses c
 - **(i)p(u)db**: Activa un depurador de Python (com `pdb`, `ipdb` o `pudb`) quan es produeix un error inesperat, abans de registrar-lo en els logs i retornar-lo.  
 - **werkzeug**: Mostra la traça completa de l’error en la pàgina web quan es produeix una excepció, cosa molt útil per a identificar problemes en el codi.  
 
-Aquesta opció és molt útil durant el desenvolupament, ja que facilita la depuració de codi, la càrrega en calent de fitxers i la revisió d’errors de manera més visual.
+Aquesta opció és molt útil durant el desenvolupament, ja que facilita la depuració de codi, la càrrega en calent de fitxers i la revisió d’errors de manera més visual. No obstant está limitada en certs aspectes. Per exemple, torna a executar el Python però no crea nous models o fields. Tampoc actualitza tot els XML, sols el contingut de les vistes en `ir.ui.view` que ja s'han enregistrat actualitzant el mòdul. Per tant, no sempre serveix i menys en les etapes inicials de la creació de mòduls. 
+
+Com que el comandament amb `--dev=all` no actualitza la base de dades, la creació de noves vistes, nous models o fields no s'actualitzarà i donarà errades. Una solució és afegir al comandament:
+
+```yaml
+    command: >
+      -- --dev=all
+      -d basededades
+      -u modul
+```
+
+Però sols quan ja existeix la base de dades i el mòdul està instal·lat. Amés, sols s'executarà quan arranquem el Docker, per tant, cal fer un `docker-compose down` i tornar a arrancar els contenidors de nou. Això suposa molta feina, així que ho podem simplificar afegint a `Visual Studio code` una extensió com `VS Code Action Buttons` i configurant el seu `json` així:
+
+```json
+        "commands": [
+            {
+                "name": "$(triangle-right) Run Odoo",
+                "color": "purple",
+                "singleInstance": true,
+                "command": "docker-compose down && docker-compose up -d && docker logs odoo -f", 
+            },
+            {
+                "name": "$(triangle-right) Rerun Odoo",
+                "color": "purple",
+                "singleInstance": true,
+                "command": "docker-compose restart odoo && docker logs odoo -f", 
+            },
+        ],
+```
+El primer `Command` ho reinicia tot, tant la base de dades com Odoo i elimina els contenidors per recrear-los. Això pot solucionar alguns problemes. Però en principi, el segon reinicia només el contenidor Odoo sense recrear-ho. És més ràpid i també actualitza la base de dades. El comandament el podem utilitzar en una terminal si no volem fer els botons o estem en un entorn on hi ha interfície gràfica.  
+
+En **Pycharm** és encara més sencill perquè es poden crear en `Run > Edit configurations...` creant un nou `Shell Script` amb els comandaments anteriors.  
 
 Per veure els logs podem fer:
 
     docker logs odoo -f
-
 
 ```{admonition} Colors en la terminal
 :class: tip
@@ -200,6 +228,28 @@ Per fer un mòdul nou:
     docker exec -ti odoo chmod 777 -R /mnt/extra-addons/proves
 
 
+```{admonition} Shell
+:class: tip
+
+Si volem executar el `shell` de Odoo podem ejecutar el comandament:
+
+
+    docker-compose exec odoo odoo shell -d proves --db_host db --db_password odoo
+
+
+Ací estem diguen que execute al contenidor odoo el comandament odoo especificant la base de dades i el host i password de postgres. És necessari especificar la base de dades perquè Docker Compose crea múltiples contenidors Docker basant-se en la configuració del fitxer `docker-compose.yml`. En aquest cas, hi ha diversos contenidors en execució, un que corre **Odoo**, un altre que corre **PostgreSQL**, i possiblement altres més.  
+
+Cada contenidor és una màquina virtual separada amb la seua pròpia adreça IP, per la qual cosa si executes aquesta comanda:  
+
+
+    docker exec -it odoo_odoo_1 bash -c "odoo shell -d postgres"
+
+  
+Odoo intentarà connectar-se a la base de dades **usant `localhost`**, però en aquest context, `localhost` es refereix al propi contenidor d’Odoo, no al de PostgreSQL.  
+
+Per a solucionar-ho, has d’indicar explícitament el **host de la base de dades** i la **contrasenya** en la comanda
+```
+    
 
 ## Instal·lar en Debian i Ubuntu
 

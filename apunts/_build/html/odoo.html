@@ -1579,7 +1579,6 @@ molts mòduls que afegeixen dades i mètodes a objectes ja existents, com
 per exemple, el mòdul comptabilitat (account) que afegix dades i mètodes
 a l’objecte res.partner. Fixem-nos en el contingut del mòdul account:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">class</span><span class="w"> </span><span class="nc">res_partner</span><span class="p">(</span><span class="n">Model</span><span class="o">.</span><span class="n">model</span><span class="p">):</span>
-    <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;res.partner&#39;</span>
     <span class="n">_inherit</span> <span class="o">=</span> <span class="s1">&#39;res.partner&#39;</span>
     <span class="n">debit_limit</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="s1">&#39;Payable limit&#39;</span><span class="p">)</span>
     <span class="o">...</span>
