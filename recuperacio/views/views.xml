@@ -16,45 +16,52 @@
 -->
 
     <!-- actions opening views on models -->
-<!--
-    <record model="ir.actions.act_window" id="recuperacio.action_window">
+
+    <record model="ir.actions.act_window" id="recuperacio.recuperacio_action_window">
       <field name="name">recuperacio window</field>
       <field name="res_model">recuperacio.recuperacio</field>
       <field name="view_mode">tree,form</field>
     </record>
--->
 
-    <!-- server action to the one above -->
-<!--
-    <record model="ir.actions.server" id="recuperacio.action_server">
-      <field name="name">recuperacio server</field>
-      <field name="model_id" ref="model_recuperacio_recuperacio"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": model._name,
-        }
-      </field>
+    <record model="ir.actions.act_window" id="recuperacio.player_action_window">
+      <field name="name">Player Window</field>
+      <field name="res_model">recuperacio.player</field>
+      <field name="view_mode">tree,form</field>
     </record>
--->
+
+    <record model="ir.actions.act_window" id="recuperacio.building_action_window">
+      <field name="name">building Window</field>
+      <field name="res_model">recuperacio.building</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+
+
 
     <!-- Top menu item -->
-<!--
+
     <menuitem name="recuperacio" id="recuperacio.menu_root"/>
--->
+
     <!-- menu categories -->
-<!--
-    <menuitem name="Menu 1" id="recuperacio.menu_1" parent="recuperacio.menu_root"/>
-    <menuitem name="Menu 2" id="recuperacio.menu_2" parent="recuperacio.menu_root"/>
--->
+
+    <menuitem name="Manage" id="recuperacio.menu_1" parent="recuperacio.menu_root"/>
+
+
     <!-- actions -->
-<!--
-    <menuitem name="List" id="recuperacio.menu_1_list" parent="recuperacio.menu_1"
-              action="recuperacio.action_window"/>
-    <menuitem name="Server to list" id="recuperacio" parent="recuperacio.menu_2"
-              action="recuperacio.action_server"/>
--->
+
+    <menuitem name="Recuperacions" id="recuperacio.menu_1_list" parent="recuperacio.menu_1"
+              action="recuperacio.recuperacio_action_window"/>
+
+    <menuitem name="Players"
+              id="recuperacio.menu_players_list"
+              parent="recuperacio.menu_1"
+              action="recuperacio.player_action_window"/>
+
+        <menuitem name="Building"
+              id="recuperacio.menu_building_list"
+              parent="recuperacio.menu_1"
+              action="recuperacio.building_action_window"/>
+
   </data>
 </odoo>

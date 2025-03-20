@@ -1,2 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_recuperacio_recuperacio,recuperacio.recuperacio,model_recuperacio_recuperacio,base.group_user,1,1,1,1
+access_recuperacio_player,recuperacio.player,model_recuperacio_player,base.group_user,1,1,1,1
+access_recuperacio_building,recuperacio.building,model_recuperacio_building,base.group_user,1,1,1,1
+access_recuperacio_material,recuperacio.material,model_recuperacio_material,base.group_user,1,1,1,1
