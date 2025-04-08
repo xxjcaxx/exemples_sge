@@ -1,7 +1,7 @@
 # Client Web
 
 En la secció de la vista i de l\'herència en la vista hem pogut
-modificar la forma en que [Odoo](Odoo "wikilink") mostra o gestiona la
+modificar la forma en que `Odoo` mostra o gestiona la
 base de dades amb el client web. La gestió de la vista es limita a crear
 trees, forms, kanbans\... Els creadors d\'Odoo recomanen utilitzar
 aquestes vistes sempre que es puga. No obstant, de vegades volem fer
@@ -25,42 +25,34 @@ altre amb una llista de les dades a mostrar pel client. Opcionalment,
 s\'envía el xml de la vista, el qual serà interpretat pel client per
 mostrar correctament les dades.
 
--   Si volem veure tot el que el servidor rep o envia al client, podem
-    arrancar el servici amb l\'opció \--log-level=debug_rpc.
+> Si volem veure tot el que el servidor rep o envia al client, podem arrancar el servici amb l\'opció \--log-level=debug_rpc.
 
 El client web és una **SPA (Single Page Application)**, a l\'estil
-d\'altres frameworks coneguts com Angular, va creant i destruint
+d\'altres frameworks coneguts com Angular o React, va creant i destruint
 elements de la interfície contínuament. Aquests elements són, entre
 altre coses, Widgets.
 
 Si volem saber modificar a baix nivell el client web, necessitem saber
 prou de Javascript, de JQuery, BootStrap i altres, amés de HTML5.
 
-En Odoo, es proporcionen tres clients web diferenciats, però que,
-internament, funcionen amb el mateix framework. Aquest són el **web
-client** que és el backend on es treballa en les dades, el **website**
-que és la pàgina web pública i el **point of sale**, que és per al punts
-de venda.
+Amb Odoo, es proporcionen tres clients web diferenciats, però que, internament, funcionen amb el mateix framework. Aquest són el **web client** que és el "backoffice" utilitzat pel empleats de l'empresa, el **website** que és la pàgina web pública i el **point of sale**, que és per al punts de venda.
 
 Quan ens referim a crear mòduls per al client, generalment ens referim a
 fer canvis subtils en l\'apariència o comportament de la web.
+
 Reflexionem sobre el tipus de modificació que necessitem:
 
 -   Un canvi menor en l\'apariència: Afegir algunes regles CSS.
--   Un canvi estétic o de comportament de la manera en que es visualitza
-    un field: Afegir HTML, CSS i Javascript a un **Widget**.
--   Un canvi en la manera en la que un field enmagatzema o recupera les
-    dades: Modificació del Javascript del Widget i de la part del model
-    o el controlador Javascript de la vista.
--   Un canvi en la manera de mostrar un recordset sencer: Crear una
-    vista.
+-   Un canvi estétic o de comportament de la manera en que es visualitza     un field: Afegir HTML, CSS i Javascript a un **Widget**.
+-   Un canvi en la manera en la que un field enmagatzema o recupera les dades: Modificació del Javascript del Widget i de la part del model o el controlador Javascript de la vista.
+-   Un canvi en la manera de mostrar un recordset sencer: Crear una  vista.
 -   Fer una web des de 0 amb les dades d\'Odoo: Utilitzar els [Web
     controllers](https://www.odoo.com/documentation/12.0/reference/http.html#reference-http-controllers)
 
-# Arquitectura del client web
+## Arquitectura del client web
 El **WebClient** d\'Odoo es construeix amb mòduls, de la mateixa manera que
 els mòduls per al \'servidor\'. Sols que en els mòduls per ampliar el
-client web es modifiquen altres arxius més que els típics dels models de
+client web es modifiquen altres arxius a banda dels típics dels models de
 python o els xml de la vista.
 
 L\'arquitectura és **MVC** internament. És a dir, Odoo té un model (ORM
@@ -75,11 +67,11 @@ de poder ser mantinguts i cal que aprofiten al màxim els recursos que el
 client web ja ens proporciona, per tant, intentarem programar el menys
 possible i aprofitar tot el que ja té el client.
 
-Els mòduls principal del client web depenen del mòdul **web**, que
+Els mòduls principals del client web depenen del mòdul **web**, que
 proporciona el nucli del client web. Els altres complementen a aquest.
 Hi ha mòduls que específicament es diuen, per exemple, **web_kanban**,
 que amplien la web. Però en realitat qualsevol mòdul ho pot fer. El
-mòdul web conté tot el HTML i Javascript necessari per a que els altres
+mòdul web conté tot l'HTML i Javascript necessari per a que els altres
 mòduls de la web funcionen.
 
 Per modificar el client web cal proporcional HTML, xml, CSS, Javascript
@@ -97,11 +89,11 @@ manera i l\'envia a client.
 ```{tip}
 Com que els CSS i JS no són processades pel servidor, no cal reiniciar el servidor per veure els canvis, sols refrescar el navegador. Això no sempre funciona, ja que el servidor pot ser que no processe els assets o que la cau del navegador no actualitze el JS o el XML.
 ```
-# Enviant el client al navegador 
+## Enviant el client al navegador 
 
 Cada vegada que refresquem, s\'envia el client sencer. Això vol dir
 molts CSS, moltes línies de Javascript de molt fitxers distints i molt
-de HTML i XML. Per evitar saturar la xarxa, el servidor fa una
+d'HTML i XML. Per evitar saturar la xarxa, el servidor fa una
 compressió de totes eixes dades de la següent manera:
 
 -   Tots els CSS i Javascript són concatenats en un sol fitxer. La
@@ -116,7 +108,7 @@ compressió de totes eixes dades de la següent manera:
 Tot això fa difícil de fer debug amb el client. Per això es recomana
 ficar **?debug=1** a la URL per demanar que no minimitze.
 
-# Els Assets
+### Els Assets
 
 El client d\'Odoo és molt complex i necessita tindre Javascript, HTML i
 CSS de molts fitxers distints. Gestionar això permetent que qualsevol
@@ -129,27 +121,10 @@ tenen l\'estructura d\'un Template QWeb i els més comuns són:
 -   **web.assets_backend**: Amb les coses específiques del Backend.
 -   **web.assets_frontend**: Amb les coses de la web pública.
 
-Si volem afegir fitxers a un asset en **odoo fins al 14**, sols cal
-heretar el XML com fem en l\'[Herència en la
-vista](Odoo#Her.C3.A8ncia_en_la_vista "wikilink"):
 
-``` xml
-<template id="assets_backend" name="helpdesk assets" inherit_id="web.assets_backend">
-    <xpath expr="//script[last()]" position="after">
-        <link rel="stylesheet" href="/helpdesk/static/src/less/helpdesk.less"/>
-        <script type="text/javascript" src="/helpdesk/static/src/js/helpdesk_dashboard.js"></script>
-    </xpath>
-</template>
-```
+ Si volem afegir fitxers a un asset en odoo, s\'ha d\'afegir al manifest:
 
-Observem que afegeix coses al Asset del Backend, concretament al final.
-
-> Aquesta és la manera general d'afegir funcionalitats o estils. Però tal vegada el nostre widget no necessita ser carregat sempre i estem afegint una càrrega constant a la xarxa. Per això pot ser interessant afegir la llibreria sols quan es crea el widget en temps d'execució. Odoo proporciona formes de carrega llibreries i CSS de forma dinàmica (lazyload en Qweb template engine).
-
-
-En cas de ser en **Odoo 15**, s\'ha d\'afegir al manifest:
-
-``` python
+```python
 'assets': {
     'web.assets_backend': [
         'web/static/src/xml/**/*',
@@ -165,6 +140,9 @@ En cas de ser en **Odoo 15**, s\'ha d\'afegir al manifest:
 },
 ```
 
+> Aquesta és la manera general d'afegir funcionalitats o estils. Però tal vegada el nostre widget no necessita ser carregat sempre i estem afegint una càrrega constant a la xarxa. Per això pot ser interessant afegir la llibreria sols quan es crea el widget en temps d'execució. Odoo proporciona formes de carrega llibreries i CSS de forma dinàmica (lazyload en Qweb template engine).
+
+
 ## Afegir CSS al nostre mòdul
 
 Abans d\'entrar en la creació de Widgets, pot ser interessant observar
@@ -172,22 +150,20 @@ cóm els **bundles** es poden ampliar d\'una forma simple per modificar o
 afegir CSS.
 
 El primer és crear el css en
-**/`<modul>`{=html}/static/src/css/`<modul>`{=html}.css**. En el nostre
-cas, sols fem un per a fer la lletra mès menuda:
+**/`<modul>`/static/src/css/`<modul>`.css**. En el nostre cas, sols fem un per a fer la lletra mès menuda:
 
 ``` css
 .reserves_tree { font-size:0.8em;}
 ```
 
-Després creem un template per afegir el CSS al bundle
-**assets_backend**:
+Després afegim el css al bundle **assets_backend**:
 
-``` xml
-<template id="assets_backend" name="reserves assets" inherit_id="web.assets_backend">
-    <xpath expr="//script[last()]" position="after">
-        <link rel="stylesheet" href="/reserves/static/src/css/reserves.css"/>
-    </xpath>
-</template>
+```python
+'assets': {
+    'web.assets_backend': [
+        'web/static/src/xml/**/*',
+    ],
+},
 ```
 
 I per últim, sols cal utilitzar la classe css:
@@ -196,20 +172,19 @@ I per últim, sols cal utilitzar la classe css:
 <field name="bookings" limit="10" class="reserves_tree">
 ```
 
-# Arquitectura dels mòduls en Javascript 
+## Arquitectura dels mòduls en Javascript 
 
 De la mateixa manera que hem vist per introduir un CSS personalitzat en
 Odoo, es pot introduir un Javascript. Aquest serà afegit al final del
-bundle i serà executat pel navegador. No obstant, el Javascript no és
-tan simple de desenvolupar. Odoo té molt de Javascript ja funcionant i
-podem interferir. Però el major problema és que no sabem molt bé qué
-s\'està executant en cada moment. Javascript és un llenguatge que
+bundle i serà executat pel navegador. 
+
+Odoo té molt de Javascript ja funcionant i podem interferir. Però el major problema és que no sabem molt bé qué s\'està executant en cada moment. Javascript és un llenguatge que
 treballa molt de forma asíncrona. Això permet que es puga carregar part
 de la web mentres una altra part ja està funcionant. Aquesta asincronia
 fa que no es puga predir fàcilment en quin ordre es carregarà o
 executarà tot. Totes les aplicacions web complexes tenen que solucionar
 eixos problemes. Javascript té un ecosistema de biblioteques molt divers
-i no tots treballen de la mateixa manera, de fet, molt han solventat
+i no tots treballen de la mateixa manera, de fet, molts han solventat
 carències del llenguatge amb tècniques de programació i biblioteques.
 Aques és el cas dels mòduls. Odoo gestiona la complexitat del seu
 Javascript amb mòduls i dependències d\'altres mòduls. Per això no és
@@ -222,98 +197,19 @@ estudiar cóm ho fa Odoo.
 Els mòduls simplifiquen la programació de les webs grans. Els mòduls oculten la complexitat de la programació de les distintes parts lògiques d’un programa. Els mòduls ofereixen una interfície en la que interactuen amb la resta de mòduls. Un programa modular és més fàcilment ampliable i reutilitzable.
 En els mòduls cal aconseguir tindre la major independència al aconseguit el menor '''acoblament''' i la major '''cohesió'''. L’acoblament és la excessiva dependència d’un mòdul respecte a altres i la cohesió és la íntima relació entre els elements interns del mòdul. [https://developer.mozilla.org/es/docs/Web/JavaScript/Introducci%C3%B3n_a_JavaScript_orientado_a_objetos]
 ```
-<https://www.odoo.com/documentation/15.0/developer/reference/frontend/framework_overview.html>
+https://www.odoo.com/documentation/15.0/developer/reference/frontend/framework_overview.html 
 
 Odoo suporta tres maneres de fer codi Javascript:
 
 -   Sense mòduls (No recomanable)
 -   Amb mòduls natius ES6.
--   Amb el seu propi sistema de mòduls:
-
-## Mòduls JS segons Odoo
-
-Javascript fins a ES6 no tenia una manera definida de fer mòduls. Per
-tant, cada programador utilitzaba un patró de disseny diferent. En Odoo
-han optat per utilitzar una tècnica anomenada AMD (Asynchronous Module
-Definition), de manera similar a com ho fa la biblioteca **require.js**.
-Odoo utilitza una única variable global anomenada **odoo** que conté una
-referència a cada funció de cada mòdul web. Per tant, per definir una
-funció deguem observar aquest exemple:
-
-``` javascript
-// in file a.js
-odoo.define('module.A', function (require) {  
-    "use strict";
-    var A = ...;
-    return A;
-});
-
-// in file b.js
-odoo.define('module.B', function (require) {
-    "use strict";
-    var A = require('module.A');
-    var B = ...; // something that involves A
-    return B;
-});
-```
-
-```{tip}
-La tècnica d’utilitzar una funció com a mòdul és anomenada '''patró mòdul''' i aconsegueix que les variables definides dins de la funció es comporten com a variables '''privades''' i sols es puga accedir a les variables i mètodes '''públics''' definits en el '''return''' de la funció.
-```
-El mètode **odoo.define** accepta tres arguments:
-
--   **moduleName**: El nom del mòdul. Es recomana seguir la mateixa
-    sintaxi que en els models de la programació en python.
--   **dependencies**: (opcional) Es tracta d\'una llista d\'strings amb
-    els noms d\'altres mòduls dels que depen.
--   **function**: L\'últim argument és una funció que defineix el mòdul
-    i que retorna la classe o un array de les classes definides. Aquesta
-    funció accepta com a argument la funció **require**, que és
-    l\'encarregada d\'obtindre altres objectes del **namespace** del
-    Javascript.
-
-Per tant, un mòdul de client web en Odoo és el resultat de la funció
-define() de la classe global Odoo, la qual necessita el nom del mòdul,
-dependències i una funció que retorne una variable o un diccionari de
-variables. Aquestes variables són les classes que exporta el mòdul.
-
-```{tip}
-Si es pot traure una analogía amb el backend python d'Odoo, el require() és com el '''self.env[]''' i permet delarar dependències sense necessitat de saber l'ordre en que carrega tot. 
-```
-Hi ha una altra manera de cridar a la funció define i és ficant els
-mòduls dels que depèn com a segon argument:
-
-``` javascript
-odoo.define('module.Something', ['module.A', 'module.B'], function (require) {
-    "use strict";
-
-    var A = require('module.A');
-    var B = require('module.B');
-
-    // some code
-});
-```
-
-Si alguna cosa falla, el client pot donar aquests missatges d\'error:
-
--   Missing dependencies: These modules do not appear in the page. It is
-    possible that the JavaScript file is not in the page or that the
-    module name is wrong
--   Failed modules: A javascript error is detected
--   Rejected modules: The module returns a rejected Promise. It (and its
-    dependent modules) is not loaded.
--   Rejected linked modules: Modules who depend on a rejected module
--   Non loaded modules: Modules who depend on a missing or a failed
-    module
+-   Amb el seu propi sistema de mòduls (En versions antigues)
 
 ## Utilitzar mòduls natius ES6 en Odoo 
 
 La documentació oficial recomana fer els nous mòduls d\'aquesta manera.
-No obstant, Odoo els transformarà en el seu sistema de mòduls al fer el
-bundle. Per això cal afegir un comentari en la primera línia:
 
 ``` javascript
-/** @odoo-module **/
 import { someFunction } from './file_b';
 
 export function otherFunction(val) {
@@ -321,31 +217,23 @@ export function otherFunction(val) {
 }
 ```
 
-Això té algunes limitacions en la sintaxi de les exportacions que està
-[documentada en la documentació
-oficial](https://www.odoo.com/documentation/15.0/developer/reference/frontend/javascript_modules.html#limitations).
-Si hi ha alguna cosa realment complicada, recomanen continuar utilitzant
-el mètode d\'Odoo que és el que, en realitat, és transpilat.
-
 # OWL
 
 Moltes pàgines web SPA com és Odoo estan fetes en un framework de
 Javascript, ja que el manteniments dels components, els hooks, la
 reactivitat o la comunicació amb el servidor són complicats i és
 innecessari fer-ho sempre. Alguns dels frameworks són: Angular, Vue,
-React\...
+React...
 
 Odoo té el seu propi, i a partir de la versió 14 es diu OWL i es
 desenvolupa per separat, sempre pensant en que siga la base dels nous
 elements de la web en Odoo. En Odoo 14 el sistema antic i OWL poden
-conviure, però s\'espera que OWL siga adoptat completament en el futur.
-De fet en Odoo 15 diuen que el core de la web ja està totalment reescrit
-en OWL, amés de la vista graph, per exemple. Per al 16 es preveu que
-tots els fields i vistes adopten el nou framework.
+conviure. Al 16 tots els fields i vistes adopten el nou framework.
 
 ```{tip}
 La primera pregunta que un desenvolupador web es fa al veure que Odoo està desenvolupant el seu framework és perquè no utilitzen Angular, Vue o React o qualsevol altre framework madur. Els desenvolupadors d'Odoo la responen en cada article: Necessiten que siga més lleugera, adaptada totalment a Odoo i no dependre d'altres. Semblen bons motius i si tenen raó o no es veurà en les pròximes versions. 
 ```
+
 OWL és un framework web menut (\<20KB) que té els elements d\'un
 framework modern:
 
@@ -395,8 +283,6 @@ fer-ho ja d\'aquesta manera en l\'exemple. En components.js afegim
 aquest codi:
 
 ``` javascript
-/** @odoo-module **/
-
 const { useState } = owl.hooks;  // Object destructuring per treue el que necessitem
 const { xml } = owl.tags;
 const { Component } = owl;   // Com es veu, owl està disponible en l'espai de noms del bundle per a que es puga accedir fàcilment.
@@ -435,110 +321,9 @@ Click Me! [<t t-esc="state.value"/>]
 
 <https://www.cybrosys.com/blog/hooks-in-odoo-owl-framework>
 
-# Classes Javascript en Odoo
 
-En Javascript no hi ha una manera estàndard tampoc de crear classes,
-però proporciona mecanismes per simular l\'efecte. Odoo utilitza la
-tècnica de [John
-Resig](https://johnresig.com/blog/simple-javascript-inheritance/).
-Cridanta al mètode **extend()** d\'una classe.
-
-``` javascript
-var Class = require('web.Class');
-
-var Animal = Class.extend({
-    init: function () {
-        this.x = 0;
-        this.hunger = 0;
-    },
-    move: function () {
-        this.x = this.x + 1;
-        this.hunger = this.hunger + 1;
-    },
-    eat: function () {
-        this.hunger = 0;
-    },
-});
-```
-
-El mètode extend() agafa un diccionari amb una llista de funcions i
-atributs. Podem crear tants atributs com funcions necessitem, podem
-sobreescriure atributs i mètodes de la classe pare i cridar a mètodes de
-la classe pare amb **this.\_super.apply(this, arguments);**
-
-Aquestes són les técniques que utilitzen en Odoo per a les classes:
-
--   Les classes es defineixen heretant de Class o d\'alguna de les seves
-    filles.
--   extend() s\'utilitza per heretar d\'una classe, com a paràmetre
-    accepta objectes (o diccionaris que és el mateix).
--   init() actua com a constructor.
--   include() permet modificar classes (monkey patch)
--   Quan utilitzem extend() o include(), cada mètode que es redefineix
-    pot utilitzar this.\_super() per accedir a la implementació
-    original.
-
-**Més sobre classes en Javascript/Odoo:**
-
-Per fer herència:
-
-``` javascript
-var Animal = require('web.Animal');
-
-var Dog = Animal.extend({
-    move: function () {
-        this.bark();
-        this._super.apply(this, arguments);
-    },
-    bark: function () {
-        console.log('woof');
-    },
-});
-
-var dog = new Dog();
-dog.move()
-```
-
-També es pot mesclar l\'herencia de varies classes:
-
-``` javascript
-var Animal = require('web.Animal');
-var DanceMixin = {
-    dance: function () {
-        console.log('dancing...');
-    },
-};
-
-var Hamster = Animal.extend(DanceMixin, {
-    sleep: function () {
-        console.log('sleeping');
-    },
-});
-```
-
-Una altra cosa que es pot fer és ampliar una classe existent amb
-**include**
-
-``` javascript
-var Hamster = require('web.Hamster');
-
-Hamster.include({
-    sleep: function () {
-        this._super.apply(this, arguments);
-        console.log('zzzz');
-    },
-});
-```
-
-[Manual Oficial Javascript
-Reference](https://www.odoo.com/documentation/12.0/reference/javascript_reference.html)
-[technical training](https://github.com/gdeb/technical-training) [Video
-Odoo JS Framework (2017)](https://www.youtube.com/watch?v=u-6aLi1oqcw)
-[Video JS Framework (2018)](https://www.youtube.com/watch?v=e3YOpQBJL_A)
 
 # Widgets personalitzats 
-
-> A partir d'Odoo 9, el client web ha canviat substancialment. Aixì que no podem fiar-nos de tutorial basats en aquest. De fet, el propi manual oficial d'Odoo no està actualitzat i no funciona.
 
 El Widget és la manera que té Odoo de mostrar les dades i gestionar-les
 de forma estàndard en tota la interfície.
