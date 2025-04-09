@@ -43,7 +43,7 @@ fer canvis subtils en l\'apariència o comportament de la web.
 Reflexionem sobre el tipus de modificació que necessitem:
 
 -   Un canvi menor en l\'apariència: Afegir algunes regles CSS.
--   Un canvi estétic o de comportament de la manera en que es visualitza     un field: Afegir HTML, CSS i Javascript a un **Widget**.
+-   Un canvi estétic o de comportament de la manera en que es visualitza un field: Afegir HTML, CSS i Javascript a un **Widget**.
 -   Un canvi en la manera en la que un field enmagatzema o recupera les dades: Modificació del Javascript del Widget i de la part del model o el controlador Javascript de la vista.
 -   Un canvi en la manera de mostrar un recordset sencer: Crear una  vista.
 -   Fer una web des de 0 amb les dades d\'Odoo: Utilitzar els [Web
@@ -283,12 +283,15 @@ fer-ho ja d\'aquesta manera en l\'exemple. En components.js afegim
 aquest codi:
 
 ``` javascript
-const { useState } = owl.hooks;  // Object destructuring per treue el que necessitem
-const { xml } = owl.tags;
-const { Component } = owl;   // Com es veu, owl està disponible en l'espai de noms del bundle per a que es puga accedir fàcilment.
-
+import { Component, xml, useState, mount } from "@odoo/owl";
 
 class MyComponent extends Component {
+    static template = xml`
+        <div t-on-click="increment">
+            <t t-esc="state.value">
+        </div>
+    `;
+
     setup() {
         this.state = useState({ value: 1 });
     }
@@ -301,9 +304,21 @@ class MyComponent extends Component {
 // La forma de cridar a la funció xml en tagged templates 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates
 
-MyComponent.template = xml`<button t-on-click="changeText">  
+MyComponent.template = xml`<button t-on-click="increment">  
 Click Me! [<t t-esc="state.value"/>]
 </button>`;
+```
+
+El problema és que ara no és fàcil integrar el component en la vista d'Odoo, ja que es necessita donar d'alta com un Widget o ampliar les vistes. 
+
+De moment, podem provar si funciona amb aquest codi que després llevarem:
+
+```javascript
+document.addEventListener("DOMContentLoaded", function () {
+    const el = document.createElement("div");
+    document.body.appendChild(el);
+    mount(MyComponent, el);
+});
 ```
 
 ## Modificar components en OWL 
