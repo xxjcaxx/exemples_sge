@@ -12,7 +12,7 @@ Les vistes tenen una prioritat i, si no s\'especifica el identificador de la que
     <field name="model">object_name</field>
     <field name="priority" eval="16"/>
     <field name="arch" type="xml">
-        <!-- view content: <form>, <tree>, <graph>, ... -->
+        <!-- view content: <form>, <list>, <graph>, ... -->
     </field>
 </record>
 ```
@@ -39,31 +39,33 @@ Exemple de vista form:
         </record>
 ```
 
-Encara que Odoo ja proporciona un tree i un form per defecte, la vista
+Encara que Odoo ja proporciona un list i un form per defecte, la vista
 cal millorar-la quasi sempre. Totes les vistes tenen fields que poden
 tindre widgets diferents. En les vistes form, podem adaptar molt
 l\'aspecte amb grups de fields, pestanyes, camps ocults
 condicionalment\...
 
-### Les vistes tree
+### Les vistes list
 
-Les vistes *tree* (o vistes de llista) són un dels tipus de vistes més utilitzats en Odoo. Permeten mostrar registres en format de taula, facilitant la visualització i la gestió de grans quantitats de dades.  
+> A partir d'Odoo 18 ja no hi ha vistes `tree` i són totes `list`, els exemples antics funcionaran canviant aquesta paraula. 
+
+Les vistes *list* (o vistes de llista) són un dels tipus de vistes més utilitzats en Odoo. Permeten mostrar registres en format de taula, facilitant la visualització i la gestió de grans quantitats de dades.  
 
 Aquestes vistes són especialment útils per a representar informació resumida d'un conjunt de registres, amb columnes que mostren els camps més rellevants. A més, poden incloure funcionalitats com l’ordenació, els filtres i les accions ràpides.  
 
-Un exemple bàsic d’una vista *tree* per al model de clients (*res.partner*) seria el següent:  
+Un exemple bàsic d’una vista *list* per al model de clients (*res.partner*) seria el següent:  
 
 ```xml
-<record id="view_partner_tree" model="ir.ui.view">
-    <field name="name">res.partner.tree</field>
+<record id="view_partner_list" model="ir.ui.view">
+    <field name="name">res.partner.list</field>
     <field name="model">res.partner</field>
     <field name="arch" type="xml">
-        <tree>
+        <list>
             <field name="name"/>
             <field name="phone"/>
             <field name="email"/>
             <field name="company_id"/>
-        </tree>
+        </list>
     </field>
 </record>
 ```
@@ -74,12 +76,12 @@ Un exemple bàsic d’una vista *tree* per al model de clients (*res.partner*) s
 - `<field name="name">`: Assigna un nom únic a la vista.  
 - `<field name="model">`: Indica el model al qual pertany la vista (`res.partner` en aquest cas).  
 - `<field name="arch" type="xml">`: Conté l'estructura XML de la vista.  
-- `<tree>`: Defineix una vista de tipus *tree*.  
+- `<list>`: Defineix una vista de tipus *list*.  
 - `<field name="name"/>`, `<field name="phone"/>`, etc.: Representen les columnes que es mostraran en la llista.  
 
 #### Colors
 
-En les vistes tree es pot modificar el **color** en funció del contingut
+En les vistes list es pot modificar el **color** en funció del contingut
 d\'un field amb l\'etiqueta **decoration**, que utilitza colors
 contextuals de **Bootstrap**:
 
@@ -93,17 +95,17 @@ contextuals de **Bootstrap**:
 `   decoration-warning - Color LIGHT BROWN`
 
 ``` xml
-<tree  decoration-info="state=='draft'" decoration-danger="state=='trashed'">
+<list  decoration-info="state=='draft'" decoration-danger="state=='trashed'">
     <field name="name"/>
     <field name="state"/>
-</tree>
+</list>
 ```
 
 En el cas de que es vulga comparar un field Date o Datetime es pot fer
 amb la variable global de QWeb **current_date**. Per exemple:
 
 ``` xml
-<tree  decoration-info="start_date==current_date">
+<list  decoration-info="start_date==current_date">
 ...
 ```
 
@@ -113,7 +115,7 @@ També es pot fer **decoration** en els fields individualment.
 
 També es pot fer **editable** per no tindre que obrir un form:
 **editable=\"\[top \| bottom\]\"**. Top o Bottom indica on es crearan
-els nous registres. Els trees editables poden tindre un atribut més
+els nous registres. Els lists editables poden tindre un atribut més
 **on_write** que indica un mètode a executar quan s\'edita o crea un
 element.
 
@@ -124,37 +126,37 @@ l\'usuari el veja. El que cal fer és ficar el field , però dir que es
 **invisible=\"1\"**
 
 ``` xml
-<tree  decoration-info="duration==0">
+<list  decoration-info="duration==0">
                     <field name="name"/>
                     <field name="course_id"/>
                     <field name="duration" invisible="1"/>
                     <field name="taken_seats" widget="progressbar"/>
-                </tree>
+                </list>
 ```
 
 #### Botons
 
-Els *trees* poden tindre **buttons** amb els mateixos atributs que els
+Els *lists* poden tindre **buttons** amb els mateixos atributs que els
 buttons dels forms.
 
 ```{tip}
-Cal tindre cura en els trees dins de forms (X2many), ja que el botó s'executa en el model del tree i no del formulari que el conté. Si volem accedir al pare, cal utilitzar l'atribut parent. Mireu en [[Odoo#Context]]
+Cal tindre cura en els lists dins de forms (X2many), ja que el botó s'executa en el model del list i no del formulari que el conté. Si volem accedir al pare, cal utilitzar l'atribut parent. Mireu en [[Odoo#Context]]
 ```
 #### Totals
 
-En els trees es pot calcular totals amb aquesta etiqueta:
+En els lists es pot calcular totals amb aquesta etiqueta:
 
 ``` xml
 <field name="amount" sum="Total Amount"/>
 ```
 
 #### Ordenar per un field 
-Un tree es pot ordenar per defecte per un field que no siga computat.
+Un list es pot ordenar per defecte per un field que no siga computat.
 Això es fa en **default_order**. Mirem un exemple per ordenar
 descendentment:
 
 ``` xml
-<tree default_order="sequence,name desc">
+<list default_order="sequence,name desc">
 ```
 
 Si volem que sempre s\'ordene per eixe criteri, sense importar la vista,
@@ -164,7 +166,7 @@ cal afegir al model l\'atribut **\_order**.
 
 #### banner_route
 
-A partir de la versió 12 d\'Odoo, permet afegir als trees, forms, etc
+A partir de la versió 12 d\'Odoo, permet afegir als lists, forms, etc
 una capçalera obtinguda per una url.
 <https://www.odoo.com/documentation/12.0/reference/views.html#common-structure>
 
@@ -175,10 +177,10 @@ imatges, aquestes estaran en el directori **static** del mòdul.
 
 **Fer un banner route pas a pas**:
 
-El primer és ficar en el tree la referència al **banner_route**:
+El primer és ficar en el list la referència al **banner_route**:
 
 ``` xml
-   <tree banner_route="/negocity/city_banner" >
+   <list banner_route="/negocity/city_banner" >
 ```
 
 Ara cal crear el **web controller** que implementa aquesta ruta (es
@@ -238,12 +240,12 @@ en **`<notebook>` `<page string="titol">`**
 Es pot separar els grups amb
 **`<separator string="Description for Quotations"/>`**
 
-Alguns **One2Many** donen una vista tree que no es adequada, per això es
-pot modificar el tree per defecte:
+Alguns **One2Many** donen una vista list que no es adequada, per això es
+pot modificar el list per defecte:
 
 ``` xml
 <field name="subscriptions" colspan="4">
-   <tree>...</tree>
+   <list>...</list>
 </field>
 ```
 
@@ -258,7 +260,7 @@ Una altra opció és especificar la vista que insertarà en el field:
 
 **Valors per defecte en un one2many**
 
-Quant creem un One2many en el mode form (o tree editable) ens permet
+Quant creem un One2many en el mode form (o list editable) ens permet
 crear elements d\'aquesta relació. Per a aconseguir que, al crear-los,
 el camp many2one corresponga al pare des del que es crida, es pot fer
 amb el context: Dins del field one2many que
@@ -490,7 +492,7 @@ O mostrar si un camp anomenat **state** té un determinat valor:
 ```
 
 En el següent exemple, introdueix dos conceptes nous: el
-**column_invisible** per ocultar una columna d\'un tree i el **parent**
+**column_invisible** per ocultar una columna d\'un list i el **parent**
 per fer referència al valor d\'un field de la vista pare:
 
 ``` xml
@@ -541,7 +543,7 @@ Les vistes kanban són per a mostrar el model en forma de \'cartes\'. Les
 vistes kanban se declaren amb una mescla de xml, html i plantilles
 **Qweb**.
 
-Un Kanban és una mescla entre tree i form. En Odoo, les vistes tenen una
+Un Kanban és una mescla entre list i form. En Odoo, les vistes tenen una
 estructura jeràrquica. En el cas del Kanban, està la **vista Kanban**,
 que conté molts **Kanban Box**, un per a cada *record* mostrat. Cada
 kanban box té dins un *div* de *class* **vignette** o **card** i, dins,
@@ -567,7 +569,7 @@ clava una caixa que ocupa tota la finestra i va recorreguent els records
 que es tenen que mostrant i dibuixant els widgets de cada record.
 
 ```{tip}
-A diferència en els trees o forms, els kanbans poden ser molt variats i han de deixar llibertat per ser dissenyats. És per això, que els desenvolupadors d'Odoo no han proporcionat unes etiquetes i atributs XML d'alt nivell com passa en els forms o trees, en els que no hem de preocupar-nos de la manera en que serà renderitzar, el CSS o cóm obté els fields de la base de dades. Al fer un Kanban, entrem al nivel de QWeb, per el que controlem plantilles, CSS i indicacions i funcions per al Javascript. Tot això està ocult en la resta de vistes, però en Kanban és impossible ocultar-ho.
+A diferència en els lists o forms, els kanbans poden ser molt variats i han de deixar llibertat per ser dissenyats. És per això, que els desenvolupadors d'Odoo no han proporcionat unes etiquetes i atributs XML d'alt nivell com passa en els forms o lists, en els que no hem de preocupar-nos de la manera en que serà renderitzar, el CSS o cóm obté els fields de la base de dades. Al fer un Kanban, entrem al nivel de QWeb, per el que controlem plantilles, CSS i indicacions i funcions per al Javascript. Tot això està ocult en la resta de vistes, però en Kanban és impossible ocultar-ho.
 ```
 Exemple bàsic:
 
@@ -653,7 +655,7 @@ Si ja volem fer un kanban més avançat, tenim aquestes opcions:
         apareixen opcions per crear nous elements sense necessitat
         d\'entrar al formulari.
     -   **default_order** per ordenar segons algun criteri si no s\'ha
-        ordenat en el tree.
+        ordenat en el list.
     -   **quick_create** a true o false segons vulguem que es puga crear
         elements sobre la marxa sense el form. Per defecte és false si
         no està agrupat i true si està agrupat.
