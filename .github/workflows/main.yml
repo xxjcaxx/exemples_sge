@@ -21,6 +21,9 @@ jobs:
       - name: Install Jupyter-Books
         run: pip install -U jupyter-book
 
+      - name: Build Book
+        run: jupyter-book build apunts/
+
       - name: Publish current workdir (which contains generated content) to GitHub Pages
         uses: rayluo/github-pages-overwriter@v1.3
 
@@ -35,7 +38,7 @@ jobs:
           # Such a directory does *not* have to already exist in your repo,
           # it could be an output directory created dynamically
           # by your static website builder.
-          source-directory: jb/_build/html/
+          source-directory: apunts/_build/html/
 
           # Optional. Default value "gh-pages".
           # It specifies the temporary branch which hosts the static website.
