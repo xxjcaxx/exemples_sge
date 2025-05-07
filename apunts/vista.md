@@ -159,10 +159,20 @@ descendentment:
 <list default_order="sequence,name desc">
 ```
 
-Si volem que sempre s\'ordene per eixe criteri, sense importar la vista,
+> Si volem que sempre s\'ordene per eixe criteri, sense importar la vista,
 cal afegir al model l\'atribut **\_order**.
 
-**header**
+#### Agrupar per un field
+
+Amb **default_group_by**. Com l'atribut per ordenar, sols funciona amb camps guardats a la base de dades. 
+
+```xml
+<list default_group_by="born_year">
+    <field name="name"/>
+    <field name="born_year"/>
+    <field name="age"/>
+</list>
+```
 
 #### banner_route
 
@@ -249,14 +259,21 @@ pot modificar el list per defecte:
 </field>
 ```
 
+O especificar la vista que volem:
+``xml
+    <field name="subscriptions" context="{'list_view_ref': 'modul.view_subscriptions_tree'}"/>
+```
+
 En un One2many es pot especificar també el **form** que en donarà quan
 anem a crear un nou element.
 
 Una altra opció és especificar la vista que insertarà en el field:
 
-``` xml
-<field name="m2o_id" context="{'form_view_ref': 'module_name.form_id'}"/>
+```xml
+    <field name="m2o_id" context="{'form_view_ref': 'module_name.form_id'}"/>
 ```
+
+> Les vistes tree embegudes tenen limitacions respecte a les cridades amb un action. Per exemple, no poden ser agrupades. 
 
 **Valors per defecte en un one2many**
 
@@ -570,6 +587,7 @@ que es tenen que mostrant i dibuixant els widgets de cada record.
 
 ```{tip}
 A diferència en els lists o forms, els kanbans poden ser molt variats i han de deixar llibertat per ser dissenyats. És per això, que els desenvolupadors d'Odoo no han proporcionat unes etiquetes i atributs XML d'alt nivell com passa en els forms o lists, en els que no hem de preocupar-nos de la manera en que serà renderitzar, el CSS o cóm obté els fields de la base de dades. Al fer un Kanban, entrem al nivel de QWeb, per el que controlem plantilles, CSS i indicacions i funcions per al Javascript. Tot això està ocult en la resta de vistes, però en Kanban és impossible ocultar-ho.
+Es poden utilitzar certs widgets en els fields com `image` o `progress_bar`, però són molts menys widgets que en els forms o lists.
 ```
 Exemple bàsic:
 
@@ -679,43 +697,6 @@ Si ja volem fer un kanban més avançat, tenim aquestes opcions:
         definir de forma específica el color que necessitem. Aquest
         field tindrà un valor de 0-9.
 
-Un exemple més complet i correcte:
-
-
-``` xml
-      <record model="ir.ui.view" id="music_kanban_view">
-            <field name="name">conservatori.music</field>
-            <field name="model">conservatori.music</field>
-            <field name="arch" type="xml">
-            <kanban default_group_by="instrument" default_order="instrument" quick_create="true">
-                    <field name="numero" sum="numero"/>
-                    <templates>
-                    <t t-name="kanban-box">
-                            <div  t-attf-class="oe_kanban_color_{{kanban_getcolor(record.numero.raw_value)}}
-                                                  oe_kanban_global_click_edit oe_semantic_html_override
-                                                  oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}}">
-                                <a type="open">
-                                    <img class="oe_kanban_image"
-                                        t-att-src="kanban_image('conservatori.music', 'foto', record.id.value)" />
-                                </a>
-                                <div t-attf-class="oe_kanban_content">
-                                    <h4>
-                                        <a type="edit">
-                                            <field name="name"></field>
-                                        </a>
-                                    </h4>
-                                    <ul>
- 
-                                       <li>Group: <field name="grup"></field></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </t>
-                    </templates>
-                </kanban>
-             </field>
-        </record>
-```
 
 **Forms dins de kanbans**:
 
@@ -745,6 +726,12 @@ identificador extern d\'una vista form en **quick_create_view**. Aquest
   </group>
  </form>
 ```
+
+
+#### Imatges en els Kanbans
+
+En molts llocs trobarem la funció `kanban_image`. És la manera correcta de fer-ho en Qweb. Necessita posar el camp `id` el principi. però també es pot utilitzar dirèctament el `widget="image"` com en els forms. 
+
 
 ### Vistes search 
 

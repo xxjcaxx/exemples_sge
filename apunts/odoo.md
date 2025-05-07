@@ -568,21 +568,27 @@ parent = fields.Many2one('game.resource', domain="[('template', '=', True)]")
     segons el domain:
 
 ``` python
-characters_attack = fields.Many2many('game.character',
-                                      relation='characters_attack', 
-                                      domain="[('id', 'in', characters_attack_available)]")
+allowed_value_ids = fields.Many2many(
+    comodel_name="x",
+    compute="_compute_allowed_value_ids"
+)
+
+def _compute_allowed_value_ids(self):
+    for record in self:
+        record.allowed_value_ids = self.env["x"].search(...)
+
+value_id = fields.Many2many(
+    comodel_name="x",
+    domain="[('id', 'in', allowed_value_ids)]",
+)
 ```
 
 -   **Domain en One2many**: Al ser una relació que depen d\'altre
     Many2one, no es pot filtrar, si fiquem un domain, sols deixarà de
     mostrar els que no compleixen el domain, però no deien d\'existir:
 
-``` python
-raws = fields.One2many('game.raws','clan', domain= lambda s: [('quantity','>',0)])
-```
 
-Observem com hem fet un **domain amb lambda**, és a dir, aquest domain
-crida a una funció lambda al ser aplicat.
+
 
 ### Fields Computed 
 
@@ -910,6 +916,18 @@ refs. Les tripletes poden ser:
 -   (5,\_,\_): Desvincula pero no elimina tots els registres vinculats
 -   (6,\_,\[ids\]): Reemplaça la llista de registres vinculats.
 
+### Dades per als Binary i Image
+
+Algunes dades com les imatges o fitxers es poden posar en records. Hi ha dos maneres: 
+
+* Convertir en Base64 el fitxer i copiar i pegar el resultat dins del field.
+* Afegir el atribut `type="base64"` i el atribut `file="modul/demo/fitxer"`
+
+```xml
+<field name="image_1920" type="base64" file="exemple/demo/cares/1000.jpg"/>
+```
+Observem la ruta que inicia des del directori del mòdul.
+
 ### Esborrar
 
 Amb l\'etiqueta **delete** es pot especificar els elements a esborrar
@@ -920,11 +938,12 @@ amb el external ID o amb un search:
 ```
 
 ```{danger}
-Si falla l'actualització amb dades de demo, és possible que Odoo 12 deshabilite la possibilitat de tornar-les a instal·lar. Això és el field demo de ir.module.module que és readonly, per tant, cal modificar-lo a ma en la base de dades:
+Si falla l'actualització amb dades de demo, és possible que Odoo deshabilite la possibilitat de tornar-les a instal·lar. Això és el field demo de ir.module.module que és readonly, per tant, cal modificar-lo a ma en la base de dades:
 
 `update ir_module_module set demo = 't' where name='school';`
 ```
 
+Més informació: https://www.odoo.com/documentation/master/developer/reference/backend/data.html
 
 ## Accions i menús 
 
@@ -1983,12 +2002,16 @@ mètodes **on_change**.
 ```{tip}
  Els camps '''computed''' ja tenen el seu propi onchange, per tant, no cal fer-lo
 ```
+
+```{tip}
+ Ha quedat "deprecated" retornar un domain https://github.com/odoo/odoo/pull/41918#issuecomment-824946980
+```
+
 En onchange es modifica el valor d\'un o més camps dirèctament i, si cal
 un filtre o un missatge, es fa en el return:
 
 ``` python
 return {
-    'domain': {'other_id': [('partner_id', '=', partner_id)]},
     'warning': {'title': "Warning", 'message': "What is this?", 'type': 'notification'},
 }
 ```
@@ -2027,26 +2050,6 @@ def _verify_valid_seats(self):
                  'message': "Increase seats or remove excess attendees",
              },
          }
-
-@api.onchange('pais')
-def _filter_empleat(self):                                             
-      return { 'domain': {'empleat': [('country','=',self.pais.id)]} }      
-
-# Exemple avançat en el que l'autor crea un domain amb una llista d'ids i un '''in''':
-@api.multi
-def onchange_partner_id(self, part):
-    res = super(SaleOrder, self).onchange_partner_id(part)
-    domain = [('active', '=', True), ('sale_ok', '=', True)]
-    if part:
-        partner = self.env['res.partner'].browse(part)
-        if partner and partner.sales_channel_id:
-            domain.append(('sales_channel_ids', '=',
-                           partner.sales_channel_id.id))
-    product_ids = self.env['product.product'].search(domain)
-    res.update(domain={
-        'order_line.product_id': ['id', 'in', [rec.id for rec in product_ids]]
-    })
-    return res 
 ```
 
 ```{tip}
@@ -2055,6 +2058,8 @@ Si l'usuari s'equivoca introduint algunes dades, Odoo proporciona varies maneres
 * onchange amb missatge d'error i restablint els valors originals
 * Sobreescriptura del mètode write o create per comprovar coses abans de guardar 
 ```
+
+
 ##### Cron Jobs 
 
 Cal crear un record en el model ir.cron, per exemple:
