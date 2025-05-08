@@ -9,13 +9,6 @@ alguna cosa més personalitzada. Si volem personalitzar a baix nivell
 l\'aparença i funcionament del client web, deguem entendre bé cóm
 funciona.
 
-Les pàgines web més simples són estàtiques. Però en el moment que
-necessitem accedir a una base de dades, necessitem un llenguatge de
-programació de servidor que obtinga les dades i les envie al navegador
-web. Fins a Odoo 6, el backend creava html complet i l\'enviava al
-client. Després van entendre que això sobrecarrega al servidor amb
-aspectes més relacionats amb la vista.
-
 L'Odoo actual carrega un client complet a la web, que es comunica amb
 missatges breus i concrets amb el servidor. Missatges en JSON que sols
 tenen dades o ordres a executar. Cada vegada que refresquem el navegador
@@ -25,19 +18,15 @@ altre amb una llista de les dades a mostrar pel client. Opcionalment,
 s\'envía el xml de la vista, el qual serà interpretat pel client per
 mostrar correctament les dades.
 
-> Si volem veure tot el que el servidor rep o envia al client, podem arrancar el servici amb l\'opció \--log-level=debug_rpc.
+> Si volem veure tot el que el servidor rep o envia al client, podem arrancar el servici amb l\'opció \--log-level=debug_rpc. També es pot obrir amb F12 la consola del navegador. 
 
 El client web és una **SPA (Single Page Application)**, a l\'estil
 d\'altres frameworks coneguts com Angular o React, va creant i destruint
-elements de la interfície contínuament. Aquests elements es diuen components. Els components és la manera genèrica de compartimentar l'interficie. Després hi ha components que actuen com a `Widgets` per mostrar fields o efectes visuals o altres, per exemples, són `views` per mostrar un o varis registres. 
-
-Si volem saber modificar a baix nivell el client web, necessitem saber
-prou de Javascript, BootStrap i altres, amés de HTML5.
+elements de la interfície contínuament. Aquests elements es diuen `components`. Els components és la manera genèrica de compartimentar l'interficie. Després hi ha components que actuen com a `Widgets` per mostrar fields o efectes visuals o altres, per exemples, són `views` per mostrar un o varis registres. 
 
 Amb Odoo, es proporcionen tres clients web diferenciats, però que, internament, funcionen amb el mateix framework. Aquest són el **web client** que és el "backoffice" utilitzat pel empleats de l'empresa, el **website** que és la pàgina web pública i el **point of sale**, que és per al punts de venda.
 
-Quan ens referim a crear mòduls per al client, generalment ens referim a
-fer canvis en l\'apariència o comportament de la web.
+Quan ens referim a crear mòduls per al client, generalment ens referim a fer canvis en l\'apariència o comportament de la web.
 
 Reflexionem sobre el tipus de modificació que necessitem:
 
@@ -45,8 +34,7 @@ Reflexionem sobre el tipus de modificació que necessitem:
 - Un canvi estétic o de comportament de la manera en que es visualitza un field: Afegir HTML, CSS i Javascript a un **Widget**.
 - Un canvi en la manera en la que un field enmagatzema o recupera les dades: Modificació del Javascript del Widget i de la part del model o el controlador Javascript de la vista.
 - Un canvi en la manera de mostrar un recordset sencer: Crear una  vista.
-- Fer una web des de 0 amb les dades d\'Odoo: Utilitzar els [Web
-    controllers](https://www.odoo.com/documentation/12.0/reference/http.html#reference-http-controllers)
+- Fer una web des de 0 amb les dades d\'Odoo: Utilitzar els [Web controllers](https://www.odoo.com/documentation/master/developer/reference/backend/http.html)
 
 ## Arquitectura del client web
 
@@ -83,8 +71,7 @@ i imatges. Això ha d\'estar en el directori **static** del mòdul:
 - static/img : pictures used in templates or CSS
 - static/libs : JS libraries needed by the module
 
-El server no manipula aquesta informació, però la processa en certa
-manera i l\'envia a client.
+El server no manipula aquesta informació, però la processa i l\'envia a client.
 
 ```{tip}
 Com que els CSS i JS no són processades pel servidor, no cal reiniciar el servidor per veure els canvis, sols refrescar el navegador. Això no sempre funciona, ja que el servidor pot ser que no processe els assets o que la cau del navegador no actualitze el JS o el XML.
@@ -97,17 +84,12 @@ molts CSS, moltes línies de Javascript de molt fitxers distints i molt
 d'HTML i XML. Per evitar saturar la xarxa, el servidor fa una
 compressió de totes eixes dades de la següent manera:
 
-- Tots els CSS i Javascript són concatenats en un sol fitxer. La
-    concatenació s\'ordena per dependències entre mòduls.
-- El Javascript és minimitzat llevant espais i refactoritzant les
-    variables per noms més curts.
-- Una web HTML molt simple sols amb l\'enllaç als CSS i Javascript és
-    enviada al client.
-- Tot es comprimeix en gzip pel server per reduir l\'enviament. El
-    navegador és capaç de descomprimir.
+- Tots els CSS i Javascript són concatenats en un sol fitxer. La concatenació s\'ordena per dependències entre mòduls.
+- El Javascript és minimitzat llevant espais i refactoritzant les variables per noms més curts.
+- Una web HTML molt simple sols amb l\'enllaç als CSS i Javascript és enviada al client.
+- Tot es comprimeix en gzip pel server per reduir l\'enviament. El navegador és capaç de descomprimir.
 
-Tot això fa difícil de fer debug amb el client. Per això es recomana
-ficar **?debug=1** a la URL per demanar que no minimitze.
+Tot això fa difícil de fer debug amb el client. Per això es recomana ficar **?debug=1** a la URL per demanar que no minimitze.
 
 ### Els Assets
 
@@ -133,9 +115,6 @@ tenen l\'estructura d\'un Template QWeb i els més comuns són:
         'web/static/lib/bootstrap/**/*',
         'web/static/src/js/boot.js',
         'web/static/src/js/webclient.js',
-    ],
-    'web.qunit_suite_tests': [
-        'web/static/src/js/webclient_tests.js',
     ],
 },
 ```
@@ -199,8 +178,6 @@ Els mòduls simplifiquen la programació de les webs grans. Els mòduls oculten 
 En els mòduls cal aconseguir tindre la major independència al aconseguit el menor '''acoblament''' i la major '''cohesió'''. L’acoblament és la excessiva dependència d’un mòdul respecte a altres i la cohesió és la íntima relació entre els elements interns del mòdul. [https://developer.mozilla.org/es/docs/Web/JavaScript/Introducci%C3%B3n_a_JavaScript_orientado_a_objetos]
 ```
 
-<https://www.odoo.com/documentation/15.0/developer/reference/frontend/framework_overview.html>
-
 Odoo suporta tres maneres de fer codi Javascript:
 
 - Sense mòduls (No recomanable)
@@ -222,7 +199,7 @@ export function otherFunction(val) {
 # OWL
 
 Moltes pàgines web SPA com és Odoo estan fetes en un framework de
-Javascript, ja que el manteniments dels components, els hooks, la
+Javascript, ja que els manteniments dels components, els hooks, la
 reactivitat o la comunicació amb el servidor són complicats i és
 innecessari fer-ho sempre. Alguns dels frameworks són: Angular, Vue,
 React...
@@ -548,7 +525,19 @@ En un altre component:
 
 La propia definició com a classe i importació com a element de l'objecte `static components` ja fa que es puga utilitzar com a `tag` en la plantilla XML. 
 
+### Crear un widget per a un field en mode lectura/escriptura
+
+## Modificar una vista en OWL
+
+Les vistes existents també són `components`, però són molt més complexos que els `fields` normals. Un field sol obtenir les dades per `props` i, com a molt, implementar la manera de comunicar els canvis a la vista. Les vistes han d'obtenir les dades del servidor, cridar a widgets i, en ocasions, interpretar un `xml` passat per `arch`. 
+
+Per abordar aquesta complexitat, Odoo opta per una arquitectura `MVC` i fa per a les vistes un model, un controlador i un renderitzador, a banda d'una plantilla `xml`. 
+
+
+
 ## Crear noves vistes en OWL
+
+
 
 <https://codingdodo.com/odoo-javascript-101-classes-and-mvc-architecture/>
 <https://codingdodo.com/odoo-15-javascript-reference/>
