@@ -24,11 +24,41 @@ Desplegar Odoo amb Docker permet instal·lar i gestionar el sistema de manera m�
 
 En classe treballarem finalment amb Docker Compose, el text següent serveix per entendre la configuració final, però no cal fer-los en el treball diari. La configuració definitiva la farem amb Docker Compose. 
 ```
+https://docs.docker.com/engine/install/ubuntu/
+
+> Si volem GUI, podem utilitzar Docker Desktop per a contenidors locals o Portainer per a gestionar també contenidors remots. 
+
+Es pot instal·lar Docker de moltes maneres, però anem a fer-ho de la manera més recomanable per al nostre cas: 
+
+```bash
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+
+# Instal·lar
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Provar
+sudo docker run hello-world
+
+# Gestionar docker sense ser root:
+sudo usermod -aG docker $USER
+
+```
 
 En Docker és molt sencill desplegar Odoo, tan sols fa falta aquests
 comandaments:
 
-    # apt install docker.io
     # docker run -d --restart="always" -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo --name db postgres:9.4
     # docker run --restart="always" -p 8069:8069 --name odoo --link db:db -t odoo
     # docker stop odoo
@@ -52,20 +82,20 @@ entrar per veure els errors:
 Per a fer els nostres mòduls podem crear-los en un directori fora del
 docker i executar-lo d\'aquesta manera:
 
-    # docker run -v /path/to/addons:/mnt/extra-addons -p 8069:8069 --name odoo --link db:db -t odoo
+    $ docker run -v /path/to/addons:/mnt/extra-addons -p 8069:8069 --name odoo --link db:db -t odoo
 
 Mentre estem fent nous mòduls, necessitem reiniciar el servici i
 arrancar-lo actualitzant un mòdul. Primer deguem parar el docker,
 després iniciar-lo indicant que vols entrar a la consola i finalment
 actualitzar el mòdul.
 
-    # docker stop odoo
-    # docker start -a odoo
-    # docker exec odoo odoo --config /etc/odoo/odoo.conf -u nommodul -d nombasededades -r odoo -w odoo --db_host 172.17.0.2 --db_port 5432
+    $ docker stop odoo
+    $ docker start -a odoo
+    $ docker exec odoo odoo --config /etc/odoo/odoo.conf -u nommodul -d nombasededades -r odoo -w odoo --db_host 172.17.0.2 --db_port 5432
 
 **Creació de mòduls, mètode 1**
 
-Com es veu, el últim comandament és un poc complicat. Per tant, anem a
+Com es veu, l'últim comandament és un poc complicat. Per tant, anem a
 fer les coses totalment bé. Per a aixó necessitem un fitxer propi de
 configuració d\'Odoo al que anomenarem **odoo.conf**. Podem utilitzar
 aquesta plantilla:
@@ -145,18 +175,9 @@ en el **run**.
 Això ha d\'estar en un directori dins d\'un fitxer anomenat
 **docker-compose.yml** i sols cal executar cada vegada:
 
-    docker-compose up -d
+    docker compose up -d
 
 Per a que funcione correctament, necessitem un fitxer `odoo.conf` que podem extreure d'un contenidor sense el volumen de `./config`. 
-
-```{admonition} Permisos
-:class: tip
-
-Si no funciona el comandament pot ser perquè el nostre usuari no està al grup `docker`. ho solucionem amb:
-
-    sudo usermod -aG docker $USER
-    newgrp docker
-```
 
 Si volem entrar en la base de dades postgreSQL per a fer coses
 manualment, podem executar:
@@ -166,9 +187,11 @@ manualment, podem executar:
 
 Executem el comandament psql de forma interactiva a la base de dades proves i amb l\'usuari odoo. 
 
+Cal cambé observar que hem associat un volum a les carpetes dels dos contenidors, exepte config i addons. Això permet compartir el codi i la configuració d'Odoo sense compartir massa fitxers o les dades privades de la base de dades. Per compartir sols cal comprimir o posar en Git la carpeta contenidora dels fitxers i carpetes que estem creant.
+
 #### Mode desenvolupador en Docker
 
-Com es pot veure, hem configurat un directori per als mòduls. En aquest directori farem els `scaffold`. Amés hem afegit al comandament `--dev=all`. Això simplifica molt el desenvolupament, ja que tots els canvis provoquen un reinici del servidor i actualització d'algunes parts dels mòduls. 
+Com es pot veure, hem configurat un directori per als mòduls. En aquest directori farem els `scaffold`. Amés hem afegit al comandament `--dev=all`. Això simplifica molt el desenvolupament, ja que molts dels canvis provoquen un reinici del servidor i actualització d'algunes parts dels mòduls. 
 
 L'opció `--dev <feature,feature,...,feature>` en Odoo permet activar diverses característiques útils per al desenvolupament. Aquesta opció **no s'ha d'usar en producció**, ja que està pensada exclusivament per a facilitar la tasca dels desenvolupadors. A continuació, s'expliquen les opcions disponibles:  
 
@@ -184,13 +207,13 @@ Aquesta opció és molt útil durant el desenvolupament, ja que facilita la depu
 Com que el comandament amb `--dev=all` no actualitza la base de dades, la creació de noves vistes, nous models o fields no s'actualitzarà i donarà errades. Una solució és afegir al comandament:
 
 ```yaml
-    command: >
-      -- --dev=all
-      -d basededades
-      -u modul
+    command: ["--dev=all", "-u", "modul", "-d", "basededades"]
 ```
 
-Però sols quan ja existeix la base de dades i el mòdul està instal·lat. Amés, sols s'executarà quan arranquem el Docker, per tant, cal fer un `docker-compose down` i tornar a arrancar els contenidors de nou. Això suposa molta feina, així que ho podem simplificar afegint a `Visual Studio code` una extensió com `VS Code Action Buttons` i configurant el seu `json` així:
+Però sols quan ja existeix la base de dades i el mòdul està instal·lat. En cas d'arrancar docker amb aquest comandament per primera vegada, es crearà la base de dades amb una confoguració estàndard que no ens interessa en Anglés, sense dades de demo i amb usuari/password admin/admin.
+
+
+Amés, sols s'executarà quan arranquem el Docker, per tant, cal fer un `docker-compose down` i tornar a arrancar els contenidors de nou. Això suposa molta feina, així que ho podem simplificar afegint a `Visual Studio code` una extensió com `VS Code Action Buttons` i configurant el seu `json` així:
 
 ```json
         "commands": [
@@ -234,7 +257,7 @@ Per fer un mòdul nou:
 Si volem executar el `shell` de Odoo podem ejecutar el comandament:
 
 
-    docker-compose exec odoo odoo shell -d proves --db_host db --db_password odoo
+    docker compose exec odoo odoo shell -d proves --db_host db --db_password odoo
 
 
 Ací estem diguen que execute al contenidor odoo el comandament odoo especificant la base de dades i el host i password de postgres. És necessari especificar la base de dades perquè Docker Compose crea múltiples contenidors Docker basant-se en la configuració del fitxer `docker-compose.yml`. En aquest cas, hi ha diversos contenidors en execució, un que corre **Odoo**, un altre que corre **PostgreSQL**, i possiblement altres més.  
@@ -493,6 +516,8 @@ Una vegada dins, es poden utilitzar els comandaments de pdb:
 ## Posar en producció
 
 <https://www.odoo.com/documentation/17.0/administration/install/deploy.html?highlight=workers>
+https://docs.docker.com/engine/install/linux-postinstall/#configure-docker-to-start-on-boot-with-systemd
+
 
 ### Odoo per HTTPS
 
