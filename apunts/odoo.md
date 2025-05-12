@@ -1076,100 +1076,37 @@ L'herència es pot aplicar en els tres components del patró MVC:
 OpenObject proporciona tres mecanismes d'herència: l'herència de classe,
 l'herència per prototip i l'herència per delegació.
 
-+----------------------+----------------------+----------------------+
-| Mecanisme            | Característiques     | Com es defineix      |
-+======================+======================+======================+
-| `<strong>`{=html}De  | \- Herència simple.\ | \- S'utilitza        |
-| clas                 | - La classe original | l'atribut `_inherit` |
-| se`</strong>`{=html} | queda substituïda    | en la definició de   |
-|                      | per la nova classe.\ | la nova classe       |
-|                      | - Afegeix noves      | Python:              |
-|                      | funcionalitats       | `_inherit = obj`\    |
-|                      | (atributs i/o        | - El nom de la nova  |
-|                      | mètodes) a la classe | classe ha de         |
-|                      | original.\           | continuar sent el    |
-|                      | - Les vistes         | mateix que el de la  |
-|                      | definides sobre la   | classe original:     |
-|                      | classe original      | `_name = obj`        |
-|                      | continuen            |                      |
-|                      | funcionant.\         |                      |
-|                      | - Permet             |                      |
-|                      | sobreescriure        |                      |
-|                      | mètodes de la classe |                      |
-|                      | original.\           |                      |
-|                      | - En PostgreSQL,     |                      |
-|                      | continua mapada en   |                      |
-|                      | la mateixa taula que |                      |
-|                      | la classe original,  |                      |
-|                      | ampliada amb els     |                      |
-|                      | nous atributs que    |                      |
-|                      | pugui incorporar.    |                      |
-+----------------------+----------------------+----------------------+
-| `<strong>`{=html}Per | \- Herència simple.\ | \- S'utilitza        |
-| protot               | - Aprofita la        | l'atribut `_inherit` |
-| ip`</strong>`{=html} | definició de la      | en la definició de   |
-|                      | classe original (com | la nova classe       |
-|                      | si fos un            | Python:              |
-|                      | «prototipus»).\      | `_inherit = obj`\    |
-|                      | - La classe original | - Cal indicar el nom |
-|                      | continua existint.\  | de la nova classe:   |
-|                      | - Afegeix noves      | `_name = nou_nom`    |
-|                      | funcionalitats       |                      |
-|                      | (atributs i/o        |                      |
-|                      | mètodes) a les       |                      |
-|                      | aportades per la     |                      |
-|                      | classe original.\    |                      |
-|                      | - Les vistes         |                      |
-|                      | definides sobre la   |                      |
-|                      | classe original no   |                      |
-|                      | existeixen (cal      |                      |
-|                      | dissenyar-les de     |                      |
-|                      | nou).\               |                      |
-|                      | - Permet             |                      |
-|                      | sobreescriure        |                      |
-|                      | mètodes de la classe |                      |
-|                      | original.\           |                      |
-|                      | - En PostgreSQL,     |                      |
-|                      | queda mapada en una  |                      |
-|                      | nova taula.          |                      |
-+----------------------+----------------------+----------------------+
-| `<strong>`{=html}Per | \- Herència simple o | \- S'utilitza        |
-| delegac              | múltiple.\           | l'atribut            |
-| ió`</strong>`{=html} | - La nova classe     | `_inherits` en la    |
-|                      | «delega» certs       | definició de la nova |
-|                      | funcionaments a      | classe Python:       |
-|                      | altres classes que   | `_inherits = …`\     |
-|                      | incorpora a          | - Cal indicar el nom |
-|                      | l'interior.\         | de la nova classe:   |
-|                      | - Els recursos de la | `_name = nou_nom`    |
-|                      | nova classe contenen |                      |
-|                      | un recurs de cada    |                      |
-|                      | classe de la que     |                      |
-|                      | deriven.\            |                      |
-|                      | - Les classes base   |                      |
-|                      | continuen existint.\ |                      |
-|                      | - Afegeix les        |                      |
-|                      | funcionalitats       |                      |
-|                      | pròpies (atributs    |                      |
-|                      | i/o mètodes) que     |                      |
-|                      | correspongui.\       |                      |
-|                      | - Les vistes         |                      |
-|                      | definides sobre les  |                      |
-|                      | classes bases no     |                      |
-|                      | existeixen a la nova |                      |
-|                      | classe.\             |                      |
-|                      | - En PostgreSQL,     |                      |
-|                      | queda mapada en      |                      |
-|                      | diferents taules:    |                      |
-|                      | una taula per als    |                      |
-|                      | atributs propis,     |                      |
-|                      | mentre que els       |                      |
-|                      | recursos de les      |                      |
-|                      | classes derivades    |                      |
-|                      | resideixen en les    |                      |
-|                      | taules corresponents |                      |
-|                      | a les dites classes. |                      |
-+----------------------+----------------------+----------------------+
+| Mecanisme             | Característiques                                                                                           | Com es defineix                                                                 |
+|-----------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| **De classe**         | - Herència simple.  
+                        - La classe original queda substituïda.  
+                        - Afegeix noves funcionalitats (atributs i/o mètodes) a la classe original.  
+                        - Les vistes definides sobre la classe original continuen funcionant.  
+                        - Permet sobreescriure mètodes de la classe original.  
+                        - En PostgreSQL, continua mapada en la mateixa taula que la classe original, ampliada amb els nous atributs que pugui incorporar. | - S'utilitza l'atribut `_inherit` en la definició de la nova classe Python:  
+`_inherit = 'obj'`  
+- El nom de la nova classe ha de continuar sent el mateix que el de la classe original:  
+`_name = 'obj'` |
+| **Per prototip**      | - Herència simple.  
+                        - Aprofita la definició de la classe original (com si fos un «prototipus»).  
+                        - La classe original continua existint.  
+                        - Afegeix noves funcionalitats (atributs i/o mètodes) a les aportades per la classe original.  
+                        - Les vistes definides sobre la classe original no existeixen (cal dissenyar-les de nou).  
+                        - Permet sobreescriure mètodes de la classe original.  
+                        - En PostgreSQL, queda mapada en una nova taula. | - S'utilitza l'atribut `_inherit` en la definició de la nova classe Python:  
+`_inherit = 'obj'`  
+- Cal indicar el nom de la nova classe:  
+`_name = 'nou_nom'` |
+| **Per delegació**     | - Herència simple o múltiple.  
+                        - La nova classe «delega» certs funcionaments a altres classes que incorpora a l'interior.  
+                        - Els recursos de la nova classe contenen un recurs de cada classe de la que deriven.  
+                        - Les classes base continuen existint.  
+                        - Afegeix les funcionalitats pròpies (atributs i/o mètodes) que correspongui.  
+                        - Les vistes definides sobre les classes bases no existeixen a la nova classe.  
+                        - En PostgreSQL, queda mapada en diferents taules: una taula per als atributs propis, mentre que els recursos de les classes derivades resideixen en les taules corresponents a les dites classes. | - S'utilitza l'atribut `_inherits` en la definició de la nova classe Python:  
+`_inherits = {'obj': 'field_id'}`  
+- Cal indicar el nom de la nova classe:  
+`_name = 'nou_nom'` |
 
     ```{figure} imgs/Inheritance_methods.png
     :scale: 100 %
@@ -1380,8 +1317,6 @@ d\'utilitzar **view_ids**, observem aquest exemple:
             <field name="name">Players</field>
             <field name="res_model">res.partner</field>
             <field name="view_mode">tree,form,kanban</field>
-            <field name="domain"> [('is_player','=',True)]</field>
-            <field name="context">{'default_is_player': True}</field>
             <field name="view_ids" eval="[(5, 0, 0),
             (0, 0, {'view_mode': 'tree', 'view_id': ref('terraform.player_tree')}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('terraform.player_form')}),]" />
@@ -1397,55 +1332,6 @@ Si es vol especificar una vista search es pot inclourer la etiqueta
 
 ``` xml
  <field name="search_view_id" ref="cine.pos_order_line_search_view"/>  
-```
-
-Exemple:
-
-``` python
-class socios(models.Model):
-     _inherit = 'res.partner'
-     _name = 'res.partner'
-     #name = fields.Char()
-     camions = fields.One2many('cooperativa.camion','socio',string='Trucks')
-     n_camiones = fields.Integer(compute='_n_camiones',string='Number of Trucks')
-     arrobas = fields.Float(compute='_n_camiones',string='@')
-     @api.depends('camions')
-     def _n_camiones(self):
-       for i in self:
-         for j in i.camions:
-           i.arrobas = i.arrobas + j.arrobas
-           i.n_camiones = i.n_camiones + 1
-```
-
-``` xml
-  <record model="ir.ui.view" id="socio_form_view">
-            <field name="name">socio</field>
-            <field name="model">res.partner</field>
-       <field name="inherit_id" ref="base.view_partner_form"/> 
-           <field name="arch" type="xml">
-    <field name="website" position="after">
-                            <field name="camions"/>
-                            <field name="n_camiones"/>
-                            <field name="arrobas"/>
-    </field>
-
-            </field>
-        </record>
-```
-
-``` xml
-    <!--Inherit quotations search view-->
-    <record id="view_sale_order_inherit_search" model="ir.ui.view">
-      <field name="name">sale.order.search.expand.filter</field>
-      <field name="model">sale.order</field>
-      <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
-      <field name="arch" type="xml">
-        <xpath expr="//search" position="inside">
-          <filter string="Total &lt; 1000" name="total_under_1000" domain="[('amount_total', '&lt;', 1000)]"/>
-          <filter string="Total &gt;= 1000" name="total_above_1000" domain="[('amount_total', '&gt;=', 1000)]"/>
-        </xpath>
-      </field>
-    </record>
 ```
 
 **Domains**
@@ -1482,6 +1368,21 @@ vista search i en l\'action dir que volem aquest filtre per defecte:
             <!--  <field name="domain"> [('is_player','=',True)]</field> -->
             <field name="domain"></field>
             <field name="context">{'default_is_player': True, 'search_default_player_partner': 1}</field>
+```
+
+Per tant, un action complet per a vistes personalitzades i amb filtres quedarà com aquest:
+
+``` xml
+        <record model="ir.actions.act_window" id="terraform.player_action_window">
+            <field name="name">Players</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="domain"></field>
+            <field name="context">{'default_is_player': True, 'search_default_player_partner': 1}</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('terraform.player_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('terraform.player_form')}),]" />
+        </record>
 ```
 
 ### Herència en el controlador 
