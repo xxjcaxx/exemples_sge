@@ -1076,37 +1076,12 @@ L'herència es pot aplicar en els tres components del patró MVC:
 OpenObject proporciona tres mecanismes d'herència: l'herència de classe,
 l'herència per prototip i l'herència per delegació.
 
-| Mecanisme             | Característiques                                                                                           | Com es defineix                                                                 |
-|-----------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| **De classe**         | - Herència simple.  
-                        - La classe original queda substituïda.  
-                        - Afegeix noves funcionalitats (atributs i/o mètodes) a la classe original.  
-                        - Les vistes definides sobre la classe original continuen funcionant.  
-                        - Permet sobreescriure mètodes de la classe original.  
-                        - En PostgreSQL, continua mapada en la mateixa taula que la classe original, ampliada amb els nous atributs que pugui incorporar. | - S'utilitza l'atribut `_inherit` en la definició de la nova classe Python:  
-`_inherit = 'obj'`  
-- El nom de la nova classe ha de continuar sent el mateix que el de la classe original:  
-`_name = 'obj'` |
-| **Per prototip**      | - Herència simple.  
-                        - Aprofita la definició de la classe original (com si fos un «prototipus»).  
-                        - La classe original continua existint.  
-                        - Afegeix noves funcionalitats (atributs i/o mètodes) a les aportades per la classe original.  
-                        - Les vistes definides sobre la classe original no existeixen (cal dissenyar-les de nou).  
-                        - Permet sobreescriure mètodes de la classe original.  
-                        - En PostgreSQL, queda mapada en una nova taula. | - S'utilitza l'atribut `_inherit` en la definició de la nova classe Python:  
-`_inherit = 'obj'`  
-- Cal indicar el nom de la nova classe:  
-`_name = 'nou_nom'` |
-| **Per delegació**     | - Herència simple o múltiple.  
-                        - La nova classe «delega» certs funcionaments a altres classes que incorpora a l'interior.  
-                        - Els recursos de la nova classe contenen un recurs de cada classe de la que deriven.  
-                        - Les classes base continuen existint.  
-                        - Afegeix les funcionalitats pròpies (atributs i/o mètodes) que correspongui.  
-                        - Les vistes definides sobre les classes bases no existeixen a la nova classe.  
-                        - En PostgreSQL, queda mapada en diferents taules: una taula per als atributs propis, mentre que els recursos de les classes derivades resideixen en les taules corresponents a les dites classes. | - S'utilitza l'atribut `_inherits` en la definició de la nova classe Python:  
-`_inherits = {'obj': 'field_id'}`  
-- Cal indicar el nom de la nova classe:  
-`_name = 'nou_nom'` |
+| **Mecanisme**     | **Característiques** | **Com es defineix** |
+|------------------|----------------------|---------------------|
+| **De classe** | - Herència simple. - La classe original queda substituïda. - Afegeix noves funcionalitats (atributs i/o mètodes) a la classe original. - Les vistes definides sobre la classe original continuen funcionant. - Permet sobreescriure mètodes de la classe original. - En PostgreSQL, continua mapada en la mateixa taula que la classe original, ampliada amb els nous atributs que pugui incorporar. | - S'utilitza l'atribut `_inherit` en la definició de la nova classe Python: `_inherit = 'obj'`. - El nom de la nova classe ha de continuar sent el mateix que el de la classe original: `_name = 'obj'`. |
+| **Per prototip** | - Herència simple. - Aprofita la definició de la classe original (com si fos un «prototipus»). - La classe original continua existint. - Afegeix noves funcionalitats (atributs i/o mètodes) a les aportades per la classe original. - Les vistes definides sobre la classe original no existeixen (cal dissenyar-les de nou). - Permet sobreescriure mètodes de la classe original. - En PostgreSQL, queda mapada en una nova taula. | - S'utilitza l'atribut `_inherit` en la definició de la nova classe Python: `_inherit = 'obj'`. - Cal indicar el nom de la nova classe: `_name = 'nou_nom'`. |
+| **Per delegació** | - Herència simple o múltiple. - La nova classe «delega» certs funcionaments a altres classes que incorpora a l'interior. - Els recursos de la nova classe contenen un recurs de cada classe de la que deriven. - Les classes base continuen existint. - Afegeix les funcionalitats pròpies (atributs i/o mètodes) que correspongui. - Les vistes definides sobre les classes bases no existeixen a la nova classe. - En PostgreSQL, queda mapada en diferents taules: una taula per als atributs propis, mentre que els recursos de les classes derivades resideixen en les taules corresponents a les dites classes. | - S'utilitza l'atribut `_inherits` en la definició de la nova classe Python: `_inherits = {'obj': 'field_id'}`. - Cal indicar el nom de la nova classe: `_name = 'nou_nom'`. |
+
 
     ```{figure} imgs/Inheritance_methods.png
     :scale: 100 %
