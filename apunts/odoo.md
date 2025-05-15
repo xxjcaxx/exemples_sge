@@ -1439,13 +1439,17 @@ funcions, per poder ser traduïbles, han de ser introduïts amb la sintaxi
 ### API de l\'ORM 
 
 ```{tip}
-{{nota|'''Interactuar en la terminal'''
- $ odoo shell -d castillo -u containers
- [https://asciinema.org/a/123126 Asciinema amb alguns exemples]
+'''Interactuar en la terminal'''
+    $ odoo shell -d castillo -u containers
+
+
+
 Observa cóm hem ficat el paràmetre '''shell'''. Les coses que se fan en la terminal no són persistents en la base de dades fins que no s'executa '''self.env.cr.commit()'''. Dins de la terminal podem obtindre ajuda dels mètodes d'Odoo amb help(), per exemple: help(tools.image)
 Amb el següent exemple, podem arrancar odoo sense molestar a l'instància que està en marxa redefinint els ports:
- $ odoo shell -c /path/to/odoo.conf --xmlrpc-port 8888 --longpolling-port 8899
-Documentació: [https://medium.com/@RafnixG/explorando-odoo-a-fondo-c%C3%B3mo-trabajar-con-la-shell-de-la-cli-y-configurar-ipython-como-repl-8f7bd04a26d] [https://medium.com/@RafnixG/shell-de-odoo-domina-operaciones-avanzadas-integraci%C3%B3n-de-librer%C3%ADas-y-automatizaci%C3%B3n-de-tareas-2e85c7d81d34]
+
+    $ odoo shell -c /path/to/odoo.conf --xmlrpc-port 8888 --longpolling-port 8899
+
+https://asciinema.org/a/123126 (Asciinema amb alguns exemples)
 ```
 
 Un mètode creat dins d\'un model actua sobre tots els elements del model
