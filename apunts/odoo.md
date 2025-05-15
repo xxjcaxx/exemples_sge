@@ -1439,10 +1439,8 @@ funcions, per poder ser traduïbles, han de ser introduïts amb la sintaxi
 ### API de l\'ORM 
 
 ```{tip}
-'''Interactuar en la terminal'''
+**Interactuar en la terminal**
     $ odoo shell -d castillo -u containers
-
-
 
 Observa cóm hem ficat el paràmetre '''shell'''. Les coses que se fan en la terminal no són persistents en la base de dades fins que no s'executa '''self.env.cr.commit()'''. Dins de la terminal podem obtindre ajuda dels mètodes d'Odoo amb help(), per exemple: help(tools.image)
 Amb el següent exemple, podem arrancar odoo sense molestar a l'instància que està en marxa redefinint els ports:
