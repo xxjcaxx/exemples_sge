@@ -1,4 +1,4 @@
-## La vista
+# La vista
 
 En aquest capítol, explorarem com funcionen les vistes en Odoo, quins tipus de vistes podem utilitzar i com es poden personalitzar mitjançant XML i accions de servidor. Aprendrem a estructurar correctament una interfície d'usuari, a definir formularis, llistats, kanbans i gràfics, i a gestionar la navegació entre ells.
 
@@ -18,7 +18,7 @@ Les vistes tenen una prioritat i, si no s\'especifica el identificador de la que
 ```
 
 ```{tip}
-Les vistes es guarden en el model '''ir.ui.view'''. Tots els elements de interficie tenen en el seu nom ir.ui (Information Repository, User Interface). Els menús a ir.ui.menu o les accions a '''ir.actions.window'''
+Les vistes es guarden en el model `ir.ui.view`. Tots els elements de interficie tenen en el seu nom ir.ui (Information Repository, User Interface). Els menús a ir.ui.menu o les accions a `ir.actions.window`
 ```
 Exemple de vista form:
 
@@ -45,7 +45,7 @@ tindre widgets diferents. En les vistes form, podem adaptar molt
 l\'aspecte amb grups de fields, pestanyes, camps ocults
 condicionalment\...
 
-### Les vistes list
+## Les vistes list
 
 > A partir d'Odoo 18 ja no hi ha vistes `tree` i són totes `list`, els exemples antics funcionaran canviant aquesta paraula. 
 
@@ -79,7 +79,7 @@ Un exemple bàsic d’una vista *list* per al model de clients (*res.partner*) s
 - `<list>`: Defineix una vista de tipus *list*.  
 - `<field name="name"/>`, `<field name="phone"/>`, etc.: Representen les columnes que es mostraran en la llista.  
 
-#### Colors
+### Colors
 
 En les vistes list es pot modificar el **color** en funció del contingut
 d\'un field amb l\'etiqueta **decoration**, que utilitza colors
@@ -111,7 +111,7 @@ amb la variable global de QWeb **current_date**. Per exemple:
 
 També es pot fer **decoration** en els fields individualment.
 
-#### Editable
+### Editable
 
 També es pot fer **editable** per no tindre que obrir un form:
 **editable=\"\[top \| bottom\]\"**. Top o Bottom indica on es crearan
@@ -119,7 +119,7 @@ els nous registres. Els lists editables poden tindre un atribut més
 **on_write** que indica un mètode a executar quan s\'edita o crea un
 element.
 
-#### Camps invisibles 
+### Camps invisibles 
 
 De vegades, un camp pot servir per a alguna cosa, però no cal que
 l\'usuari el veja. El que cal fer és ficar el field , però dir que es
@@ -134,7 +134,7 @@ l\'usuari el veja. El que cal fer és ficar el field , però dir que es
                 </list>
 ```
 
-#### Botons
+### Botons
 
 Els *lists* poden tindre **buttons** amb els mateixos atributs que els
 buttons dels forms.
@@ -143,7 +143,7 @@ buttons dels forms.
 Cal tindre cura en els lists dins de forms (X2many), ja que el botó s'executa en el model del list i no del formulari que el conté. Si volem accedir al pare, cal utilitzar l'atribut parent.
 ```
 
-#### Totals
+### Totals
 
 En els lists es pot calcular totals amb aquesta etiqueta:
 
@@ -151,7 +151,7 @@ En els lists es pot calcular totals amb aquesta etiqueta:
 <field name="amount" sum="Total Amount"/>
 ```
 
-#### Ordenar per un field 
+### Ordenar per un field 
 Un list es pot ordenar per defecte per un field que no siga computat.
 Això es fa en **default_order**. Mirem un exemple per ordenar
 descendentment:
@@ -163,7 +163,7 @@ descendentment:
 > Si volem que sempre s\'ordene per eixe criteri, sense importar la vista,
 cal afegir al model l\'atribut **\_order**.
 
-#### Agrupar per un field
+### Agrupar per un field
 
 Amb **default_group_by**. Com l'atribut per ordenar, sols funciona amb camps guardats a la base de dades. 
 
@@ -175,7 +175,7 @@ Amb **default_group_by**. Com l'atribut per ordenar, sols funciona amb camps gua
 </list>
 ```
 
-#### banner_route
+### banner_route
 
 A partir de la versió 12 d\'Odoo, permet afegir als lists, forms, etc
 una capçalera obtinguda per una url.
@@ -232,7 +232,7 @@ ha de cridar al backend a una funció d\'un model en concret. La resta de
 dades es fan com l\'exemple. La funció que diu **data-method** és una
 funció que ha d\'estar en el model que diu **data-model**.
 
-### Millores en les vistes form 
+## Les vistes form 
 
 Per a que un form quede bé, es pot inclure la etiqueta
 **`<sheet>`**, que fa que no ocupe tota la pantalla encara que
@@ -265,7 +265,7 @@ O especificar la vista que volem:
     <field name="subscriptions" context="{'list_view_ref': 'modul.view_subscriptions_tree'}"/>
 ```
 
-En un One2many es pot especificar també el **form** que en donarà quan
+En un One2many es pot especificar també el **form** que ens donarà quan
 anem a crear un nou element.
 
 Una altra opció és especificar la vista que insertarà en el field:
@@ -303,6 +303,7 @@ Aquesta sintaxi funciona per a passar per context valors per defecte a un form c
 ```{tip}
 En Odoo 14 ja no cal fer-ho, però el manual és vàlid per a altres many2ones o altres valors per defecte
 ```
+
 **Domains en Many2ones**
 
 Els camps Many2one es poden filtrar, per exemple:
@@ -313,7 +314,7 @@ Els camps Many2one es poden filtrar, per exemple:
 
 Funciona tant per a Many2one com per a Many2many.
 
-#### Widgets
+### Widgets
 
 Alguns camps, com ara les imatges, es poden mostrar utilitzant un
 **widget** distint que el per defecte:
@@ -334,7 +335,7 @@ representar la informació de manera distinta. Aquests són els widgets
 disponibles per a cada tipus de field, sobretot per al form, encara que
 alguns funcionen en el tree:
 
-##### Integer i Float {#integer_i_float}
+#### Integer i Float
 
 Els camps integer poden ser representats per molts widgets, es a dir, no
 donen error. Encara que no tots tenen sentit, com per exemple el *text*.
@@ -347,53 +348,18 @@ donen error. Encara que no tots tenen sentit, com per exemple el *text*.
 -   **widget=\"float\"**: Mostra el número en decimals.
 -   **widget=\"percentpie\"**: Mostra un gràfic circular amb el
     percentatge (no funciona en la vista tree ni en kanban).
-
-![](Percentpie.png "Percentpie.png")
-
 -   **widget=\"float_time\"**: Mostra els float com si representaren el
     temps.
 -   **widget=\"progressbar\"**: Mostra una barra de progrés (funciona en
     la vista tree i form, però no en kanban):
-
-![](Progressbar.png "Progressbar.png")
-
 -   **widget=\"monetary\"**: Mostra el número amb 2 decimals.
 -   **widget=\"gauge\"**: Mostra un curiós gràfic de semi-circul. Sols
     funciona en kanban.
 
-![](Gauge.png "Gauge.png")
-
+    Observem un ús real del `Gauge` per veure com els widgets poden tenir opcions:
+    
 ``` xml
- <field name="integrity" widget="gauge" style="width:150px; height: 110px;" options="{'levelcolors': ['#a9d70b', '#f9c802', '#ff0000'], 'action_jump': '357'}">Integrity</field>
-```
-
-Altres opcions segons el propi code:
-
-``` javascript
-/**
- * Kanban widgets: GaugeWidget
- * options
- * - max_value: maximum value of the gauge [default: 100]
- * - max_field: get the max_value from the field that must be present in the
- *              view; takes over max_value
- * - gauge_value_field: if set, the value displayed below the gauge is taken
-                        from this field instead of the base field used for
-                        the gauge. This allows to display a number different
-                        from the gauge.
- * - force_set: is value is 0, display a text 'Click to set' [default: True]
- * - label: lable of the gauge, displayed below the gauge value
- * - title: title of the gauge, displayed on top of the gauge
- * - on_change: action to call when cliking and setting a value
- * - on_click_label: optional label of the input displayed when clicking
- *
- */
-```
-
--   **field_float_rating**: Mostra estrelles en funció d\'un float:
-
-``` javascript
-rating_avg = fields.Float("Rating Average", compute='_compute_rating_stats')
-<field string="Rating" name="rating_avg" widget="field_float_rating"/>
+<field name="current" widget="gauge" options="{'max_field': 'target_goal', 'label_field': 'definition_suffix', 'style': 'width:160px; height: 120px;'}" />
 ```
 
 ##### Char i Text {#char_i_text}
@@ -406,46 +372,6 @@ rating_avg = fields.Float("Rating Average", compute='_compute_rating_stats')
 -   **widget=\"date\"**: Permet guardar dates com cadenes de text.
 -   **widget=\"html\"**: Permet guardar textos però amb format. Apareix
     un wysiwyg
--   **widget=\"sparkline**\": Mostra un gràfic menut indicant alguna
-    progressió. Necessita tindre guardat (o generat) en el char un json
-    determinat, per exemple:
-
-`[{"tooltip": "julio 2015", "value": "1.00"},`\
-` {"tooltip": "agosto 2015", "value": "-1.00"},`\
-` {"tooltip": "septiembre 2015", "value": "30.00"},`\
-` {"tooltip": "octubre 2015", "value": "0.00"},`\
-` {"tooltip": "noviembre 2015", "value": "0.00"}]`
-
-I aquest seria un exemple del XML per a que funcione:
-
-``` xml
- <li>
-   <a type="action" class="oe_sparkline_bar_link">
-      Level: <field name="state" widget="sparkline_bar" options="{'delayIn': '3000'}" />
-   </a>
- </li>
-Un altre exemple:
- <field name="state" widget="sparkline_bar" options="{'type': 'tristate', 'colorMap': {'0': 'orange', '-1': 'red', '1': 'green'}}" />
-```
-
-En els exemples que es poden veure en Odoo, aquests valors són sempre
-computed, generant un json i invocant la funció de python json.dumps().
-Amés, accepta algunes opcions:
-
--   **type**: Per defecte el type es **bar**, en altres exemples usa
-    **tristate**. Segons el manual de [la
-    llibreria](http://omnipotent.net/jquery.sparkline/#common) es poden
-    usar **pie**, **bullet**, **box** o **discrete** Cadascun dona una
-    apariència distinta al gràfic.
--   **height**: Altura
--   Més opcions i opcions específiques de cada type:
-    [1](http://omnipotent.net/jquery.sparkline/#common)
-
-![](Sparkline.png "Sparkline.png")
-
-```{=mediawiki}
-{{nota|En la versió 11 d'Odoo no trobem que s'utilitze el sparkline. Com que depen de biblioteques externes, no té molt de sentit intentar implantar-lo. Per tant, aquesta sessió està obsoleta. Recomanem utilitzar el dashboard_graph.}}
-```
 -   **dashboard_graph**:
 
 Mostra un gràfic menut indicant alguna progressió. Necessita tindre
@@ -485,7 +411,7 @@ Amés, accepta algunes opcions:
 -   **type**: Pot ser **bar** o **line**. En el cas de ser line, en
     compte de \'label\' i \'value\' cal posar \'x\' i \'y\'.
 
-##### Boolean
+#### Boolean
 
 -   **Ribbon**: (Odoo 13) Mostra com una cinta al costat del formulari
     per mostrar un boolean important.
@@ -498,7 +424,7 @@ Amés, accepta algunes opcions:
 -   **boolean_toggle** per als trees, permet activar un boolean en un
     tree.
 
-##### Date
+#### Date
 
 -   **Daterange**: Mostra un rang de dates
 
@@ -507,7 +433,7 @@ date_begin = fields.Datetime( string='Start Date')
 <field name="date_begin" widget="daterange"/>
 ```
 
-##### Many2one
+#### Many2one
 
 -   **widget=\"many2one\"**: Per defecte, crea un selection amb opció de
     crear nous. Accepta arguments per evitar les opcions de crear:
@@ -521,7 +447,7 @@ date_begin = fields.Datetime( string='Start Date')
 
 ![](Many2onebutton.png "Many2onebutton.png")
 
-##### Many2Many
+#### Many2Many
 
 -   **widget=\"many2many\"**: Per defecte, crea una llista amb opció de
     esborrar o afegir nous.
@@ -544,13 +470,13 @@ partner_ids = fields.Many2many('res.partner', 'calendar_event_res_partner_rel', 
 <field name="partner_ids" widget="many2many_tags_avatar" write_model="calendar.contacts" write_field="partner_id" avatar_field="image_128"/>
 ```
 
-##### One2many
+#### One2many
 
 -   **widget=\"one2many\"**: Per defecte.
 -   **widget=\"one2many_list\"**: Aparentment igual, es manté per
     retrocompatibilitat
 
-##### Modificar el tree del One2many {#modificar_el_tree_del_one2many}
+#### Modificar el tree del One2many 
 
 El one2many, al igual que el many2one es poden vorer en format tree. Per
 defecte agafa el tree definit del model, però es pot especificar el tree
@@ -598,7 +524,7 @@ Inclús es pot forçar a mostrar un kanban:
 De vegades, el kanban este no funciona perquè no força a carregar les
 imatges.
 
-##### Binary o Image {#binary_o_image}
+#### Binary o Image 
 
 -   **signature**: Permet signar dirènctament en la pantalla
 
@@ -613,11 +539,11 @@ imatges.
 ```
     options="{&quot;zoom&quot;: true, &quot;preview_image&quot;: &quot;image_128&quot;}
 
-##### Selection
+#### Selection
 
            <field name="state" decoration-success="state == 'sale' or state == 'done'" decoration-info="state == 'draft' or state == 'sent'" widget="badge" optional="show"/>
 
-##### Fields dels trees {#fields_dels_trees}
+#### Fields dels trees 
 
 -   **handle**: Per a ordenar a ma. Cal que aquest camp siga el criteri
     d\'ordenació.
