@@ -140,8 +140,9 @@ Els *lists* poden tindre **buttons** amb els mateixos atributs que els
 buttons dels forms.
 
 ```{tip}
-Cal tindre cura en els lists dins de forms (X2many), ja que el botó s'executa en el model del list i no del formulari que el conté. Si volem accedir al pare, cal utilitzar l'atribut parent. Mireu en [[Odoo#Context]]
+Cal tindre cura en els lists dins de forms (X2many), ja que el botó s'executa en el model del list i no del formulari que el conté. Si volem accedir al pare, cal utilitzar l'atribut parent.
 ```
+
 #### Totals
 
 En els lists es pot calcular totals amb aquesta etiqueta:
@@ -324,52 +325,302 @@ Alguns camps, com ara les imatges, es poden mostrar utilitzant un
 <field name="state" widget="statusbar"/>
 ```
 
-Llista de [widgets d\'Odoo](widgets_d'Odoo "wikilink") disponibles per a
-camps dins de forms:
+Les vistes form, tree o kanban de Odoo mostren els fields en els
+anomenats widgets. Aquests permeten, per exemple, que les dates tinguen
+un calendari o que es mostre una llista en un many2many.
 
-``` javascript
-instance.web.form.widgets = new instance.web.Registry({
-    'char' : 'instance.web.form.FieldChar',
-    'id' : 'instance.web.form.FieldID',
-    'email' : 'instance.web.form.FieldEmail',
-    'url' : 'instance.web.form.FieldUrl',
-    'text' : 'instance.web.form.FieldText',
-    'html' : 'instance.web.form.FieldTextHtml',
-    'char_domain': 'instance.web.form.FieldCharDomain',
-    'date' : 'instance.web.form.FieldDate',
-    'datetime' : 'instance.web.form.FieldDatetime',
-    'selection' : 'instance.web.form.FieldSelection',
-    'radio' : 'instance.web.form.FieldRadio',
-    'many2one' : 'instance.web.form.FieldMany2One',
-    'many2onebutton' : 'instance.web.form.Many2OneButton',
-    'many2many' : 'instance.web.form.FieldMany2Many',
-    'many2many_tags' : 'instance.web.form.FieldMany2ManyTags',
-    'many2many_kanban' : 'instance.web.form.FieldMany2ManyKanban',
-    'one2many' : 'instance.web.form.FieldOne2Many',
-    'one2many_list' : 'instance.web.form.FieldOne2Many',
-    'reference' : 'instance.web.form.FieldReference',
-    'boolean' : 'instance.web.form.FieldBoolean',
-    'float' : 'instance.web.form.FieldFloat',
-    'percentpie': 'instance.web.form.FieldPercentPie',
-    'barchart': 'instance.web.form.FieldBarChart',
-    'integer': 'instance.web.form.FieldFloat',
-    'float_time': 'instance.web.form.FieldFloat',
-    'progressbar': 'instance.web.form.FieldProgressBar',
-    'image': 'instance.web.form.FieldBinaryImage',
-    'binary': 'instance.web.form.FieldBinaryFile',
-    'many2many_binary': 'instance.web.form.FieldMany2ManyBinaryMultiFiles',
-    'statusbar': 'instance.web.form.FieldStatus',
-    'monetary': 'instance.web.form.FieldMonetary',
-    'many2many_checkboxes': 'instance.web.form.FieldMany2ManyCheckBoxes',
-    'x2many_counter': 'instance.web.form.X2ManyCounter',
-    'priority':'instance.web.form.Priority',
-    'kanban_state_selection':'instance.web.form.KanbanSelection',
-    'statinfo': 'instance.web.form.StatInfo',
-});
+Cada field te un widget per defecte, però es poden canviar si volem
+representar la informació de manera distinta. Aquests són els widgets
+disponibles per a cada tipus de field, sobretot per al form, encara que
+alguns funcionen en el tree:
+
+##### Integer i Float {#integer_i_float}
+
+Els camps integer poden ser representats per molts widgets, es a dir, no
+donen error. Encara que no tots tenen sentit, com per exemple el *text*.
+
+-   **widget=\"integer\"**: Tan sols mostra el número sense comes. En
+    cas de no tindre valor, mostra 0.
+-   **widget=\"char\"**: També mostra el número, si no te valor deixa un
+    buit i el camp és més ample.
+-   **widget=\"id\"**: Mostra el número però no es pot editar.
+-   **widget=\"float\"**: Mostra el número en decimals.
+-   **widget=\"percentpie\"**: Mostra un gràfic circular amb el
+    percentatge (no funciona en la vista tree ni en kanban).
+
+![](Percentpie.png "Percentpie.png")
+
+-   **widget=\"float_time\"**: Mostra els float com si representaren el
+    temps.
+-   **widget=\"progressbar\"**: Mostra una barra de progrés (funciona en
+    la vista tree i form, però no en kanban):
+
+![](Progressbar.png "Progressbar.png")
+
+-   **widget=\"monetary\"**: Mostra el número amb 2 decimals.
+-   **widget=\"gauge\"**: Mostra un curiós gràfic de semi-circul. Sols
+    funciona en kanban.
+
+![](Gauge.png "Gauge.png")
+
+``` xml
+ <field name="integrity" widget="gauge" style="width:150px; height: 110px;" options="{'levelcolors': ['#a9d70b', '#f9c802', '#ff0000'], 'action_jump': '357'}">Integrity</field>
 ```
 
-Tret de:
-<https://github.com/odoo/odoo/blob/8.0/addons/web/static/src/js/view_form.js#L6355>
+Altres opcions segons el propi code:
+
+``` javascript
+/**
+ * Kanban widgets: GaugeWidget
+ * options
+ * - max_value: maximum value of the gauge [default: 100]
+ * - max_field: get the max_value from the field that must be present in the
+ *              view; takes over max_value
+ * - gauge_value_field: if set, the value displayed below the gauge is taken
+                        from this field instead of the base field used for
+                        the gauge. This allows to display a number different
+                        from the gauge.
+ * - force_set: is value is 0, display a text 'Click to set' [default: True]
+ * - label: lable of the gauge, displayed below the gauge value
+ * - title: title of the gauge, displayed on top of the gauge
+ * - on_change: action to call when cliking and setting a value
+ * - on_click_label: optional label of the input displayed when clicking
+ *
+ */
+```
+
+-   **field_float_rating**: Mostra estrelles en funció d\'un float:
+
+``` javascript
+rating_avg = fields.Float("Rating Average", compute='_compute_rating_stats')
+<field string="Rating" name="rating_avg" widget="field_float_rating"/>
+```
+
+##### Char i Text {#char_i_text}
+
+-   **widget=\"char\"**: Mostra un editor d\'un línia.
+-   **widget=\"text\"**: Mostra un camp més alt per fer més d\'una
+    línia.
+-   **widget=\"email\"**: Crea el enllaç per enviar-li un correu.
+-   **widget=\"url\"**: Crea el enllaç amb http.
+-   **widget=\"date\"**: Permet guardar dates com cadenes de text.
+-   **widget=\"html\"**: Permet guardar textos però amb format. Apareix
+    un wysiwyg
+-   **widget=\"sparkline**\": Mostra un gràfic menut indicant alguna
+    progressió. Necessita tindre guardat (o generat) en el char un json
+    determinat, per exemple:
+
+`[{"tooltip": "julio 2015", "value": "1.00"},`\
+` {"tooltip": "agosto 2015", "value": "-1.00"},`\
+` {"tooltip": "septiembre 2015", "value": "30.00"},`\
+` {"tooltip": "octubre 2015", "value": "0.00"},`\
+` {"tooltip": "noviembre 2015", "value": "0.00"}]`
+
+I aquest seria un exemple del XML per a que funcione:
+
+``` xml
+ <li>
+   <a type="action" class="oe_sparkline_bar_link">
+      Level: <field name="state" widget="sparkline_bar" options="{'delayIn': '3000'}" />
+   </a>
+ </li>
+Un altre exemple:
+ <field name="state" widget="sparkline_bar" options="{'type': 'tristate', 'colorMap': {'0': 'orange', '-1': 'red', '1': 'green'}}" />
+```
+
+En els exemples que es poden veure en Odoo, aquests valors són sempre
+computed, generant un json i invocant la funció de python json.dumps().
+Amés, accepta algunes opcions:
+
+-   **type**: Per defecte el type es **bar**, en altres exemples usa
+    **tristate**. Segons el manual de [la
+    llibreria](http://omnipotent.net/jquery.sparkline/#common) es poden
+    usar **pie**, **bullet**, **box** o **discrete** Cadascun dona una
+    apariència distinta al gràfic.
+-   **height**: Altura
+-   Més opcions i opcions específiques de cada type:
+    [1](http://omnipotent.net/jquery.sparkline/#common)
+
+![](Sparkline.png "Sparkline.png")
+
+```{=mediawiki}
+{{nota|En la versió 11 d'Odoo no trobem que s'utilitze el sparkline. Com que depen de biblioteques externes, no té molt de sentit intentar implantar-lo. Per tant, aquesta sessió està obsoleta. Recomanem utilitzar el dashboard_graph.}}
+```
+-   **dashboard_graph**:
+
+Mostra un gràfic menut indicant alguna progressió. Necessita tindre
+guardat (o generat) en el char un json determinat, per exemple:
+
+`[{"values":`\
+`        [{"label":"2019-01-31","value": "7"},`\
+`         {"label":"2019-02-01","value": "20"},`\
+`         {"label":"2019-02-02","value": "45"},`\
+`         {"label":"2019-02-03","value": "34"},`\
+`         {"label":"2019-02-04","value": "40"},`\
+`         {"label":"2019-02-05","value": "67"},`\
+`         {"label":"2019-02-06","value": "80"}],`\
+` "area":true, "title": "Next Week", "key": "Ocupation", "color": "#7c7bad"}]`
+
+I aquest seria un exemple del XML per a que funcione:
+
+``` xml
+<field name="week_ocupation" widget="dashboard_graph"  graph_type="bar"/>
+```
+
+En els exemples que es poden veure en Odoo, aquests valors són sempre
+computed, generant un json i invocant la funció de python json.dumps()
+([2](https://docs.python.org/3.7/library/json.html)):
+
+``` python
+           values = []
+           for i in record.sales:
+               reserves = i.quantity
+               values.append({'label':str(i.name),'value':str(reserves)})
+           graph = [{'values': values, 'area': True, 'title': 'Sales', 'key': 'Sales', 'color': '#7c7bad'}]
+           h.graph_data = json.dumps(graph)
+```
+
+Amés, accepta algunes opcions:
+
+-   **type**: Pot ser **bar** o **line**. En el cas de ser line, en
+    compte de \'label\' i \'value\' cal posar \'x\' i \'y\'.
+
+##### Boolean
+
+-   **Ribbon**: (Odoo 13) Mostra com una cinta al costat del formulari
+    per mostrar un boolean important.
+
+``` python
+<widget name="web_ribbon" text="Archived" bg_color="bg-danger" />
+<widget name="web_ribbon" text="Paid"/>
+```
+
+-   **boolean_toggle** per als trees, permet activar un boolean en un
+    tree.
+
+##### Date
+
+-   **Daterange**: Mostra un rang de dates
+
+``` python
+date_begin = fields.Datetime( string='Start Date')
+<field name="date_begin" widget="daterange"/>
+```
+
+##### Many2one
+
+-   **widget=\"many2one\"**: Per defecte, crea un selection amb opció de
+    crear nous. Accepta arguments per evitar les opcions de crear:
+
+``` python
+ <field name="field_name" options="{'no_create': True, 'no_open': True}"/>
+```
+
+-   **widget=\"many2onebutton\"**: Crea un simple botó que indica si
+    està assignat. Si polses s\'obri el formulari.
+
+![](Many2onebutton.png "Many2onebutton.png")
+
+##### Many2Many
+
+-   **widget=\"many2many\"**: Per defecte, crea una llista amb opció de
+    esborrar o afegir nous.
+-   **widget=\"many2many_tags\"**: Llista amb etiquetes com en els
+    filtres
+
+![](Many2many_tags.png "Many2many_tags.png")
+
+-   **widget=\"many2many_checkboxes\"**: Llista de checkboxes.
+
+![](Many2many_checkboxes.png "Many2many_checkboxes.png")
+
+-   **widget=\"many2many_kanban\"**: Mostra un kanban dels que té
+    associats, necessita que la vista kanban estiga definida.
+-   **widget=\"x2many_counter\"**: Mostra sols la quantitat.
+-   **many2many_tags_avatar**:
+
+``` xml
+partner_ids = fields.Many2many('res.partner', 'calendar_event_res_partner_rel', string='Attendees')
+<field name="partner_ids" widget="many2many_tags_avatar" write_model="calendar.contacts" write_field="partner_id" avatar_field="image_128"/>
+```
+
+##### One2many
+
+-   **widget=\"one2many\"**: Per defecte.
+-   **widget=\"one2many_list\"**: Aparentment igual, es manté per
+    retrocompatibilitat
+
+##### Modificar el tree del One2many {#modificar_el_tree_del_one2many}
+
+El one2many, al igual que el many2one es poden vorer en format tree. Per
+defecte agafa el tree definit del model, però es pot especificar el tree
+que volem veure:
+
+``` xml
+  <field name="fortress">
+   <tree>
+     <field name="name"/><field name="level"/>
+   </tree>
+  </field>
+```
+
+Inclús es pot forçar a mostrar un kanban:
+
+``` xml
+<field name="gallery" mode="kanban,tree" context="{'default_hotel_id':active_id}">
+                 <kanban>
+                 <!--list of field to be loaded -->
+                 <field name="name" />
+                 <field name="image" />
+
+                 <templates>
+                 <t t-name="kanban-box">
+                     <div class="oe_product_vignette">
+                     <a type="open">
+                        <img class="oe_kanban_image" style="width:300px; height:auto;"
+                        t-att-src="kanban_image('marsans.hotel.galley', 'image', record.id.value)" />
+                    </a>
+                    <div class="oe_product_desc">
+                        <h4>
+                        <a type="edit">
+                            <field name="name"></field>
+                        </a>
+                        </h4>
+
+                    </div>
+                    </div>
+                    </t>
+                    </templates>
+                </kanban>
+                </field>
+```
+
+De vegades, el kanban este no funciona perquè no força a carregar les
+imatges.
+
+##### Binary o Image {#binary_o_image}
+
+-   **signature**: Permet signar dirènctament en la pantalla
+
+```{=html}
+<!-- -->
+```
+-   **image**: A banda del que es pot ficar en el field de max_width o
+    max_height, al widget es pot afegir opcions com:
+
+```{=html}
+<!-- -->
+```
+    options="{&quot;zoom&quot;: true, &quot;preview_image&quot;: &quot;image_128&quot;}
+
+##### Selection
+
+           <field name="state" decoration-success="state == 'sale' or state == 'done'" decoration-info="state == 'draft' or state == 'sent'" widget="badge" optional="show"/>
+
+##### Fields dels trees {#fields_dels_trees}
+
+-   **handle**: Per a ordenar a ma. Cal que aquest camp siga el criteri
+    d\'ordenació.
 
 
 **Reescalar les imatges**
