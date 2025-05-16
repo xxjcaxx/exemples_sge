@@ -1,9 +1,7 @@
 # Wizards
 
 Els wizards d\'Odoo permeten fer un asistent
-interactiu per a que l\'usuari complete una tasca. Com que no ha
-d\'agafar les dades directament en un formulari, si no que el va ajudant
-a completar-ho, no pot ser guardat en la base de dades fins al final.
+interactiu per a que l\'usuari complete una tasca. Es tracta símplement d'un formulari emergent que va demanant dades i ajundant a l'usuari i en el que les dades són temporals. 
 
 Els wizards en Odoo se fan a partir de models que estenen la classe
 **TransientModel** en compte de *Model*. Aquesta classe és molt
@@ -51,8 +49,7 @@ cicle de vida d\'un wizard serà el següent:
     -   Aquestes funcions canvien el field **state** i retornen un
         action del mateix wizard per refrescar-lo i que no es tanque.
     -   El formulari té groups o field que es mostren o s\'oculten en
-        funció del field **state** amb una etiqueta específica del XML
-        anomenada **states=**.
+        funció del field **state**.
 -   En cas de tindre un wizard complex en el que omplir Many2many o
     One2many, tal vegada es necessiten més transientModels per fer
     relacions. No es poden fer relacions x2many amb models normals.
