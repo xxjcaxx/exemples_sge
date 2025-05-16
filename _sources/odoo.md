@@ -568,21 +568,27 @@ parent = fields.Many2one('game.resource', domain="[('template', '=', True)]")
     segons el domain:
 
 ``` python
-characters_attack = fields.Many2many('game.character',
-                                      relation='characters_attack', 
-                                      domain="[('id', 'in', characters_attack_available)]")
+allowed_value_ids = fields.Many2many(
+    comodel_name="x",
+    compute="_compute_allowed_value_ids"
+)
+
+def _compute_allowed_value_ids(self):
+    for record in self:
+        record.allowed_value_ids = self.env["x"].search(...)
+
+value_id = fields.Many2many(
+    comodel_name="x",
+    domain="[('id', 'in', allowed_value_ids)]",
+)
 ```
 
 -   **Domain en One2many**: Al ser una relació que depen d\'altre
     Many2one, no es pot filtrar, si fiquem un domain, sols deixarà de
     mostrar els que no compleixen el domain, però no deien d\'existir:
 
-``` python
-raws = fields.One2many('game.raws','clan', domain= lambda s: [('quantity','>',0)])
-```
 
-Observem com hem fet un **domain amb lambda**, és a dir, aquest domain
-crida a una funció lambda al ser aplicat.
+
 
 ### Fields Computed 
 
@@ -910,6 +916,18 @@ refs. Les tripletes poden ser:
 -   (5,\_,\_): Desvincula pero no elimina tots els registres vinculats
 -   (6,\_,\[ids\]): Reemplaça la llista de registres vinculats.
 
+### Dades per als Binary i Image
+
+Algunes dades com les imatges o fitxers es poden posar en records. Hi ha dos maneres: 
+
+* Convertir en Base64 el fitxer i copiar i pegar el resultat dins del field.
+* Afegir el atribut `type="base64"` i el atribut `file="modul/demo/fitxer"`
+
+```xml
+<field name="image_1920" type="base64" file="exemple/demo/cares/1000.jpg"/>
+```
+Observem la ruta que inicia des del directori del mòdul.
+
 ### Esborrar
 
 Amb l\'etiqueta **delete** es pot especificar els elements a esborrar
@@ -920,11 +938,12 @@ amb el external ID o amb un search:
 ```
 
 ```{danger}
-Si falla l'actualització amb dades de demo, és possible que Odoo 12 deshabilite la possibilitat de tornar-les a instal·lar. Això és el field demo de ir.module.module que és readonly, per tant, cal modificar-lo a ma en la base de dades:
+Si falla l'actualització amb dades de demo, és possible que Odoo deshabilite la possibilitat de tornar-les a instal·lar. Això és el field demo de ir.module.module que és readonly, per tant, cal modificar-lo a ma en la base de dades:
 
 `update ir_module_module set demo = 't' where name='school';`
 ```
 
+Més informació: https://www.odoo.com/documentation/master/developer/reference/backend/data.html
 
 ## Accions i menús 
 
@@ -1057,100 +1076,12 @@ L'herència es pot aplicar en els tres components del patró MVC:
 OpenObject proporciona tres mecanismes d'herència: l'herència de classe,
 l'herència per prototip i l'herència per delegació.
 
-+----------------------+----------------------+----------------------+
-| Mecanisme            | Característiques     | Com es defineix      |
-+======================+======================+======================+
-| `<strong>`{=html}De  | \- Herència simple.\ | \- S'utilitza        |
-| clas                 | - La classe original | l'atribut `_inherit` |
-| se`</strong>`{=html} | queda substituïda    | en la definició de   |
-|                      | per la nova classe.\ | la nova classe       |
-|                      | - Afegeix noves      | Python:              |
-|                      | funcionalitats       | `_inherit = obj`\    |
-|                      | (atributs i/o        | - El nom de la nova  |
-|                      | mètodes) a la classe | classe ha de         |
-|                      | original.\           | continuar sent el    |
-|                      | - Les vistes         | mateix que el de la  |
-|                      | definides sobre la   | classe original:     |
-|                      | classe original      | `_name = obj`        |
-|                      | continuen            |                      |
-|                      | funcionant.\         |                      |
-|                      | - Permet             |                      |
-|                      | sobreescriure        |                      |
-|                      | mètodes de la classe |                      |
-|                      | original.\           |                      |
-|                      | - En PostgreSQL,     |                      |
-|                      | continua mapada en   |                      |
-|                      | la mateixa taula que |                      |
-|                      | la classe original,  |                      |
-|                      | ampliada amb els     |                      |
-|                      | nous atributs que    |                      |
-|                      | pugui incorporar.    |                      |
-+----------------------+----------------------+----------------------+
-| `<strong>`{=html}Per | \- Herència simple.\ | \- S'utilitza        |
-| protot               | - Aprofita la        | l'atribut `_inherit` |
-| ip`</strong>`{=html} | definició de la      | en la definició de   |
-|                      | classe original (com | la nova classe       |
-|                      | si fos un            | Python:              |
-|                      | «prototipus»).\      | `_inherit = obj`\    |
-|                      | - La classe original | - Cal indicar el nom |
-|                      | continua existint.\  | de la nova classe:   |
-|                      | - Afegeix noves      | `_name = nou_nom`    |
-|                      | funcionalitats       |                      |
-|                      | (atributs i/o        |                      |
-|                      | mètodes) a les       |                      |
-|                      | aportades per la     |                      |
-|                      | classe original.\    |                      |
-|                      | - Les vistes         |                      |
-|                      | definides sobre la   |                      |
-|                      | classe original no   |                      |
-|                      | existeixen (cal      |                      |
-|                      | dissenyar-les de     |                      |
-|                      | nou).\               |                      |
-|                      | - Permet             |                      |
-|                      | sobreescriure        |                      |
-|                      | mètodes de la classe |                      |
-|                      | original.\           |                      |
-|                      | - En PostgreSQL,     |                      |
-|                      | queda mapada en una  |                      |
-|                      | nova taula.          |                      |
-+----------------------+----------------------+----------------------+
-| `<strong>`{=html}Per | \- Herència simple o | \- S'utilitza        |
-| delegac              | múltiple.\           | l'atribut            |
-| ió`</strong>`{=html} | - La nova classe     | `_inherits` en la    |
-|                      | «delega» certs       | definició de la nova |
-|                      | funcionaments a      | classe Python:       |
-|                      | altres classes que   | `_inherits = …`\     |
-|                      | incorpora a          | - Cal indicar el nom |
-|                      | l'interior.\         | de la nova classe:   |
-|                      | - Els recursos de la | `_name = nou_nom`    |
-|                      | nova classe contenen |                      |
-|                      | un recurs de cada    |                      |
-|                      | classe de la que     |                      |
-|                      | deriven.\            |                      |
-|                      | - Les classes base   |                      |
-|                      | continuen existint.\ |                      |
-|                      | - Afegeix les        |                      |
-|                      | funcionalitats       |                      |
-|                      | pròpies (atributs    |                      |
-|                      | i/o mètodes) que     |                      |
-|                      | correspongui.\       |                      |
-|                      | - Les vistes         |                      |
-|                      | definides sobre les  |                      |
-|                      | classes bases no     |                      |
-|                      | existeixen a la nova |                      |
-|                      | classe.\             |                      |
-|                      | - En PostgreSQL,     |                      |
-|                      | queda mapada en      |                      |
-|                      | diferents taules:    |                      |
-|                      | una taula per als    |                      |
-|                      | atributs propis,     |                      |
-|                      | mentre que els       |                      |
-|                      | recursos de les      |                      |
-|                      | classes derivades    |                      |
-|                      | resideixen en les    |                      |
-|                      | taules corresponents |                      |
-|                      | a les dites classes. |                      |
-+----------------------+----------------------+----------------------+
+| **Mecanisme**     | **Característiques** | **Com es defineix** |
+|------------------|----------------------|---------------------|
+| **De classe** | - Herència simple. <br>- La classe original queda substituïda o ampliada.  <br>- Afegeix noves funcionalitats (atributs i/o mètodes) a la classe original.  <br>- Les vistes definides sobre la classe original continuen funcionant.  <br>- Permet sobreescriure mètodes de la classe original.  <br>- En PostgreSQL, continua mapada en la mateixa taula que la classe original, ampliada amb els nous atributs que pugui incorporar. | - S'utilitza l'atribut `_inherit` en la definició de la nova classe Python: `_inherit = 'obj'`.  <br>- El nom de la nova classe ha de continuar sent el mateix que el de la classe original: `_name = 'obj'`. |
+| **Per prototip** | - Herència simple.  <br>- Aprofita la definició de la classe original (com si fos un «prototipus»).  <br>- La classe original continua existint.  <br>- Afegeix noves funcionalitats (atributs i/o mètodes) a les aportades per la classe original.  <br>- Les vistes definides sobre la classe original no existeixen (cal dissenyar-les de nou).  <br>- Permet sobreescriure mètodes de la classe original.  <br>- En PostgreSQL, queda mapada en una nova taula. | - S'utilitza l'atribut `_inherit` en la definició de la nova classe Python: `_inherit = 'obj'`.  <br>- Cal indicar el nom de la nova classe: `_name = 'nou_nom'`. |
+| **Per delegació** | - Herència simple o múltiple.  <br>- La nova classe «delega» certs funcionaments a altres classes que incorpora a l'interior.  <br>- Els recursos de la nova classe contenen un recurs de cada classe de la que deriven.  <br>- Les classes base continuen existint.  <br>- Afegeix les funcionalitats pròpies (atributs i/o mètodes) que correspongui.  <br>- Les vistes definides sobre les classes bases no existeixen a la nova classe.  <br>- En PostgreSQL, queda mapada en diferents taules: una taula per als atributs propis, mentre que els recursos de les classes derivades resideixen en les taules corresponents a les dites classes. | - S'utilitza l'atribut `_inherits` en la definició de la nova classe Python: `_inherits = {'obj': 'field_id'}`.  <br>- Cal indicar el nom de la nova classe: `_name = 'nou_nom'`. |
+
 
     ```{figure} imgs/Inheritance_methods.png
     :scale: 100 %
@@ -1361,8 +1292,6 @@ d\'utilitzar **view_ids**, observem aquest exemple:
             <field name="name">Players</field>
             <field name="res_model">res.partner</field>
             <field name="view_mode">tree,form,kanban</field>
-            <field name="domain"> [('is_player','=',True)]</field>
-            <field name="context">{'default_is_player': True}</field>
             <field name="view_ids" eval="[(5, 0, 0),
             (0, 0, {'view_mode': 'tree', 'view_id': ref('terraform.player_tree')}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('terraform.player_form')}),]" />
@@ -1378,55 +1307,6 @@ Si es vol especificar una vista search es pot inclourer la etiqueta
 
 ``` xml
  <field name="search_view_id" ref="cine.pos_order_line_search_view"/>  
-```
-
-Exemple:
-
-``` python
-class socios(models.Model):
-     _inherit = 'res.partner'
-     _name = 'res.partner'
-     #name = fields.Char()
-     camions = fields.One2many('cooperativa.camion','socio',string='Trucks')
-     n_camiones = fields.Integer(compute='_n_camiones',string='Number of Trucks')
-     arrobas = fields.Float(compute='_n_camiones',string='@')
-     @api.depends('camions')
-     def _n_camiones(self):
-       for i in self:
-         for j in i.camions:
-           i.arrobas = i.arrobas + j.arrobas
-           i.n_camiones = i.n_camiones + 1
-```
-
-``` xml
-  <record model="ir.ui.view" id="socio_form_view">
-            <field name="name">socio</field>
-            <field name="model">res.partner</field>
-       <field name="inherit_id" ref="base.view_partner_form"/> 
-           <field name="arch" type="xml">
-    <field name="website" position="after">
-                            <field name="camions"/>
-                            <field name="n_camiones"/>
-                            <field name="arrobas"/>
-    </field>
-
-            </field>
-        </record>
-```
-
-``` xml
-    <!--Inherit quotations search view-->
-    <record id="view_sale_order_inherit_search" model="ir.ui.view">
-      <field name="name">sale.order.search.expand.filter</field>
-      <field name="model">sale.order</field>
-      <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
-      <field name="arch" type="xml">
-        <xpath expr="//search" position="inside">
-          <filter string="Total &lt; 1000" name="total_under_1000" domain="[('amount_total', '&lt;', 1000)]"/>
-          <filter string="Total &gt;= 1000" name="total_above_1000" domain="[('amount_total', '&gt;=', 1000)]"/>
-        </xpath>
-      </field>
-    </record>
 ```
 
 **Domains**
@@ -1463,6 +1343,21 @@ vista search i en l\'action dir que volem aquest filtre per defecte:
             <!--  <field name="domain"> [('is_player','=',True)]</field> -->
             <field name="domain"></field>
             <field name="context">{'default_is_player': True, 'search_default_player_partner': 1}</field>
+```
+
+Per tant, un action complet per a vistes personalitzades i amb filtres quedarà com aquest:
+
+``` xml
+        <record model="ir.actions.act_window" id="terraform.player_action_window">
+            <field name="name">Players</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="domain"></field>
+            <field name="context">{'default_is_player': True, 'search_default_player_partner': 1}</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('terraform.player_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('terraform.player_form')}),]" />
+        </record>
 ```
 
 ### Herència en el controlador 
@@ -1544,13 +1439,15 @@ funcions, per poder ser traduïbles, han de ser introduïts amb la sintaxi
 ### API de l\'ORM 
 
 ```{tip}
-{{nota|'''Interactuar en la terminal'''
- $ odoo shell -d castillo -u containers
- [https://asciinema.org/a/123126 Asciinema amb alguns exemples]
+**Interactuar en la terminal**
+    $ odoo shell -d castillo -u containers
+
 Observa cóm hem ficat el paràmetre '''shell'''. Les coses que se fan en la terminal no són persistents en la base de dades fins que no s'executa '''self.env.cr.commit()'''. Dins de la terminal podem obtindre ajuda dels mètodes d'Odoo amb help(), per exemple: help(tools.image)
 Amb el següent exemple, podem arrancar odoo sense molestar a l'instància que està en marxa redefinint els ports:
- $ odoo shell -c /path/to/odoo.conf --xmlrpc-port 8888 --longpolling-port 8899
-Documentació: [https://medium.com/@RafnixG/explorando-odoo-a-fondo-c%C3%B3mo-trabajar-con-la-shell-de-la-cli-y-configurar-ipython-como-repl-8f7bd04a26d] [https://medium.com/@RafnixG/shell-de-odoo-domina-operaciones-avanzadas-integraci%C3%B3n-de-librer%C3%ADas-y-automatizaci%C3%B3n-de-tareas-2e85c7d81d34]
+
+    $ odoo shell -c /path/to/odoo.conf --xmlrpc-port 8888 --longpolling-port 8899
+
+https://asciinema.org/a/123126 (Asciinema amb alguns exemples)
 ```
 
 Un mètode creat dins d\'un model actua sobre tots els elements del model
@@ -1983,12 +1880,16 @@ mètodes **on_change**.
 ```{tip}
  Els camps '''computed''' ja tenen el seu propi onchange, per tant, no cal fer-lo
 ```
+
+```{tip}
+ Ha quedat "deprecated" retornar un domain https://github.com/odoo/odoo/pull/41918#issuecomment-824946980
+```
+
 En onchange es modifica el valor d\'un o més camps dirèctament i, si cal
 un filtre o un missatge, es fa en el return:
 
 ``` python
 return {
-    'domain': {'other_id': [('partner_id', '=', partner_id)]},
     'warning': {'title': "Warning", 'message': "What is this?", 'type': 'notification'},
 }
 ```
@@ -2027,26 +1928,6 @@ def _verify_valid_seats(self):
                  'message': "Increase seats or remove excess attendees",
              },
          }
-
-@api.onchange('pais')
-def _filter_empleat(self):                                             
-      return { 'domain': {'empleat': [('country','=',self.pais.id)]} }      
-
-# Exemple avançat en el que l'autor crea un domain amb una llista d'ids i un '''in''':
-@api.multi
-def onchange_partner_id(self, part):
-    res = super(SaleOrder, self).onchange_partner_id(part)
-    domain = [('active', '=', True), ('sale_ok', '=', True)]
-    if part:
-        partner = self.env['res.partner'].browse(part)
-        if partner and partner.sales_channel_id:
-            domain.append(('sales_channel_ids', '=',
-                           partner.sales_channel_id.id))
-    product_ids = self.env['product.product'].search(domain)
-    res.update(domain={
-        'order_line.product_id': ['id', 'in', [rec.id for rec in product_ids]]
-    })
-    return res 
 ```
 
 ```{tip}
@@ -2055,6 +1936,8 @@ Si l'usuari s'equivoca introduint algunes dades, Odoo proporciona varies maneres
 * onchange amb missatge d'error i restablint els valors originals
 * Sobreescriptura del mètode write o create per comprovar coses abans de guardar 
 ```
+
+
 ##### Cron Jobs 
 
 Cal crear un record en el model ir.cron, per exemple:

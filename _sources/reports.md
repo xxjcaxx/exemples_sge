@@ -1,7 +1,6 @@
 # Reports
 
-El nou motor de reports utilitza una combinació de **QWeb, BootStrap i
-Wkhtmltopdf**.
+El motor de reports utilitza una combinació de **QWeb, BootStrap i Wkhtmltopdf**.
 
 ```{admonition} Consell
 :class: tip
