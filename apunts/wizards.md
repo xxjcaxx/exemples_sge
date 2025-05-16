@@ -124,7 +124,7 @@ el model del wizard que utilitza. Els action que criden a wizard tenen
 l\'atribut **target** a **new** per a que llance una finestra emergent.
 
 ```{tip}
-`binding_model` és el model on es pot llançar el wizard. Amb això només ja apareix en el menú superior d'accions. Però podem fer un botó que el cride de forma més intuïtiva. En alguns tutorials el trobareu com res_model, però és per a versions anteriors a la 13. 
+`binding_model` és el model on es pot llançar el wizard. Amb això només ja apareix en el menú superior d'accions. Però podem fer un botó que el cride de forma més intuïtiva.
 ```
 ``` xml
  <button name="%(launch_mmog_fortress_wizard)d" type="action" string="Launch attack" class="oe_highlight" />
@@ -136,18 +136,21 @@ action, ja que és l\'anomenat **XML id**.
 
 ## Wizard amb assistent
 
-En aquest exemple anem a fer un wizard amb assistent. Per començar, cal
-crear un camp **state** amb varis valors possibles:
+En aquest exemple anem a fer un wizard amb assistent. Un assitent va demanant les dades poc a poc i autocompletant o indicant a l'usuari l'ordre en el que ha d'introduir les dades. És útil quan es tracta de formularis complexos amb molts camps que depenen d'altres. 
+
+Per començar, cal
+crear un camp **state** tipus `Selection` amb varis valors possibles i el primer per defecte:
 
 ``` python
-      state = fields.Selection([
+    state = fields.Selection([
         ('pelis', "Movie Selection"),
         ('dia', "Day Selection"),                                                                        
       ], default='pelis')
-                    
-      @api.multi      
-      def action_pelis(self):
-        self.state = 'pelis'
+
+          
+    def next(self):
+        if self.state == 'state1':
+            self.state = 'state2'
         return {
             'type': 'ir.actions.act_window',
             'res_model': self._name,
@@ -156,11 +159,9 @@ crear un camp **state** amb varis valors possibles:
             'target': 'new',
         }
 
-                                                      
-                                
-      @api.multi                        
-      def action_dia(self):              
-        self.state = 'dia'                      
+    def previous(self):
+        if self.state == 'player':
+            self.state = 'building'
         return {
             'type': 'ir.actions.act_window',
             'res_model': self._name,
