@@ -317,6 +317,9 @@ Els components fets en OWL per a Odoo es poden aplicar de moltes maneres, entre 
 
 Algunes d'aquestes maneres les anirem utilitzant al llarg d'aquest article. Per exemple, el `click_count` de l'exemple anterior és un widget independent.
 
+Per a que els components i altres elements del frontend estiguen disponibles per a ser insertats en altres components s'ha d'enregistrar. OWL gestiona el registres a l'objecte `registry`. Aquests estan organitzats per categories. A nosaltres en interessen les categories de `actions`,  `views`, `view_widgets` o `fields`, per exemple.  
+
+
 ## Modificar components en OWL
 
 De la mateixa manera que hem vist anteriorment, anem a modificar un component existent. En aquest cas serà un component per a un `field`, per tant, estem parlan de un `widget`. La paraula `Widget` es considera obsoleta en Odoo amb OWL, ara cal dir `Components`. No obstant, al crear forms o trees, encara posem `widget=`, per tant, podem entendre al Widget com un component capaç de mostrar o editar dades dins de les vistes.
