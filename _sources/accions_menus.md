@@ -1,41 +1,44 @@
 ## Accions i menús
 
-    Diagrama de cóm es comporta el client web quan carrega Odoo per primera 
-    vegada i cóm crida a un action i carrega les vistes i les dades (records)
-    +----------------------+                            +----------------------+
-    |                      | GET / al port 8069         |                      |
-    |    Navegador Web     +--------------------------> |    Servidor Odoo     |
-    |                      |                            |                      |
-    +----------------------+  index.html (bàsic)        |                      |
-    |  Enllaços a JS i CSS <----------------------------+                      |
-    +----------------------+                            |                      |
-    |                      | GET JS i CSS  Qweb         +----------------------+
-    |                      +----------------------------> Crea els Assets      |
-    |                      |                            +----------------------+
-    +----------------------+ CSS i JS ASSETS Templates  |                      |
-    | Inicia Client Web    <----------------------------+                      |
-    +----------------------+                            |                      |
-    |                      | POST Load Views            +----------------------+
-    |                      +----------------------------> ir.ui.view           |
-    |                      | arch i json amb els fields |                      |
-    |                      +<---------------------------+                      |
-    |                      |                            +----------------------+
-    +----------------------+ POST load action           +----------------------+
-    |  Pulsem un menú      +----------------------------> ir.ui.action         |
-    +----------------------+ Definició de l'action      |                      |
-    |                      <----------------------------+                      |
-    | l'Action necessita   |                            +----------------------+
-    | vistes               | POST Load Views            |                      |
-    |                      +---------------------------->  ir.ui.view          |
-    |                      | Totes les vistes i fields  |                      |
-    | El client analitza   <----------------------------+                      |
-    | quins field necessita| POST Search read           +----------------------+
-    +---------------------------------------------------> Selecciona i computa |
-    |                      | Json amb els records       | el fields            |
-    |El client renderitza  <---------------------------------------------------+
-    |la vista amb els      |                            |                      |
-    |records               |                            |                      |
-    +----------------------+                            +----------------------+
+Diagrama de cóm es comporta el client web quan carrega Odoo per primera vegada i cóm crida a un action i carrega les vistes i les dades (records)
+
+<!-- 
+sequenceDiagram
+    participant N as Navegador Web
+    participant O as Servidor Odoo
+
+    N->>O: GET / (port 8069)
+    O->>N: index.html (bàsic)
+    N->>O: GET JS i CSS QWeb 
+    Note right of O: Crear els assets
+    O->>N: Assets (JS i CSS) Templates
+
+    Note left of N: Inicia Client Web
+
+    N->>O: POST Load Views
+    Note right of O: ir.ui.view
+    O->>N: arch + json amb fields
+    Note left of N: Polsem un menú
+
+    N->>O: POST Load Action
+    Note right of O: ir.ui.action
+    O->>N: Definició de l'action
+
+    N->>O: POST Load Views (per l'action)
+    O->>N: Totes les vistes i fields
+
+    N->>O: POST Search Read
+    Note right of O: Select i compute
+    O->>N: Json amb els records
+
+    Note left of N: Analitza fields necessaris
+    Note left of N: Renderitza la vista amb els records
+-->
+
+<div style="width: 600px;">
+  <img src="./imgs/diamgramaactions.png" alt="Diagrama de flujo" style="width: 100%;" />
+</div>
+
 
 El client web de Odoo conté uns menús dalt i a l\'esquerra. Aquests
 menús, al ser accionats mostren altres menús i les pantalles del
@@ -44,30 +47,30 @@ programa. Quant pulsem en un menú, canvia la pantalla perquè hem fet una
 
 Una acció bàsicament té:
 
--   **type**: El tipus d\'acció que és i cóm l\'acció és interpretada.
+- **type**: El tipus d\'acció que és i cóm l\'acció és interpretada.
     Quan la definim en el XML, el type no cal especificar-lo, ja que ho
     indica el model en que es guarda.
--   **name**: El nom, que pot ser mostrat en la pantalla o no. Es
+- **name**: El nom, que pot ser mostrat en la pantalla o no. Es
     recomana que siga llegible per els humans.
 
 Les accions i els menús es declaren en fitxers de dades en XML o
-dirèctament si una funció retorna un diccionari que la defineix. Les
+directament si una funció retorna un diccionari que la defineix. Les
 accions poden ser cridades de tres maneres:
 
--   Fent clic en un menú.
--   Fent clic en botons de les vistes (han d\'estar connectats amb
+- Fent clic en un menú.
+- Fent clic en botons de les vistes (han d\'estar connectats amb
     accions).
--   Com accions contextuals en els objectes.
+- Com accions contextuals en els objectes.
 
 D\'aquesta manera, el client web pot saber quina acció ha d\'executar si
 rep alguna d\'aquestes coses:
 
--   **false**: Indica que s\'ha de tancar el diàleg actual.
--   **Una string**: Amb l\'etiqueta de **l\'acció de client** a
+- **false**: Indica que s\'ha de tancar el diàleg actual.
+- **Una string**: Amb l\'etiqueta de **l\'acció de client** a
     executar.
--   **Un número**: Amb el ID o external ID de l\'acció a trobar a la
+- **Un número**: Amb el ID o external ID de l\'acció a trobar a la
     base de dades.
--   **Un diccionari**: Amb la definició de l\'acció, aquesta no està ni
+- **Un diccionari**: Amb la definició de l\'acció, aquesta no està ni
     en XML ni en la base de dades. En general, és la manera de cridar a
     un action al finalitzar una funció.
 
@@ -91,12 +94,11 @@ declarats amb una etiqueta **menuitem**:
 Les accions han de ser declarades al XML abans que els menús que les accionen. 
 ```
 
-
 ```{tip}
 El que hem vist en esta secció és la definició d'una acció en un XML com a part de la vista, però una acció no és més que una forma còmoda d'escriure moltes coses que farà el client en javascript per demanar alguna cosa al servidor. Els actions separen i simplifiquen el desenvolupament de la interfície d'usuari que és el client web. Un menú o botó en html acciona una funció javascript que en principi no sap el que fer. Aquesta demana que es carregue la definició del seu action. Una vegada carregada la definició, queda clar tot el que ha de demanar (les vistes, context, dominis, vistes search, lloc on carregar-ho tot...) aleshores demana les vistes i amb ajuda de les vistes i els fields, demana els records que són les dades a mostrar. Per tant, un action és la definició sense programar javascript de coses que ha de fer el javascript. Odoo permet declarar actions com a resposta de funcions. Aquestes actions no estan en la base de dades, però són enviades igualment al client i el client fa en elles el mateix que en un action que ell ha demanat. Un exemple d'això són els actions que retornen els botons dels wizards. De fet, podem fer que un botó torne un action i, per tant, obrir una vista diferent. 
 ```
-Aquest exemple és una funció cridada per un botó que retorna un action:
 
+Aquest exemple és una funció cridada per un botó que retorna un action:
 
 ``` python
     @api.multi    # Molt important que siga multi.
@@ -144,11 +146,10 @@ Aquest és el json que rep el client després de cridar al botó:
 Ara el client pot demanar un formulari i el record corresponent al model
 *reserves.comments* i el id *20*.
 
-
 Anem a veure en detall tots els fields que tenen aquestes accions:
 
--   **res_model**: El model del que mostrarà les vistes.
--   **views**: Una llista de parelles en el ID de la vista i el tipus.
+- **res_model**: El model del que mostrarà les vistes.
+- **views**: Una llista de parelles en el ID de la vista i el tipus.
     En cas de que no sabem el ID de la vista, podem ficar **false** i
     triarà o crearà una per defecte. Observem l\'exemple anterior, on en
     la declaració de l\'acció no s\'especifica aquest field, però el
@@ -156,21 +157,21 @@ Anem a veure en detall tots els fields que tenen aquestes accions:
     **\"views\":**. La llista
     de vistes la trau automàticament amb la funció
     **[fields_view_get()](https://www.odoo.com/documentation/12.0/reference/orm.html#odoo.models.Model.fields_view_get)**.
--   **res_id**: (Opcional) Si es va a mostrar un form, indica la ID del
+- **res_id**: (Opcional) Si es va a mostrar un form, indica la ID del
     record que es va a mostrar.
--   **search_view_id**: (Opcional) Se li pasa (id, name) on id
+- **search_view_id**: (Opcional) Se li pasa (id, name) on id
     respresenta el ID de la vista search que es mostrarà.
--   **target**: (Opcional) El destí del action. Per defecte és en la
+- **target**: (Opcional) El destí del action. Per defecte és en la
     finestra actual (**current**), encara que pot ser a tota la pantalla
     (**full_screen**) o en un diàleg o *pop-up* (**new**) o **main** en
     cas de voler que es veja en la finestra actual sense les
     *breadcrumbs*, el que vol dir que elimina el rastre d\'on vé
     l\'acció.
--   **context**: (Opcional)Informació addicional. 
--   **domain**: (Opcional) Aplica un filtre als registres que es demanaran a la base de dades.
--   **limit**: (Opcional) Per defecte 80, és la quantitat de records que
+- **context**: (Opcional)Informació addicional.
+- **domain**: (Opcional) Aplica un filtre als registres que es demanaran a la base de dades.
+- **limit**: (Opcional) Per defecte 80, és la quantitat de records que
     mostrar en la vista tree.
--   **auto-search**: (Opcional) En cas de que necessitem una búsqueda
+- **auto-search**: (Opcional) En cas de que necessitem una búsqueda
     només carregar la vista.
 
 Exemples d\'Actions declarades en python:
@@ -199,14 +200,14 @@ Exemples d\'Actions declarades en python:
 Quan guardem una action en la base de dades, normalment definint-la com
 un XML, tenim aquest altres fields:
 
--   **view_mode**: Lista separada per comes de les vistes que ha de
+- **view_mode**: Lista separada per comes de les vistes que ha de
     mostrar. Una vegada el servidor va a enviar aquest action al client,
     amb açò generarà el field **views**.
--   **view_ids**: Una llista d\'objectes de vista que permet definir la
+- **view_ids**: Una llista d\'objectes de vista que permet definir la
     vista de la primera part de **views**. Aquesta llista és un
     Many2many amb les vistes i la taula intermitja es diu
     **ir.actions.act_window.view**.
--   **view_id**: Una vista específica a afegir a **views**.
+- **view_id**: Una vista específica a afegir a **views**.
 
 Per tant, si volem definir les vistes que volem que mostre el action,
 podem omplir els camps anteriors. El servidor observa la llista de
@@ -218,6 +219,7 @@ vista en un action:
 ``` python
 <field name="view_ids" eval="[(5, 0, 0),(0, 0, {'view_mode': 'tree', 'view_id': ref('tree_external_id')}),(0, 0, {'view_mode': 'form', 'view_id': ref('form_external_id')}),]" />
 ```
+
 En els fitxers de dades, aquesta sintaxi és per a modificar fields Many2many. El **(5,0,0)** per
 a desvincular les possibles vistes. El **(0,0,`<record>`{=html})** per
 crear un nou record i vincular-ho. En aquest cas, crea un record amb els
@@ -226,8 +228,7 @@ vincular.
 
 Això també es pot fer més explícitament insertant records en **ir.actions.act_window.view**.
 
-### Accions tipus URL {#accions_tipus_url}
-
+### Accions tipus URL 
 Aquestes accions símplement obrin un URL. Exemple:
 
 ``` python
@@ -238,7 +239,7 @@ Aquestes accions símplement obrin un URL. Exemple:
 }
 ```
 
-### Accions tipus Server {#accions_tipus_server}
+### Accions tipus Server
 
 Les accions tipus server funcionen en un model base i poden ser
 executades automàticament o amb el menú contextual d\'acció que es veu
@@ -246,11 +247,11 @@ dalt en la vista.
 
 Les accions que pot fer un server action són:
 
--   Executar un **codi python**. Amb un bloc de codi que serà executat
+- Executar un **codi python**. Amb un bloc de codi que serà executat
     al servidor.
--   Crear un **nou record**.
--   **Escriure** en un record existent.
--   Executar **varies accions**. Per poder executar varies accions
+- Crear un **nou record**.
+- **Escriure** en un record existent.
+- Executar **varies accions**. Per poder executar varies accions
     server.
 
 Com es pot veure al codi de les server action:
@@ -278,7 +279,7 @@ Permet executar codi en el servidor. És una acció molt genèrica que pot,
 inclús retornar una acció tipus window. Les accions tipus server són una
 forma més genèrica del que fa el button tipus **object**.
 
-Vejem un exemple:
+Veiem un exemple:
 
 ``` xml
 <record model="ir.actions.server" id="print_instance">
@@ -293,10 +294,10 @@ Vejem un exemple:
 
 En l\'exemple anterior podem veure les característiques bàsiques:
 
--   **ir.action.server**: El nom del model on es guardarà.
--   **model_id**: És l\'equivalent a **res_model** en les accions tipus
+- **ir.action.server**: El nom del model on es guardarà.
+- **model_id**: És l\'equivalent a **res_model** en les accions tipus
     window. Es tracta del model sobre el que treballarà l\'action.
--   **code**: Troç de codi que executarà. Pot ser un python complex o el
+- **code**: Troç de codi que executarà. Pot ser un python complex o el
     nom d\'un mètode que ja tinga el model.
 
 El servidor rebrà del client la ordre d\'executar eixe action. Eixa
@@ -332,30 +333,30 @@ Però no sempre s\'utilitza l\'etiqueta **code**. Això depen d\'una altra
 anomenada **state** que pot tindre el tipus d\'acció de servidor. Estan
 disponibles els següents valors:
 
--   **code** : Executar codi Python\': un bloc de codi Python que serà
+- **code** : Executar codi Python\': un bloc de codi Python que serà
     executat. En el cas d\'utilitzar code, el codi té accés a algunes
     variables específiques:
-    -   **env**: *Enviroment* d\'Odoo en el que l\'action s\'executa.
-    -   **model**: Model en que s\'executa. Es tracta d\'un
+  - **env**: *Enviroment* d\'Odoo en el que l\'action s\'executa.
+  - **model**: Model en que s\'executa. Es tracta d\'un
         **recordset** buit.
-    -   **record**: El registre en que s\'executa l\'acció.
-    -   **records**: Recordset de tots els registres en que s\'executa
+  - **record**: El registre en que s\'executa l\'acció.
+  - **records**: Recordset de tots els registres en que s\'executa
         l\'acció (si es cridada per un tree, per exemple)
-    -   **time, datetime, dateutil, timezone** Bilioteques Python útils
+  - **time, datetime, dateutil, timezone** Bilioteques Python útils
         (**són python pures, no d\'odoo**)
-    -   **log(message, level=\'info\')**: Per enviar missatges al log.
-    -   **Warning** per llançar una excepció amb **raise**.
-    -   **action={\...}** per llançar una acció.
--   **object_create**: Crear o duplicar un nou registre: crea un nou
+  - **log(message, level=\'info\')**: Per enviar missatges al log.
+  - **Warning** per llançar una excepció amb **raise**.
+  - **action={\...}** per llançar una acció.
+- **object_create**: Crear o duplicar un nou registre: crea un nou
     registre amb nous valors, o duplica un d\'existent a la base de
     dades
--   **object_write**: Escriure en un registre: actualitza els valors
+- **object_write**: Escriure en un registre: actualitza els valors
     d\'un registre
--   **multi**: Executar diverses accions: defineix una acció que llança
+- **multi**: Executar diverses accions: defineix una acció que llança
     altres diverses accions de servidor
--   **followers**: Afegir seguidors: afegeix seguidors a un registre
+- **followers**: Afegir seguidors: afegeix seguidors a un registre
     (disponible a Discuss)
--   **email**: Enviar un correu electrònic: envia automàticament un
+- **email**: Enviar un correu electrònic: envia automàticament un
     correu electrònic (disponible a email_template)
 
 Exemple complet de action tipus server. (No fa res útil, però es pot
@@ -480,17 +481,17 @@ l\'interfície de manera automàtica. En el cas que ens ocupa, el client
 web atén a un action demanat pel menú lateral, aquest mostra un tree en
 la finestra corresponent. Però en la definició del tree, sols està la
 part de les dades. Dalt del tree, el client web mostra una barra de
-búsqueda i uns menús desplagables **dropdown**. Aquest menú és generat
+búsqueda i uns menús desplegables **dropdown**. Aquest menú és generat
 pel client amb la llista d\'accions vinculades al model que està
 mostrant.
 
-Lamanera més senzilla de vincular un action al menú de dalt és amb aquests
+La manera més senzilla de vincular un action al menú de dalt és amb aquests
 fields que ara tenen les actions:
 
--   **binding_type**: Per defecte és de tipus **action**, però pot ser
+- **binding_type**: Per defecte és de tipus **action**, però pot ser
     **action_form_only** per mostrar un formulari o **report** per
     generar un report.
--   **binding_model_id**: Aquest field serveix per vincular l\'action al
+- **binding_model_id**: Aquest field serveix per vincular l\'action al
     menú de dalt de les vistes d\'eixe model.
 
 Exemple tret del codi d\'Odoo 11:
