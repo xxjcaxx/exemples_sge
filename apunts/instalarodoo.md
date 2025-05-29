@@ -10,9 +10,6 @@ de les més avançades que són descarregar per *git* el repositori i fer
 que arranque a l\'inici a les més simples que són desplegar un
 **docker** amb tot funcionant. 
 
-[Manual technical training
-Odoo](https://github.com/odoo/technical-training/tree/12.0-99-sysadmin).
-
 ## Instal·lar Amb Docker
 
 [Documentació oficial](https://registry.hub.docker.com/_/odoo/)
@@ -28,7 +25,7 @@ https://docs.docker.com/engine/install/ubuntu/
 
 > Si volem GUI, podem utilitzar Docker Desktop per a contenidors locals o Portainer per a gestionar també contenidors remots. 
 
-Es pot instal·lar Docker de moltes maneres, però anem a fer-ho de la manera més recomanable per al nostre cas: 
+Es pot instal·lar Docker de moltes maneres, però anem a fer-ho de la manera més recomanable per al nostre cas, que és la de la web oficial: 
 
 ```bash
 # Add Docker's official GPG key:
@@ -768,6 +765,9 @@ funciona:
 
 ## Enllaços
 
+
+-   [Manual technical training
+Odoo](https://github.com/odoo/technical-training/tree/12.0-99-sysadmin).
 -   [Video de instalar Odoo
     manualmente](https://www.youtube.com/watch?v=IPjqbwA814Q).
 -   [Video de configurar Odoo como
