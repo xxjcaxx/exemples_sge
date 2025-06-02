@@ -269,6 +269,19 @@ Odoo intentarà connectar-se a la base de dades **usant `localhost`**, però en 
 
 Per a solucionar-ho, has d’indicar explícitament el **host de la base de dades** i la **contrasenya** en la comanda
 ```
+
+
+## Posar en producció amb docker
+
+Si podem deixar correguent un Docker a un servidor amb connexió a Internet amb els ports exposats, ja estaria en producció. No obstant això suposa varis problemes de seguretat i rendiment. 
+
+### Docker de Nginx
+
+Podem afegir al fitxer del Docker Compose la configuració d'un contenidor Nginx. Aquest implementarà HTTPS i farà de proxy a Odoo.
+
+### Workers
+
+### Posar en producció quan es reinicia el servidor
     
 
 ## Instal·lar en Debian i Ubuntu
