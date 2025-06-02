@@ -1,20 +1,15 @@
 # Wizards
 
 Els wizards d\'Odoo permeten fer un asistent
-interactiu per a que l\'usuari complete una tasca. Com que no ha
-d\'agafar les dades directament en un formulari, si no que el va ajudant
-a completar-ho, no pot ser guardat en la base de dades fins al final.
+interactiu per a que l'usuari complete una tasca. Es tracta simplement d'un formulari emergent que va demanant dades i ajundant a l'usuari i en el que les dades són temporals.
 
 Els wizards en Odoo se fan a partir de models que estenen la classe
 **TransientModel** en compte de *Model*. Aquesta classe és molt
 pareguda, però:
 
--   Les dades no són persistents, encara que es guarden temporalment en
-    la base de dades.
--   Els records dels wizards poden tindre referències Many2one o
-    Many2many amb el records dels models normals, però no al contrari.
--   Els records dels models normals poden tindre One2many a Wizards,
-    però cada cert tems s\'eliminen.
+- Les dades no són persistents, encara que es guarden temporalment en la base de dades.
+- Els records dels wizards poden tindre referències Many2one o Many2many amb el records dels models normals, però no al contrari.
+- Els records dels models normals poden tindre One2many a Wizards, però cada cert tems s\'eliminen.
 
 En realitat, no estem fent res molt diferent al que fem en Odoo a
 exepció del **TransientModel**. Es tracta de crear formularis i accions
@@ -22,41 +17,40 @@ igual que podem crear-los per a altres propòsits. Un Wizard és un
 conjunt de tècniques que s\'utilitzen conjuntament sovint. Així, el
 cicle de vida d\'un wizard serà el següent:
 
--   Un botó o el menú de dalt de la vista crida a un **action** que
+- Un botó o el menú de dalt de la vista crida a un **action** que
     mostrarà el wizard. Por ser cridat de 4 maneres:
-    -   Per un action ja preexistent en la base de dades amb **%()d** i
+  - Per un action ja preexistent en la base de dades amb **%()d** i
         un botó de tipus action.
-    -   Per un action ja preexistent que tinga **binding_model** i per
+  - Per un action ja preexistent que tinga **binding_model** i per
         tant isca en el menú de dalt d\'una vista en eixe model.
-    -   Per un action generat per Python i retornat per una funció. (En
+  - Per un action generat per Python i retornat per una funció. (En
         Odoo totes les funcions cridades des de la vista poden retornar
         un action que després el client executa).
-    -   La més exòtica és per un action preexistent però obtingut en una
+  - La més exòtica és per un action preexistent però obtingut en una
         funció Python i retornat per aquesta. No és molt freqüent, però
         pot ser l\'única opció si la funció pot o no retornar un wizard
         i la cridada al mateix es vol definir una vegada només.
--   Eixe action, en els wizards, sol obrir una finestra modal
+- Eixe action, en els wizards, sol obrir una finestra modal
     (target=\"new\") on es mostren alguns fields del **TransientModel**.
--   La finestra conté un formulari que sol tindre un botó per a enviar,
+- La finestra conté un formulari que sol tindre un botó per a enviar,
     crear o el que es necessite i un especial **Cancel** que té la seua
     sintaxi específica.
--   Els wizards solen ser assistents que tenen botos de **next**,
+- Els wizards solen ser assistents que tenen botos de **next**,
     **back** per exemple. Eixe comportament s\'implementa amb:
-    -   Un field de tipus **selection** anomenat **state** (és important
+  - Un field de tipus **selection** anomenat **state** (és important
         el nom).
-    -   Un **header** en el formulari amb un widget **statusbar** per
+  - Un **header** en el formulari amb un widget **statusbar** per
         mostrar el progrés.
-    -   Els botons anterior i següent que criden a funcions del
+  - Els botons anterior i següent que criden a funcions del
         TransientModel.
-    -   Aquestes funcions canvien el field **state** i retornen un
+  - Aquestes funcions canvien el field **state** i retornen un
         action del mateix wizard per refrescar-lo i que no es tanque.
-    -   El formulari té groups o field que es mostren o s\'oculten en
-        funció del field **state** amb una etiqueta específica del XML
-        anomenada **states=**.
--   En cas de tindre un wizard complex en el que omplir Many2many o
+  - El formulari té groups o field que es mostren o s\'oculten en
+        funció del field **state**.
+- En cas de tindre un wizard complex en el que omplir Many2many o
     One2many, tal vegada es necessiten més transientModels per fer
     relacions. No es poden fer relacions x2many amb models normals.
--   Finalment, el wizard acabarà creant o modificant alguns models
+- Finalment, el wizard acabarà creant o modificant alguns models
     permanent de la base de dades. Això es fa en una funció. Eixa funció
     pot retornar un action per mostrar les instàncies creades o per
     refrescar la vista que l\'ha cridat.
@@ -85,7 +79,7 @@ class wizard(models.TransientModel):
        return {}
 ```
 
-En el python cal observar la classe de la que hereta, el default, que
+En el python cal observar la classe de la que hereta (`TransientModel`). També el default, que
 extrau el **active_id** del form que a llançat el wizard i el mètode que
 és cridat pel botó de la vista.
 
@@ -127,8 +121,9 @@ el model del wizard que utilitza. Els action que criden a wizard tenen
 l\'atribut **target** a **new** per a que llance una finestra emergent.
 
 ```{tip}
-`binding_model` és el model on es pot llançar el wizard. Amb això només ja apareix en el menú superior d'accions. Però podem fer un botó que el cride de forma més intuïtiva. En alguns tutorials el trobareu com res_model, però és per a versions anteriors a la 13. 
+`binding_model` és el model on es pot llançar el wizard. Amb això només ja apareix en el menú superior d'accions. Però podem fer un botó que el cride de forma més intuïtiva.
 ```
+
 ``` xml
  <button name="%(launch_mmog_fortress_wizard)d" type="action" string="Launch attack" class="oe_highlight" />
 ```
@@ -137,20 +132,37 @@ Si volem, podem ficar un botó que cride al action del wizard. Observem
 la sintaxi del name, que és igual sempre que el button siga de tipus
 action, ja que és l\'anomenat **XML id**.
 
+Una altra opció és fer que el botó siga de tipus `object` i que la funció retorne un action com el creat anteriorment:
+
+```python
+def launch_mmog_fortress_wizard(self):
+    return {
+        'name': 'Launch attack',
+        'type': 'ir.actions.act_window',
+        'res_model': 'mmog.wizard',
+        'view_mode': 'form',
+        'target': 'new',
+        'context': self._context,
+    }
+```
+
 ## Wizard amb assistent
 
-En aquest exemple anem a fer un wizard amb assistent. Per començar, cal
-crear un camp **state** amb varis valors possibles:
+En aquest exemple anem a fer un wizard amb assistent. Un assistent va demanant les dades poc a poc i autocompletant o indicant a l'usuari l'ordre en el que ha d'introduir les dades. És útil quan es tracta de formularis complexos amb molts camps que depenen d'altres.
+
+Per començar, cal
+crear un camp **state** tipus `Selection` amb varis valors possibles i el primer per defecte:
 
 ``` python
-      state = fields.Selection([
+    state = fields.Selection([
         ('pelis', "Movie Selection"),
         ('dia', "Day Selection"),                                                                        
       ], default='pelis')
-                    
-      @api.multi      
-      def action_pelis(self):
-        self.state = 'pelis'
+
+          
+    def next(self):
+        if self.state == 'state1':
+            self.state = 'state2'
         return {
             'type': 'ir.actions.act_window',
             'res_model': self._name,
@@ -159,11 +171,9 @@ crear un camp **state** amb varis valors possibles:
             'target': 'new',
         }
 
-                                                      
-                                
-      @api.multi                        
-      def action_dia(self):              
-        self.state = 'dia'                      
+    def previous(self):
+        if self.state == 'player':
+            self.state = 'building'
         return {
             'type': 'ir.actions.act_window',
             'res_model': self._name,
@@ -201,8 +211,8 @@ valor de **state**.
 ```{tip}
 En l'anterior exemple els botons per a passar al següent estat s'oculten. Si volem deshabilitar-los podem crear un duplicat amb els states inversos i amb la classe "oe_highlight disabled"
 ```
-Els wizards poden tornar a recarregar la vista des de la que són
-cridats:
+
+Els wizards poden tornar a recarregar la vista des de la que són cridats o poden retornar un action per carregar qualsevol vista, per exemple una del registre que s'ha creat:
 
 ``` python
 return {
@@ -215,17 +225,6 @@ return {
     'context': self._context,   # El context es pot ampliar per afegir opcions
     'type': 'ir.actions.act_window',
     'target': 'current',  # Si ho fem en current, canvia la finestra actual.
-}
-```
-
-L\'exemple anterior és la manera llarga i completa de cridar a una vista
-en concret, però si sols necessitem refrescar la vista cridada, podem
-afegir:
-
-``` python
-return {
-    'type': 'ir.actions.client',
-    'tag': 'reload',
 }
 ```
 
@@ -266,10 +265,15 @@ de dins del wizard cap a un model permanent. El problema està en els
 **One2many** i els **Many2many**. Aquestes relacions impliquen que hi ha
 algun model que apunta al **transientmodel** del wizard. Eixe tipus de
 relacions són impossibles o no recomanables, aleshores cal crear altres
-*transientmodels* auxiliars que representen als originals per
+`transientmodels` auxiliars que representen als originals per
 implementar les relacions.
 
+Les relacions `Many2many` entre un TransientModel i un model normal són interessants unidireccionalment, és a dir, al `TransientModel` es pot veure i utilitzar la llista, però no té sentit aquesta llista al model normal si al final es va a esborrar. Odoo manté durant un temps el model per al wizard y al esborrar, també elimina les relacions a la taula intermèdia.
+
+Per tant, si durant el wizard es va a necessitar manipular llistes, pot ser recomanable fer un model transitori també per a simular el model en el que es fa la relació final.
+
 ### Amb One2many
+
 En el següent exemple anem a veure cóm implementar un wizard per a un
 viatge en el que tindrem una llista de ciutats disponibles en funció
 d\'un origen i unes carreteres. Observem primer el transientModel de
@@ -339,38 +343,6 @@ de les noves.
 Podem aprofitar la llista de ciutats disponibles per fer un filtre en la
 vista en el field **destiny**. Per a fer aixó tenim algunes opcions ja
 tractades:
-
--   En el return de l\'Onchange es pot indicar el filtre si el field
-    està visible en el estat actual del wizard:
-
-``` python
-return { 
-         'domain': {
-            'destiny': [('id', 'in', (self.cities_available.city).ids)],
-           }
-       }
-```
-
--   En cas de que el field de destí estiga en estats posteriors del
-    wizard, cal enviar per context el filtre. La raó és que cada vegada
-    que es fa click en un botó **next** dins del wizard, el wizard es
-    tanca i cal retornar un action que el torne a obrir en un altre
-    estat. Això no afecta a les dades temporals ni als models temporals
-    auxiliars, però reinicia el formulari i es perden els canvis fets
-    per l\'Onchange en el model virtual del formulari anterior. Vegen el
-    *return* de la funció del botó **next** del formulari:
-
-``` python
- return {
-            'name': 'Travel Wizard',
-            'type': 'ir.actions.act_window',
-            'res_model': self._name,
-            'res_id': self.id,
-            'view_mode': 'form',
-            'target': 'new',
-            'context': dict(self._context, cities_available_context= (self.cities_available.city).ids, origin_context = self.origin.id)
-        }
-```
 
 Observem la sintaxi en la que es crea un diccionari amb **dict()**
 concatenant el context amb dos nous atributs, el de les ciutats i
@@ -447,7 +419,7 @@ Podem implementar la funció seüent:
 ## Onchange en Wizards
 
 En principi els Onchange funcionen igual que sempre. És a dir, poden
-modificar el valor dels fields o retornar un domain o un warning. No
+modificar el valor dels fields o retornar un warning. No
 obstant, cal indicar que Onchange funciona sobre un record virtual còpia
 del record real en el que treballa el wizard. Així, quan fa un canvi,
 sols afecta a la vista. Això no és cap problema quan fem un formulari
@@ -470,21 +442,6 @@ Observem aquest codi:
 
 El primer write escriu sobre el registre real del wizard i el segon
 sobre el virtual per a veure el canvi.
-
-Una altra cosa a tindre en compte és que el domain que retornen sols es
-vàlid per a la vista actual. Al ser refrescada, es perd. Per això, cal
-enviar-lo per context en la funció del botó *next* i aprofitar-ho en la
-vista:
-
-``` python
-    # En el action del return de next:
-    'context': dict(self._context, cities_available_context= (self.cities_available.city).ids, origin_context = self.origin.id),
-```
-
-``` xml
-    <!-- En la vista:  -->
-     <field name="destiny" domain = "[('id','in',context.get('cities_available_context',[]))]" />
-```
 
 ## Alertes
 
@@ -530,8 +487,7 @@ Si volem notificar sense molestar massa, es pot cridar a una
 
 Pot ser de molts tipus i no tanca el wizard, per tant, es pot continuar.
 
-## Exemple Complet de Wizards 
-
+## Exemple Complet de Wizards
 
 El codi complet de l\'exemple està a:
 [1](https://github.com/xxjcaxx/sge18-19/tree/master/wizards)

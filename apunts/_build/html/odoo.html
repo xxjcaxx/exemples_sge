@@ -16,21 +16,19 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -38,11 +36,10 @@
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
-  <!-- So that users can add custom icons -->
-  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
@@ -60,8 +57,6 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'odoo';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -69,7 +64,6 @@
     <link rel="prev" title="Instal·lar Odoo" href="instalarodoo.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -85,8 +79,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -94,6 +99,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -101,8 +107,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -118,8 +124,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -149,17 +154,21 @@
     
     
     <img src="_static/odoo_logo.svg" class="logo__image only-light" alt="Apunts d'Odoo - Home"/>
-    <img src="_static/odoo_logo.svg" class="logo__image only-dark pst-js-only" alt="Apunts d'Odoo - Home"/>
+    <script>document.write(`<img src="_static/odoo_logo.svg" class="logo__image only-dark" alt="Apunts d'Odoo - Home"/>`);</script>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -181,13 +190,6 @@
 <li class="toctree-l1"><a class="reference internal" href="client_web.html">Client Web</a></li>
 
 
-
-
-
-
-
-
-
 <li class="toctree-l1"><a class="reference internal" href="Jupyter%20y%20Odoo.html">Usar Jupyter en Odoo.</a></li>
 </ul>
 
@@ -197,14 +199,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -348,16 +345,24 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
+  </button>
+`);
+</script>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -417,6 +422,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitxers-de-dades">Fitxers de dades</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#external-ids">External Ids</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expressions">Expressions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dades-per-als-binary-i-image">Dades per als Binary i Image</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#esborrar">Esborrar</a></li>
 </ul>
 </li>
@@ -692,9 +698,9 @@ que ja no es necessiten, per exemple.</p></li>
 llista.</p></li>
 </ul>
 <p>Els fields es declaren amb un constructor:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">openerp</span><span class="w"> </span><span class="kn">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">fields</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openerp</span> <span class="kn">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">fields</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">LessMinimalModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">LessMinimalModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;test.model2&#39;</span>
 
     <span class="n">name</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Char</span><span class="p">()</span>
@@ -713,7 +719,7 @@ ajuda a l’usuari per plenar el camp.</p></li>
 </ul>
 <p>I algunes, sobretot les especials, tenen atributs particulars.</p>
 <p>Exemple complet:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">AModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
 
     <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;a_name&#39;</span>
 
@@ -744,7 +750,7 @@ field.</p>
  <span class="c1"># o:</span>
  <span class="n">name</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Char</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">a_fun</span><span class="p">)</span>
  <span class="c1">#...</span>
- <span class="k">def</span><span class="w"> </span><span class="nf">a_fun</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+ <span class="k">def</span> <span class="nf">a_fun</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_something</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -799,7 +805,7 @@ d’integritat necessaries. Anem a repasar un a un aquests camps:</p>
 <span class="c1"># Fragment de test_new_api:</span>
     <span class="n">reference</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Reference</span><span class="p">(</span><span class="n">string</span><span class="o">=</span><span class="s1">&#39;Related Document&#39;</span><span class="p">,</span> <span class="n">selection</span><span class="o">=</span><span class="s1">&#39;_reference_models&#39;</span><span class="p">)</span>
     <span class="nd">@api</span><span class="o">.</span><span class="n">model</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_reference_models</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_reference_models</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">models</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;ir.model&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;!=&#39;</span><span class="p">,</span> <span class="s1">&#39;manual&#39;</span><span class="p">)])</span>
         <span class="k">return</span> <span class="p">[(</span><span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span>
@@ -828,7 +834,7 @@ relacions entre models són sempre les mateixes.</p>
 </pre></div>
 </div>
 <p>El codi resultant sería:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ciutat</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ciutat</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;mon.ciutat&#39;</span>
     <span class="n">pais</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Many2one</span><span class="p">(</span><span class="s2">&quot;mon.pais&quot;</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="s1">&#39;Pais&#39;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s1">&#39;restrict&#39;</span><span class="p">)</span>
 </pre></div>
@@ -857,7 +863,7 @@ D’aquesta manera, sempre has de especificar el nom del model i el nom
 del camp Many2one del model que fa referencia a l’actual, com es pot
 veure en l’exemple.</p>
 <p>En l’exemple anterior, quedaria com:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">pais</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">pais</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;mon.pais&#39;</span>
     <span class="n">ciutats</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">One2many</span><span class="p">(</span><span class="s1">&#39;mon.ciutat&#39;</span><span class="p">,</span> <span class="s1">&#39;pais&#39;</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="s1">&#39;Ciutats&#39;</span><span class="p">)</span>
 </pre></div>
@@ -939,7 +945,7 @@ en els del primer model. Per poder editar en els dos cal fer una
 funció inversa per al camp computed. Aquesta és una de les opcions
 més elegants. Exemple:</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">orderline</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">orderline</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;sale.order.line&#39;</span>
     <span class="n">_inherit</span> <span class="o">=</span> <span class="s1">&#39;sale.order.line&#39;</span>
     <span class="n">booking</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Many2one</span><span class="p">(</span><span class="s1">&#39;reserves.bookings&#39;</span><span class="p">)</span>
@@ -948,19 +954,19 @@ més elegants. Exemple:</p></li>
     <span class="p">(</span><span class="s1">&#39;booking_uniq&#39;</span><span class="p">,</span> <span class="s1">&#39;unique(booking)&#39;</span><span class="p">,</span> <span class="s1">&#39;There is another order line for this booking&#39;</span><span class="p">),</span>
     <span class="p">]</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">bookings</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">bookings</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;reserves.bookings&#39;</span>
 
     <span class="n">name</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Char</span><span class="p">()</span>
     <span class="n">order_line</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Many2one</span><span class="p">(</span><span class="s1">&#39;sale.order.line&#39;</span><span class="p">,</span><span class="n">compute</span><span class="o">=</span><span class="s1">&#39;_get_order_line&#39;</span><span class="p">,</span><span class="n">inverse</span><span class="o">=</span><span class="s1">&#39;_set_order_line&#39;</span><span class="p">)</span>
 
     <span class="nd">@api</span><span class="o">.</span><span class="n">multi</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_get_order_line</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_get_order_line</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
             <span class="n">b</span><span class="o">.</span><span class="n">order_line</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;sale.order.line&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s1">&#39;booking.id&#39;</span><span class="p">,</span><span class="s1">&#39;=&#39;</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">id</span><span class="p">)])</span><span class="o">.</span><span class="n">id</span>
 
     <span class="nd">@api</span><span class="o">.</span><span class="n">one</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_set_order_line</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_set_order_line</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">order_line</span><span class="o">.</span><span class="n">id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;sale.order.line&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span><span class="s1">&#39;=&#39;</span><span class="p">,</span><span class="n">o</span><span class="p">)])</span><span class="o">.</span><span class="n">write</span><span class="p">({</span><span class="s1">&#39;booking&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">})</span>
 </pre></div>
@@ -1000,9 +1006,19 @@ que poden ser elegits per al field:</p></li>
 <li><p><strong>Domain en Many2many</strong>: La llista d’elements a triar es filtra
 segons el domain:</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">characters_attack</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Many2many</span><span class="p">(</span><span class="s1">&#39;game.character&#39;</span><span class="p">,</span>
-                                      <span class="n">relation</span><span class="o">=</span><span class="s1">&#39;characters_attack&#39;</span><span class="p">,</span> 
-                                      <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;[(&#39;id&#39;, &#39;in&#39;, characters_attack_available)]&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">allowed_value_ids</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Many2many</span><span class="p">(</span>
+    <span class="n">comodel_name</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span>
+    <span class="n">compute</span><span class="o">=</span><span class="s2">&quot;_compute_allowed_value_ids&quot;</span>
+<span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_compute_allowed_value_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+        <span class="n">record</span><span class="o">.</span><span class="n">allowed_value_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="n">value_id</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Many2many</span><span class="p">(</span>
+    <span class="n">comodel_name</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span>
+    <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;[(&#39;id&#39;, &#39;in&#39;, allowed_value_ids)]&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -1010,11 +1026,6 @@ segons el domain:</p></li>
 Many2one, no es pot filtrar, si fiquem un domain, sols deixarà de
 mostrar els que no compleixen el domain, però no deien d’existir:</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">raws</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">One2many</span><span class="p">(</span><span class="s1">&#39;game.raws&#39;</span><span class="p">,</span><span class="s1">&#39;clan&#39;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;quantity&#39;</span><span class="p">,</span><span class="s1">&#39;&gt;&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">)])</span>
-</pre></div>
-</div>
-<p>Observem com hem fet un <strong>domain amb lambda</strong>, és a dir, aquest domain
-crida a una funció lambda al ser aplicat.</p>
 </section>
 </section>
 <section id="fields-computed">
@@ -1028,7 +1039,7 @@ computed. Anem a veure alguns exemples:</p>
    <span class="nd">@api</span><span class="o">.</span><span class="n">depends</span><span class="p">(</span><span class="s1">&#39;seats&#39;</span><span class="p">,</span> <span class="s1">&#39;attendee_ids&#39;</span><span class="p">)</span>  <span class="c1"># El decorador @api.depends() indica que es cridarà a la funció </span>
                                           <span class="c1"># sempre que es modifiquen els camps seats i attendee_ids. </span>
                                           <span class="c1">#Si no el posem, es recalcula sols al recarregar el action.</span>
-   <span class="k">def</span><span class="w"> </span><span class="nf">_taken_seats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>          
+   <span class="k">def</span> <span class="nf">_taken_seats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>          
       <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>  <span class="c1"># El for recorre self, que és un recordset amb tots els elements del model mostrats </span>
                       <span class="c1"># per la vista, si és un tree, seran tots els visibles i si és un form, serà un singleton.</span>
           <span class="k">if</span> <span class="ow">not</span> <span class="n">r</span><span class="o">.</span><span class="n">seats</span><span class="p">:</span> <span class="c1"># r és un singleton i es pot accedir als fields com a variables de l&#39;objecte.      </span>
@@ -1053,10 +1064,10 @@ formulari.</p>
 <p>Exemples de <strong>computed</strong> de tots els tipus de fields:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">openerp</span><span class="w"> </span><span class="kn">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">api</span><span class="p">,</span> <span class="n">tools</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">openerp</span> <span class="kn">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">api</span><span class="p">,</span> <span class="n">tools</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">datetime</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">proves_computed</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">proves_computed</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
      <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;proves_computed.proves_computed&#39;</span>
 
      <span class="n">name</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Char</span><span class="p">()</span>
@@ -1074,7 +1085,7 @@ formulari.</p>
      <span class="n">description</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Text</span><span class="p">()</span>
 
      <span class="nd">@api</span><span class="o">.</span><span class="n">depends</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
-     <span class="k">def</span><span class="w"> </span><span class="nf">_value_pc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+     <span class="k">def</span> <span class="nf">_value_pc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
       <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
         <span class="n">r</span><span class="o">.</span><span class="n">computedfloat</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span> 
         <span class="n">r</span><span class="o">.</span><span class="n">computedchar</span> <span class="o">=</span> <span class="s2">&quot;(&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">value</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;)&quot;</span>
@@ -1094,7 +1105,7 @@ formulari.</p>
         
 
      <span class="nd">@api</span><span class="o">.</span><span class="n">depends</span><span class="p">(</span><span class="s1">&#39;image&#39;</span><span class="p">)</span>
-     <span class="k">def</span><span class="w"> </span><span class="nf">_redimensionar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+     <span class="k">def</span> <span class="nf">_redimensionar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
          <span class="n">image_original</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">image</span>
          <span class="k">if</span> <span class="n">image_original</span><span class="p">:</span>
@@ -1136,13 +1147,13 @@ funció i fer que estiga en l’opció <strong>inverse</strong>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="n">preu</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Float</span><span class="p">(</span><span class="s1">&#39;Price&#39;</span><span class="p">,</span><span class="n">compute</span><span class="o">=</span><span class="s2">&quot;_get_price&quot;</span><span class="p">,</span><span class="n">search</span><span class="o">=</span><span class="s1">&#39;_search_price&#39;</span><span class="p">,</span><span class="n">inverse</span><span class="o">=</span><span class="s1">&#39;_set_price&#39;</span><span class="p">)</span>
 
  <span class="nd">@api</span><span class="o">.</span><span class="n">depends</span><span class="p">(</span><span class="s1">&#39;pelicula&#39;</span><span class="p">,</span><span class="s1">&#39;descompte&#39;</span><span class="p">)</span>
-      <span class="k">def</span><span class="w"> </span><span class="nf">_get_price</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">def</span> <span class="nf">_get_price</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
           <span class="n">price</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">pelicula</span><span class="o">.</span><span class="n">preu</span>
           <span class="n">price</span> <span class="o">=</span> <span class="n">price</span> <span class="o">-</span> <span class="p">(</span><span class="n">price</span><span class="o">*</span><span class="n">r</span><span class="o">.</span><span class="n">descompte</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span>
           <span class="n">r</span><span class="o">.</span><span class="n">preu</span> <span class="o">=</span> <span class="n">price</span>
 
-      <span class="k">def</span><span class="w"> </span><span class="nf">_search_price</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">operator</span><span class="p">,</span><span class="n">value</span><span class="p">):</span> <span class="c1"># De moment aquest search sols és per a ==</span>
+      <span class="k">def</span> <span class="nf">_search_price</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">operator</span><span class="p">,</span><span class="n">value</span><span class="p">):</span> <span class="c1"># De moment aquest search sols és per a ==</span>
        <span class="n">preus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="p">([])</span><span class="o">.</span><span class="n">mapped</span><span class="p">(</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">id</span> <span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">pelicula</span><span class="o">.</span><span class="n">preu</span> <span class="o">-</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">pelicula</span><span class="o">.</span><span class="n">preu</span><span class="o">*</span><span class="n">e</span><span class="o">.</span><span class="n">descompte</span><span class="o">/</span><span class="mi">100</span><span class="p">)])</span> <span class="c1"># Un bon exemple de mapped en lambda</span>
        <span class="nb">print</span> <span class="n">preus</span>
        <span class="n">p</span> <span class="o">=</span> <span class="p">[</span> <span class="n">num</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">preus</span> <span class="k">if</span> <span class="n">num</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">value</span><span class="p">]</span>  <span class="c1"># condició if en una llista python sense fer un for (list comprehension)</span>
@@ -1151,7 +1162,7 @@ funció i fer que estiga en l’opció <strong>inverse</strong>.</p>
        <span class="c1"># p és una llista de les id que ja compleixen la condició, per tant sols cal fer que la id estiga en la llista.</span>
        <span class="k">return</span> <span class="p">[(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span><span class="s1">&#39;in&#39;</span><span class="p">,</span><span class="n">p</span><span class="p">)]</span>
 
-      <span class="k">def</span><span class="w"> </span><span class="nf">_set_price</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">def</span> <span class="nf">_set_price</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
        <span class="bp">self</span><span class="o">.</span><span class="n">pelicula</span><span class="o">.</span><span class="n">preu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">preu</span>  <span class="c1"># Açò és un exemple, però està mal, ja que modifiques el preu de la peli en totes les sessions</span>
 </pre></div>
 </div>
@@ -1166,7 +1177,7 @@ en el constructor dels fields:</p>
 <span class="n">user_id</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Many2one</span><span class="p">(</span><span class="s1">&#39;res.users&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
 <span class="n">start_date</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Date</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">Date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span>
 <span class="n">active</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Boolean</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">compute_default_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">compute_default_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
 <span class="n">a_field</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Char</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">compute_default_value</span><span class="p">)</span>
 </pre></div>
@@ -1190,7 +1201,7 @@ eixe moment. En eixe cas es pot utilitzar un <strong>on_change</strong>.</p>
 <p>En cas de tindre molts valors per defecte o que depenen del context, es
 pot utilitzar la funció <strong>default_get</strong> que ja tenen els models.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="nd">@api</span><span class="o">.</span><span class="n">model</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">default_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_fields</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">default_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_fields</span><span class="p">):</span>
         <span class="n">result</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">SelectSalePrice</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">default_get</span><span class="p">(</span><span class="n">default_fields</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;default_picking_id&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">result</span><span class="p">[</span><span class="s1">&#39;picking_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;default_picking_id&#39;</span><span class="p">)</span>
@@ -1206,10 +1217,10 @@ defecte al diccionari que retorna aquesta funció en la classe <em>Model</em></p
 d’integritat, addicionals a les de la base de dades. Odoo valida
 aquestes restriccions en les modificacions de dades i, en cas de
 violació, mostra una pantalla d’error.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">odoo.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ValidationError</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">odoo.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
 
 <span class="nd">@api</span><span class="o">.</span><span class="n">constrains</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">_check_something</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_check_something</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">record</span><span class="o">.</span><span class="n">age</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Your record is too old: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">age</span><span class="p">)</span>
@@ -1311,6 +1322,18 @@ vinculats</p></li>
 <li><p>(6,_,[ids]): Reemplaça la llista de registres vinculats.</p></li>
 </ul>
 </section>
+<section id="dades-per-als-binary-i-image">
+<h3>Dades per als Binary i Image<a class="headerlink" href="#dades-per-als-binary-i-image" title="Link to this heading">#</a></h3>
+<p>Algunes dades com les imatges o fitxers es poden posar en records. Hi ha dos maneres:</p>
+<ul class="simple">
+<li><p>Convertir en Base64 el fitxer i copiar i pegar el resultat dins del field.</p></li>
+<li><p>Afegir el atribut <code class="docutils literal notranslate"><span class="pre">type=&quot;base64&quot;</span></code> i el atribut <code class="docutils literal notranslate"><span class="pre">file=&quot;modul/demo/fitxer&quot;</span></code></p></li>
+</ul>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;image_1920&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;base64&quot;</span><span class="w"> </span><span class="na">file=</span><span class="s">&quot;exemple/demo/cares/1000.jpg&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+<p>Observem la ruta que inicia des del directori del mòdul.</p>
+</section>
 <section id="esborrar">
 <h3>Esborrar<a class="headerlink" href="#esborrar" title="Link to this heading">#</a></h3>
 <p>Amb l’etiqueta <strong>delete</strong> es pot especificar els elements a esborrar
@@ -1320,9 +1343,10 @@ amb el external ID o amb un search:</p>
 </div>
 <div class="admonition danger">
 <p class="admonition-title">Danger</p>
-<p>Si falla l’actualització amb dades de demo, és possible que Odoo 12 deshabilite la possibilitat de tornar-les a instal·lar. Això és el field demo de ir.module.module que és readonly, per tant, cal modificar-lo a ma en la base de dades:</p>
+<p>Si falla l’actualització amb dades de demo, és possible que Odoo deshabilite la possibilitat de tornar-les a instal·lar. Això és el field demo de ir.module.module que és readonly, per tant, cal modificar-lo a ma en la base de dades:</p>
 <p><code class="docutils literal notranslate"><span class="pre">update ir_module_module set demo = 't' where name='school';</span></code></p>
 </div>
+<p>Més informació: <a class="reference external" href="https://www.odoo.com/documentation/master/developer/reference/backend/data.html">https://www.odoo.com/documentation/master/developer/reference/backend/data.html</a></p>
 </section>
 </section>
 <section id="accions-i-menus">
@@ -1448,100 +1472,29 @@ dissenyar-ne de nous.</p></li>
 </ul>
 <p>OpenObject proporciona tres mecanismes d’herència: l’herència de classe,
 l’herència per prototip i l’herència per delegació.</p>
-<p>+———————-+———————-+———————-+
-| Mecanisme            | Característiques     | Com es defineix      |
-+======================+======================+======================+
-| <code class="docutils literal notranslate"><span class="pre">&lt;strong&gt;</span></code>{=html}De  | - Herència simple.\ | - S’utilitza        |
-| clas                 | - La classe original | l’atribut <code class="docutils literal notranslate"><span class="pre">_inherit</span></code> |
-| se<code class="docutils literal notranslate"><span class="pre">&lt;/strong&gt;</span></code>{=html} | queda substituïda    | en la definició de   |
-|                      | per la nova classe.\ | la nova classe       |
-|                      | - Afegeix noves      | Python:              |
-|                      | funcionalitats       | <code class="docutils literal notranslate"><span class="pre">_inherit</span> <span class="pre">=</span> <span class="pre">obj</span></code>\    |
-|                      | (atributs i/o        | - El nom de la nova  |
-|                      | mètodes) a la classe | classe ha de         |
-|                      | original.\           | continuar sent el    |
-|                      | - Les vistes         | mateix que el de la  |
-|                      | definides sobre la   | classe original:     |
-|                      | classe original      | <code class="docutils literal notranslate"><span class="pre">_name</span> <span class="pre">=</span> <span class="pre">obj</span></code>        |
-|                      | continuen            |                      |
-|                      | funcionant.\         |                      |
-|                      | - Permet             |                      |
-|                      | sobreescriure        |                      |
-|                      | mètodes de la classe |                      |
-|                      | original.\           |                      |
-|                      | - En PostgreSQL,     |                      |
-|                      | continua mapada en   |                      |
-|                      | la mateixa taula que |                      |
-|                      | la classe original,  |                      |
-|                      | ampliada amb els     |                      |
-|                      | nous atributs que    |                      |
-|                      | pugui incorporar.    |                      |
-+———————-+———————-+———————-+
-| <code class="docutils literal notranslate"><span class="pre">&lt;strong&gt;</span></code>{=html}Per | - Herència simple.\ | - S’utilitza        |
-| protot               | - Aprofita la        | l’atribut <code class="docutils literal notranslate"><span class="pre">_inherit</span></code> |
-| ip<code class="docutils literal notranslate"><span class="pre">&lt;/strong&gt;</span></code>{=html} | definició de la      | en la definició de   |
-|                      | classe original (com | la nova classe       |
-|                      | si fos un            | Python:              |
-|                      | «prototipus»).\      | <code class="docutils literal notranslate"><span class="pre">_inherit</span> <span class="pre">=</span> <span class="pre">obj</span></code>\    |
-|                      | - La classe original | - Cal indicar el nom |
-|                      | continua existint.\  | de la nova classe:   |
-|                      | - Afegeix noves      | <code class="docutils literal notranslate"><span class="pre">_name</span> <span class="pre">=</span> <span class="pre">nou_nom</span></code>    |
-|                      | funcionalitats       |                      |
-|                      | (atributs i/o        |                      |
-|                      | mètodes) a les       |                      |
-|                      | aportades per la     |                      |
-|                      | classe original.\    |                      |
-|                      | - Les vistes         |                      |
-|                      | definides sobre la   |                      |
-|                      | classe original no   |                      |
-|                      | existeixen (cal      |                      |
-|                      | dissenyar-les de     |                      |
-|                      | nou).\               |                      |
-|                      | - Permet             |                      |
-|                      | sobreescriure        |                      |
-|                      | mètodes de la classe |                      |
-|                      | original.\           |                      |
-|                      | - En PostgreSQL,     |                      |
-|                      | queda mapada en una  |                      |
-|                      | nova taula.          |                      |
-+———————-+———————-+———————-+
-| <code class="docutils literal notranslate"><span class="pre">&lt;strong&gt;</span></code>{=html}Per | - Herència simple o | - S’utilitza        |
-| delegac              | múltiple.\           | l’atribut            |
-| ió<code class="docutils literal notranslate"><span class="pre">&lt;/strong&gt;</span></code>{=html} | - La nova classe     | <code class="docutils literal notranslate"><span class="pre">_inherits</span></code> en la    |
-|                      | «delega» certs       | definició de la nova |
-|                      | funcionaments a      | classe Python:       |
-|                      | altres classes que   | <code class="docutils literal notranslate"><span class="pre">_inherits</span> <span class="pre">=</span> <span class="pre">…</span></code>\     |
-|                      | incorpora a          | - Cal indicar el nom |
-|                      | l’interior.\         | de la nova classe:   |
-|                      | - Els recursos de la | <code class="docutils literal notranslate"><span class="pre">_name</span> <span class="pre">=</span> <span class="pre">nou_nom</span></code>    |
-|                      | nova classe contenen |                      |
-|                      | un recurs de cada    |                      |
-|                      | classe de la que     |                      |
-|                      | deriven.\            |                      |
-|                      | - Les classes base   |                      |
-|                      | continuen existint.\ |                      |
-|                      | - Afegeix les        |                      |
-|                      | funcionalitats       |                      |
-|                      | pròpies (atributs    |                      |
-|                      | i/o mètodes) que     |                      |
-|                      | correspongui.\       |                      |
-|                      | - Les vistes         |                      |
-|                      | definides sobre les  |                      |
-|                      | classes bases no     |                      |
-|                      | existeixen a la nova |                      |
-|                      | classe.\             |                      |
-|                      | - En PostgreSQL,     |                      |
-|                      | queda mapada en      |                      |
-|                      | diferents taules:    |                      |
-|                      | una taula per als    |                      |
-|                      | atributs propis,     |                      |
-|                      | mentre que els       |                      |
-|                      | recursos de les      |                      |
-|                      | classes derivades    |                      |
-|                      | resideixen en les    |                      |
-|                      | taules corresponents |                      |
-|                      | a les dites classes. |                      |
-+———————-+———————-+———————-+</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Mecanisme</strong></p></th>
+<th class="head"><p><strong>Característiques</strong></p></th>
+<th class="head"><p><strong>Com es defineix</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>De classe</strong></p></td>
+<td><p>- Herència simple. <br>- La classe original queda substituïda o ampliada.  <br>- Afegeix noves funcionalitats (atributs i/o mètodes) a la classe original.  <br>- Les vistes definides sobre la classe original continuen funcionant.  <br>- Permet sobreescriure mètodes de la classe original.  <br>- En PostgreSQL, continua mapada en la mateixa taula que la classe original, ampliada amb els nous atributs que pugui incorporar.</p></td>
+<td><p>- S’utilitza l’atribut <code class="docutils literal notranslate"><span class="pre">_inherit</span></code> en la definició de la nova classe Python: <code class="docutils literal notranslate"><span class="pre">_inherit</span> <span class="pre">=</span> <span class="pre">'obj'</span></code>.  <br>- El nom de la nova classe ha de continuar sent el mateix que el de la classe original: <code class="docutils literal notranslate"><span class="pre">_name</span> <span class="pre">=</span> <span class="pre">'obj'</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Per prototip</strong></p></td>
+<td><p>- Herència simple.  <br>- Aprofita la definició de la classe original (com si fos un «prototipus»).  <br>- La classe original continua existint.  <br>- Afegeix noves funcionalitats (atributs i/o mètodes) a les aportades per la classe original.  <br>- Les vistes definides sobre la classe original no existeixen (cal dissenyar-les de nou).  <br>- Permet sobreescriure mètodes de la classe original.  <br>- En PostgreSQL, queda mapada en una nova taula.</p></td>
+<td><p>- S’utilitza l’atribut <code class="docutils literal notranslate"><span class="pre">_inherit</span></code> en la definició de la nova classe Python: <code class="docutils literal notranslate"><span class="pre">_inherit</span> <span class="pre">=</span> <span class="pre">'obj'</span></code>.  <br>- Cal indicar el nom de la nova classe: <code class="docutils literal notranslate"><span class="pre">_name</span> <span class="pre">=</span> <span class="pre">'nou_nom'</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Per delegació</strong></p></td>
+<td><p>- Herència simple o múltiple.  <br>- La nova classe «delega» certs funcionaments a altres classes que incorpora a l’interior.  <br>- Els recursos de la nova classe contenen un recurs de cada classe de la que deriven.  <br>- Les classes base continuen existint.  <br>- Afegeix les funcionalitats pròpies (atributs i/o mètodes) que correspongui.  <br>- Les vistes definides sobre les classes bases no existeixen a la nova classe.  <br>- En PostgreSQL, queda mapada en diferents taules: una taula per als atributs propis, mentre que els recursos de les classes derivades resideixen en les taules corresponents a les dites classes.</p></td>
+<td><p>- S’utilitza l’atribut <code class="docutils literal notranslate"><span class="pre">_inherits</span></code> en la definició de la nova classe Python: <code class="docutils literal notranslate"><span class="pre">_inherits</span> <span class="pre">=</span> <span class="pre">{'obj':</span> <span class="pre">'field_id'}</span></code>.  <br>- Cal indicar el nom de la nova classe: <code class="docutils literal notranslate"><span class="pre">_name</span> <span class="pre">=</span> <span class="pre">'nou_nom'</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>```{figure} imgs/Inheritance_methods.png
 :scale: 100 %
 :alt: Herència
@@ -1578,7 +1531,7 @@ mapat l’objecte pare.</p>
 molts mòduls que afegeixen dades i mètodes a objectes ja existents, com
 per exemple, el mòdul comptabilitat (account) que afegix dades i mètodes
 a l’objecte res.partner. Fixem-nos en el contingut del mòdul account:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">class</span><span class="w"> </span><span class="nc">res_partner</span><span class="p">(</span><span class="n">Model</span><span class="o">.</span><span class="n">model</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">class</span> <span class="nc">res_partner</span><span class="p">(</span><span class="n">Model</span><span class="o">.</span><span class="n">model</span><span class="p">):</span>
     <span class="n">_inherit</span> <span class="o">=</span> <span class="s1">&#39;res.partner&#39;</span>
     <span class="n">debit_limit</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="s1">&#39;Payable limit&#39;</span><span class="p">)</span>
     <span class="o">...</span>
@@ -1600,10 +1553,10 @@ de trobar en els mòduls que incorpora Odoo. Un exemple el tenim en el
 mòdul base_calendar en el qual podem observar el mòdul comptabilitat
 (account) que afegix dades i mètodes a l’objecte res.partner. Fixem-nos
 en el contingut del mòdul account:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">class</span><span class="w"> </span><span class="nc">res_alarm</span><span class="p">(</span><span class="n">Model</span><span class="o">.</span><span class="n">model</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">class</span> <span class="nc">res_alarm</span><span class="p">(</span><span class="n">Model</span><span class="o">.</span><span class="n">model</span><span class="p">):</span>
     <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;res.alarm&#39;</span>
     <span class="o">...</span>
-    <span class="k">class</span><span class="w"> </span><span class="nc">calendar_alarm</span><span class="p">(</span><span class="n">Model</span><span class="o">.</span><span class="n">model</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">calendar_alarm</span><span class="p">(</span><span class="n">Model</span><span class="o">.</span><span class="n">model</span><span class="p">):</span>
     <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;calendar.alarm&#39;</span>
     <span class="n">_inherit</span> <span class="o">=</span> <span class="s1">&#39;res.alarm&#39;</span>
     <span class="o">...</span>
@@ -1626,10 +1579,10 @@ L’herència per delegació obliga que cada recurs de l’objecte derivat
 apunte a un recurs de cadascun dels objectes dels quals deriva i es pot
 donar el cas que hi hagi diversos recursos de l’objecte derivat que
 apunten a un mateix recurs per algun dels objectes dels quals deriva.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">class</span><span class="w"> </span><span class="nc">res_alarm</span><span class="p">(</span><span class="n">Model</span><span class="o">.</span><span class="n">model</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">class</span> <span class="nc">res_alarm</span><span class="p">(</span><span class="n">Model</span><span class="o">.</span><span class="n">model</span><span class="p">):</span>
     <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;res.alarm&#39;</span>
     <span class="o">...</span>
-    <span class="k">class</span><span class="w"> </span><span class="nc">calendar_alarm</span><span class="p">(</span><span class="n">Model</span><span class="o">.</span><span class="n">model</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">calendar_alarm</span><span class="p">(</span><span class="n">Model</span><span class="o">.</span><span class="n">model</span><span class="p">):</span>
     <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;calendar.alarm&#39;</span>
     <span class="n">_inherits</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;res.alarm&#39;</span><span class="p">:</span><span class="s1">&#39;alarm_id&#39;</span><span class="p">}</span>
     <span class="o">...</span>
@@ -1726,8 +1679,6 @@ d’utilitzar <strong>view_ids</strong>, observem aquest exemple:</p>
 <span class="w">            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>Players<span class="nt">&lt;/field&gt;</span>
 <span class="w">            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;res_model&quot;</span><span class="nt">&gt;</span>res.partner<span class="nt">&lt;/field&gt;</span>
 <span class="w">            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;view_mode&quot;</span><span class="nt">&gt;</span>tree,form,kanban<span class="nt">&lt;/field&gt;</span>
-<span class="w">            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;domain&quot;</span><span class="nt">&gt;</span><span class="w"> </span>[(&#39;is_player&#39;,&#39;=&#39;,True)]<span class="nt">&lt;/field&gt;</span>
-<span class="w">            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;context&quot;</span><span class="nt">&gt;</span>{&#39;default_is_player&#39;:<span class="w"> </span>True}<span class="nt">&lt;/field&gt;</span>
 <span class="w">            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;view_ids&quot;</span><span class="w"> </span><span class="na">eval=</span><span class="s">&quot;[(5, 0, 0),</span>
 <span class="s">            (0, 0, {&#39;view_mode&#39;: &#39;tree&#39;, &#39;view_id&#39;: ref(&#39;terraform.player_tree&#39;)}),</span>
 <span class="s">            (0, 0, {&#39;view_mode&#39;: &#39;form&#39;, &#39;view_id&#39;: ref(&#39;terraform.player_form&#39;)}),]&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
@@ -1740,51 +1691,6 @@ que afegir un nou registre amb eixes dades en concret. El que necessita
 <p>Si es vol especificar una vista search es pot inclourer la etiqueta
 <strong>search_view_id</strong>:</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;search_view_id&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;cine.pos_order_line_search_view&quot;</span><span class="nt">/&gt;</span><span class="w">  </span>
-</pre></div>
-</div>
-<p>Exemple:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">socios</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
-     <span class="n">_inherit</span> <span class="o">=</span> <span class="s1">&#39;res.partner&#39;</span>
-     <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;res.partner&#39;</span>
-     <span class="c1">#name = fields.Char()</span>
-     <span class="n">camions</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">One2many</span><span class="p">(</span><span class="s1">&#39;cooperativa.camion&#39;</span><span class="p">,</span><span class="s1">&#39;socio&#39;</span><span class="p">,</span><span class="n">string</span><span class="o">=</span><span class="s1">&#39;Trucks&#39;</span><span class="p">)</span>
-     <span class="n">n_camiones</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="n">compute</span><span class="o">=</span><span class="s1">&#39;_n_camiones&#39;</span><span class="p">,</span><span class="n">string</span><span class="o">=</span><span class="s1">&#39;Number of Trucks&#39;</span><span class="p">)</span>
-     <span class="n">arrobas</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Float</span><span class="p">(</span><span class="n">compute</span><span class="o">=</span><span class="s1">&#39;_n_camiones&#39;</span><span class="p">,</span><span class="n">string</span><span class="o">=</span><span class="s1">&#39;@&#39;</span><span class="p">)</span>
-     <span class="nd">@api</span><span class="o">.</span><span class="n">depends</span><span class="p">(</span><span class="s1">&#39;camions&#39;</span><span class="p">)</span>
-     <span class="k">def</span><span class="w"> </span><span class="nf">_n_camiones</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-       <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
-         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">i</span><span class="o">.</span><span class="n">camions</span><span class="p">:</span>
-           <span class="n">i</span><span class="o">.</span><span class="n">arrobas</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">arrobas</span> <span class="o">+</span> <span class="n">j</span><span class="o">.</span><span class="n">arrobas</span>
-           <span class="n">i</span><span class="o">.</span><span class="n">n_camiones</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">n_camiones</span> <span class="o">+</span> <span class="mi">1</span>
-</pre></div>
-</div>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="nt">&lt;record</span><span class="w"> </span><span class="na">model=</span><span class="s">&quot;ir.ui.view&quot;</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;socio_form_view&quot;</span><span class="nt">&gt;</span>
-<span class="w">            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>socio<span class="nt">&lt;/field&gt;</span>
-<span class="w">            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;model&quot;</span><span class="nt">&gt;</span>res.partner<span class="nt">&lt;/field&gt;</span>
-<span class="w">       </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;inherit_id&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;base.view_partner_form&quot;</span><span class="nt">/&gt;</span><span class="w"> </span>
-<span class="w">           </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;arch&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;xml&quot;</span><span class="nt">&gt;</span>
-<span class="w">    </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;website&quot;</span><span class="w"> </span><span class="na">position=</span><span class="s">&quot;after&quot;</span><span class="nt">&gt;</span>
-<span class="w">                            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;camions&quot;</span><span class="nt">/&gt;</span>
-<span class="w">                            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;n_camiones&quot;</span><span class="nt">/&gt;</span>
-<span class="w">                            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;arrobas&quot;</span><span class="nt">/&gt;</span>
-<span class="w">    </span><span class="nt">&lt;/field&gt;</span>
-
-<span class="w">            </span><span class="nt">&lt;/field&gt;</span>
-<span class="w">        </span><span class="nt">&lt;/record&gt;</span>
-</pre></div>
-</div>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="cm">&lt;!--Inherit quotations search view--&gt;</span>
-<span class="w">    </span><span class="nt">&lt;record</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;view_sale_order_inherit_search&quot;</span><span class="w"> </span><span class="na">model=</span><span class="s">&quot;ir.ui.view&quot;</span><span class="nt">&gt;</span>
-<span class="w">      </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>sale.order.search.expand.filter<span class="nt">&lt;/field&gt;</span>
-<span class="w">      </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;model&quot;</span><span class="nt">&gt;</span>sale.order<span class="nt">&lt;/field&gt;</span>
-<span class="w">      </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;inherit_id&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;sale.sale_order_view_search_inherit_quotation&quot;</span><span class="nt">/&gt;</span>
-<span class="w">      </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;arch&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;xml&quot;</span><span class="nt">&gt;</span>
-<span class="w">        </span><span class="nt">&lt;xpath</span><span class="w"> </span><span class="na">expr=</span><span class="s">&quot;//search&quot;</span><span class="w"> </span><span class="na">position=</span><span class="s">&quot;inside&quot;</span><span class="nt">&gt;</span>
-<span class="w">          </span><span class="nt">&lt;filter</span><span class="w"> </span><span class="na">string=</span><span class="s">&quot;Total &amp;lt; 1000&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;total_under_1000&quot;</span><span class="w"> </span><span class="na">domain=</span><span class="s">&quot;[(&#39;amount_total&#39;, &#39;&amp;lt;&#39;, 1000)]&quot;</span><span class="nt">/&gt;</span>
-<span class="w">          </span><span class="nt">&lt;filter</span><span class="w"> </span><span class="na">string=</span><span class="s">&quot;Total &amp;gt;= 1000&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;total_above_1000&quot;</span><span class="w"> </span><span class="na">domain=</span><span class="s">&quot;[(&#39;amount_total&#39;, &#39;&amp;gt;=&#39;, 1000)]&quot;</span><span class="nt">/&gt;</span>
-<span class="w">        </span><span class="nt">&lt;/xpath&gt;</span>
-<span class="w">      </span><span class="nt">&lt;/field&gt;</span>
-<span class="w">    </span><span class="nt">&lt;/record&gt;</span>
 </pre></div>
 </div>
 <p><strong>Domains</strong></p>
@@ -1815,6 +1721,19 @@ vista search i en l’action dir que volem aquest filtre per defecte:</p>
 <span class="w">            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;context&quot;</span><span class="nt">&gt;</span>{&#39;default_is_player&#39;:<span class="w"> </span>True,<span class="w"> </span>&#39;search_default_player_partner&#39;:<span class="w"> </span>1}<span class="nt">&lt;/field&gt;</span>
 </pre></div>
 </div>
+<p>Per tant, un action complet per a vistes personalitzades i amb filtres quedarà com aquest:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="w">        </span><span class="nt">&lt;record</span><span class="w"> </span><span class="na">model=</span><span class="s">&quot;ir.actions.act_window&quot;</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;terraform.player_action_window&quot;</span><span class="nt">&gt;</span>
+<span class="w">            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>Players<span class="nt">&lt;/field&gt;</span>
+<span class="w">            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;res_model&quot;</span><span class="nt">&gt;</span>res.partner<span class="nt">&lt;/field&gt;</span>
+<span class="w">            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;view_mode&quot;</span><span class="nt">&gt;</span>tree,form,kanban<span class="nt">&lt;/field&gt;</span>
+<span class="w">            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;domain&quot;</span><span class="nt">&gt;&lt;/field&gt;</span>
+<span class="w">            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;context&quot;</span><span class="nt">&gt;</span>{&#39;default_is_player&#39;:<span class="w"> </span>True,<span class="w"> </span>&#39;search_default_player_partner&#39;:<span class="w"> </span>1}<span class="nt">&lt;/field&gt;</span>
+<span class="w">            </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;view_ids&quot;</span><span class="w"> </span><span class="na">eval=</span><span class="s">&quot;[(5, 0, 0),</span>
+<span class="s">            (0, 0, {&#39;view_mode&#39;: &#39;tree&#39;, &#39;view_id&#39;: ref(&#39;terraform.player_tree&#39;)}),</span>
+<span class="s">            (0, 0, {&#39;view_mode&#39;: &#39;form&#39;, &#39;view_id&#39;: ref(&#39;terraform.player_form&#39;)}),]&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/record&gt;</span>
+</pre></div>
+</div>
 </section>
 <section id="herencia-en-el-controlador">
 <h3>Herència en el controlador<a class="headerlink" href="#herencia-en-el-controlador" title="Link to this heading">#</a></h3>
@@ -1840,12 +1759,12 @@ base: el mètode de l’objecte derivat invoca el mètode sobreescrit.</p></li>
 <p>Exemples:</p>
 <p><a class="reference external" href="http://www.odoo.yenthevg.com/override-create-functions-odoo/">Sobreescriure el mètode
 <strong>create</strong></a>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">res_partner</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">res_partner</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">_inherit</span> <span class="o">=</span> <span class="s1">&#39;res.partner&#39;</span>
     <span class="n">passed_override_write_function</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Boolean</span><span class="p">(</span><span class="n">string</span><span class="o">=</span><span class="s1">&#39;Has passed our super method&#39;</span><span class="p">)</span>
  
     <span class="nd">@api</span><span class="o">.</span><span class="n">model</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
         <span class="c1"># Override the original create function for the res.partner model</span>
         <span class="n">record</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">res_partner</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
  
@@ -1890,13 +1809,14 @@ _ a la capçalera.</p>
 <h3>API de l’ORM<a class="headerlink" href="#api-de-l-orm" title="Link to this heading">#</a></h3>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>{{nota|’’’Interactuar en la terminal’’’
-<span class="math notranslate nohighlight">\( odoo shell -d castillo -u containers
- [https://asciinema.org/a/123126 Asciinema amb alguns exemples]
-Observa cóm hem ficat el paràmetre '''shell'''. Les coses que se fan en la terminal no són persistents en la base de dades fins que no s'executa '''self.env.cr.commit()'''. Dins de la terminal podem obtindre ajuda dels mètodes d'Odoo amb help(), per exemple: help(tools.image)
-Amb el següent exemple, podem arrancar odoo sense molestar a l'instància que està en marxa redefinint els ports:
- \)</span> odoo shell -c /path/to/odoo.conf –xmlrpc-port 8888 –longpolling-port 8899
-Documentació: [<a class="reference external" href="https://medium.com/&#64;RafnixG/explorando-odoo-a-fondo-c%C3%B3mo-trabajar-con-la-shell-de-la-cli-y-configurar-ipython-como-repl-8f7bd04a26d">https://medium.com/&#64;RafnixG/explorando-odoo-a-fondo-cómo-trabajar-con-la-shell-de-la-cli-y-configurar-ipython-como-repl-8f7bd04a26d</a>] [<a class="reference external" href="https://medium.com/&#64;RafnixG/shell-de-odoo-domina-operaciones-avanzadas-integraci%C3%B3n-de-librer%C3%ADas-y-automatizaci%C3%B3n-de-tareas-2e85c7d81d34">https://medium.com/&#64;RafnixG/shell-de-odoo-domina-operaciones-avanzadas-integración-de-librerías-y-automatización-de-tareas-2e85c7d81d34</a>]</p>
+<p><strong>Interactuar en la terminal</strong>
+$ odoo shell -d castillo -u containers</p>
+<p>Observa cóm hem ficat el paràmetre ‘’’shell’’’. Les coses que se fan en la terminal no són persistents en la base de dades fins que no s’executa ‘’’self.env.cr.commit()’’’. Dins de la terminal podem obtindre ajuda dels mètodes d’Odoo amb help(), per exemple: help(tools.image)
+Amb el següent exemple, podem arrancar odoo sense molestar a l’instància que està en marxa redefinint els ports:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ odoo shell -c /path/to/odoo.conf --xmlrpc-port 8888 --longpolling-port 8899
+</pre></div>
+</div>
+<p><a class="reference external" href="https://asciinema.org/a/123126">https://asciinema.org/a/123126</a> (Asciinema amb alguns exemples)</p>
 </div>
 <p>Un mètode creat dins d’un model actua sobre tots els elements del model
 que estiguen actius en el moment de cridar al mètode. Si és un tree,
@@ -1906,7 +1826,7 @@ seran molts i si és un form sols un. Però en qualsevol cas és una
 anomenats <strong>recordsets</strong> que són col·leccions d’objectes sobre un
 model. Si iterem dins dels recordset , obtenim els <strong>singletons</strong>, que
 són objectes individuals de cada línia en la base de dades.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">do_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">do_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="nb">print</span> <span class="bp">self</span> <span class="c1"># =&gt; a.model(1, 2, 3, 4, 5)</span>
     <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
         <span class="nb">print</span> <span class="n">record</span> <span class="c1"># =&gt; a.model(1), then a.model(2), then a.model(3), ...</span>
@@ -2036,7 +1956,7 @@ context:</p>
 </div>
 <p>Eixe action obre un wizard, que és un model transitori en el que podem
 definir un field amb els continguts del context:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">_default_bookings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_default_bookings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
          <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;b_fs&#39;</span><span class="p">)</span>
 <span class="n">bookings_fs</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Many2many</span><span class="p">(</span><span class="s1">&#39;reserves.bookings&#39;</span><span class="p">,</span><span class="n">readonly</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">_default_bookings</span><span class="p">)</span>
 </pre></div>
@@ -2047,7 +1967,7 @@ cridat. (Això és com el
 One2many, però fet a mà)</p>
 <p>També es pot utilitzar aquesta manera d’enviar un recordset per un
 context per al <strong>domain</strong> d’un field Many2one o Many2many:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">_domain_bookings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_domain_bookings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
          <span class="k">return</span> <span class="p">[(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span><span class="s1">&#39;=&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;b_fs&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">ids</span><span class="p">)]</span>
 <span class="n">bookings_fs</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Many2many</span><span class="p">(</span><span class="s1">&#39;reserves.bookings&#39;</span><span class="p">,</span><span class="n">readonly</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">_default_bookings</span><span class="p">)</span>
 </pre></div>
@@ -2161,7 +2081,7 @@ herència per fer coses en el moment de la creació. Ací tenim un exemple
 en el que modifiquem el <strong>create</strong> d’un model per crear una instància
 associada amb una imatge predefinida:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>     <span class="nd">@api</span><span class="o">.</span><span class="n">model</span>
-     <span class="k">def</span><span class="w"> </span><span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+     <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
         <span class="n">new_id</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">player</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
         <span class="nb">print</span> <span class="n">values</span>
         <span class="n">name_player</span> <span class="o">=</span> <span class="n">new_id</span><span class="o">.</span><span class="n">name</span>
@@ -2232,7 +2152,7 @@ existixen.</p>
 <h5>unlink()<a class="headerlink" href="#unlink" title="Link to this heading">#</a></h5>
 <p>Esborra de la base de dades els elements del recordset actual.</p>
 <p>Exemple de cóm sobreescriure el mètode unlink per a esborrar en cascada:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span><span class="w"> </span><span class="nf">unlink</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">unlink</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
             <span class="n">x</span><span class="o">.</span><span class="n">catid</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">product_uom_class</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
@@ -2269,10 +2189,13 @@ mètodes <strong>on_change</strong>.</p>
 <p class="admonition-title">Tip</p>
 <p>Els camps ‘’’computed’’’ ja tenen el seu propi onchange, per tant, no cal fer-lo</p>
 </div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Ha quedat “deprecated” retornar un domain <a class="github reference external" href="https://github.com/odoo/odoo/pull/41918#issuecomment-824946980">odoo/odoo#41918</a></p>
+</div>
 <p>En onchange es modifica el valor d’un o més camps dirèctament i, si cal
 un filtre o un missatge, es fa en el return:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="p">{</span>
-    <span class="s1">&#39;domain&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;other_id&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;partner_id&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="n">partner_id</span><span class="p">)]},</span>
     <span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s2">&quot;Warning&quot;</span><span class="p">,</span> <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s2">&quot;What is this?&quot;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;notification&#39;</span><span class="p">},</span>
 <span class="p">}</span>
 </pre></div>
@@ -2282,7 +2205,7 @@ altre cas, en un dialog. (Odoo 13)</p>
 <p>Exemples:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># onchange handler</span>
 <span class="nd">@api</span><span class="o">.</span><span class="n">onchange</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="s1">&#39;unit_price&#39;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">_onchange_price</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_onchange_price</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="c1"># set auto-changing field</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">price</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">amount</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_price</span>
     <span class="c1"># Can optionally return a warning and domains</span>
@@ -2294,7 +2217,7 @@ altre cas, en un dialog. (Odoo 13)</p>
     <span class="p">}</span>
 
 <span class="nd">@api</span><span class="o">.</span><span class="n">onchange</span><span class="p">(</span><span class="s1">&#39;seats&#39;</span><span class="p">,</span> <span class="s1">&#39;attendee_ids&#39;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">_verify_valid_seats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_verify_valid_seats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
      <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">seats</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
          <span class="k">return</span> <span class="p">{</span>
              <span class="s1">&#39;warning&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -2308,26 +2231,6 @@ altre cas, en un dialog. (Odoo 13)</p>
                  <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s2">&quot;Increase seats or remove excess attendees&quot;</span><span class="p">,</span>
              <span class="p">},</span>
          <span class="p">}</span>
-
-<span class="nd">@api</span><span class="o">.</span><span class="n">onchange</span><span class="p">(</span><span class="s1">&#39;pais&#39;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">_filter_empleat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>                                             
-      <span class="k">return</span> <span class="p">{</span> <span class="s1">&#39;domain&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;empleat&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;country&#39;</span><span class="p">,</span><span class="s1">&#39;=&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">pais</span><span class="o">.</span><span class="n">id</span><span class="p">)]}</span> <span class="p">}</span>      
-
-<span class="c1"># Exemple avançat en el que l&#39;autor crea un domain amb una llista d&#39;ids i un &#39;&#39;&#39;in&#39;&#39;&#39;:</span>
-<span class="nd">@api</span><span class="o">.</span><span class="n">multi</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">onchange_partner_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">):</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">SaleOrder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">onchange_partner_id</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
-    <span class="n">domain</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;sale_ok&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)]</span>
-    <span class="k">if</span> <span class="n">part</span><span class="p">:</span>
-        <span class="n">partner</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;res.partner&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">browse</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">partner</span> <span class="ow">and</span> <span class="n">partner</span><span class="o">.</span><span class="n">sales_channel_id</span><span class="p">:</span>
-            <span class="n">domain</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;sales_channel_ids&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span>
-                           <span class="n">partner</span><span class="o">.</span><span class="n">sales_channel_id</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-    <span class="n">product_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;product.product&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
-    <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="p">{</span>
-        <span class="s1">&#39;order_line.product_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">rec</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">product_ids</span><span class="p">]]</span>
-    <span class="p">})</span>
-    <span class="k">return</span> <span class="n">res</span> 
 </pre></div>
 </div>
 <div class="admonition tip">
@@ -2359,7 +2262,7 @@ altre cas, en un dialog. (Odoo 13)</p>
 </div>
 <p>I un mètode amb el &#64;api.model i aquests arguments:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="nd">@api</span><span class="o">.</span><span class="n">model</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">update_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">update_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="o">...</span>
 </pre></div>
 </div>
@@ -2404,8 +2307,8 @@ seu propi tipus de dades anomenat datetime, date i timedelta entre
 altres. Això pot provocar dificultats per a fer cálculs en dates. Odoo
 proporciona algunes ferramentes mínimes per facilitar aquesta tasca.</p>
 <p>Primer de tot, anem a importar datetime:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">odoo</span><span class="w"> </span><span class="kn">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">api</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">odoo</span> <span class="kn">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">api</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 </pre></div>
 </div>
 <p>El primer que necessitem saber és cóm transformar de date o datetime
@@ -2463,8 +2366,8 @@ crear un timedelta:</p>
 <p><strong>Ara anem a veure cóm calcular el temps que ha passat entre dues
 dates:</strong></p>
 <p>Solució amb <strong>relativedelta</strong>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">dateutil.relativedelta</span><span class="w"> </span><span class="kn">import</span> <span class="n">relativedelta</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span> <span class="nn">dateutil.relativedelta</span> <span class="kn">import</span> <span class="n">relativedelta</span>
 
 <span class="n">start</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">Datetime</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_date</span><span class="p">)</span>
 <span class="n">end</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">Datetime</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end_date</span><span class="p">)</span>
@@ -2479,7 +2382,7 @@ dates:</strong></p>
 <p>El problema és que dona la data per separat. No sol ser molt útil per a
 Odoo on necessitem la diferència sols en dies, hores o minuts.</p>
 <p>Solució sols amb <strong>Datetime</strong>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
  
 <span class="n">start</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">Datetime</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_date</span><span class="p">)</span>
 <span class="n">end</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">Datetime</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end_date</span><span class="p">)</span>
@@ -2552,8 +2455,8 @@ estan en openerp.exceptions</p>
 nosaltres. Però en ocasion pot ser útil.</p>
 <p>Per exemple, si volem mostrar un Warning perquè úsuari ha fet alguna
 cosa mal. (Normalment es fa un onchange que ja pot tornar el warning)</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">openerp</span><span class="w"> </span><span class="kn">import</span> <span class="n">_</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">openerp.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="ne">Warning</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openerp</span> <span class="kn">import</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">openerp.exceptions</span> <span class="kn">import</span> <span class="ne">Warning</span>
 <span class="p">[</span><span class="o">...</span><span class="p">]</span>
 <span class="k">raise</span> <span class="ne">Warning</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Alguna cosa ha fallat!&#39;</span><span class="p">))</span>
 </pre></div>
@@ -2587,13 +2490,13 @@ volem alguna cosa més sofisticada hem de cridar a una funció normal.</p>
 field més del model <strong>res.control.settings</strong>. Aquest ja s’encarrega de
 centralitzar opcions de configuració. Per a que aparega en el menú de
 configuració també podem afegir-lo heretant en la vista:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">config</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TransientModel</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">config</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TransientModel</span><span class="p">):</span>
     <span class="n">_inherit</span> <span class="o">=</span> <span class="s1">&#39;res.config.settings&#39;</span>
     <span class="n">players</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Char</span><span class="p">(</span><span class="n">string</span><span class="o">=</span><span class="s1">&#39;players&#39;</span><span class="p">,</span>
                              <span class="n">config_parameter</span><span class="o">=</span><span class="s2">&quot;expanse.players&quot;</span><span class="p">)</span>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">reset_universe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">reset_universe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;reset&quot;</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -2677,8 +2580,7 @@ settings.</p>
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -2723,6 +2625,7 @@ settings.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitxers-de-dades">Fitxers de dades</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#external-ids">External Ids</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expressions">Expressions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dades-per-als-binary-i-image">Dades per als Binary i Image</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#esborrar">Esborrar</a></li>
 </ul>
 </li>
@@ -2813,8 +2716,8 @@ By Jose Castillo
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

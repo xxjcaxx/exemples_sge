@@ -1,4 +1,4 @@
-## La vista
+# La vista
 
 En aquest capítol, explorarem com funcionen les vistes en Odoo, quins tipus de vistes podem utilitzar i com es poden personalitzar mitjançant XML i accions de servidor. Aprendrem a estructurar correctament una interfície d'usuari, a definir formularis, llistats, kanbans i gràfics, i a gestionar la navegació entre ells.
 
@@ -12,13 +12,13 @@ Les vistes tenen una prioritat i, si no s\'especifica el identificador de la que
     <field name="model">object_name</field>
     <field name="priority" eval="16"/>
     <field name="arch" type="xml">
-        <!-- view content: <form>, <tree>, <graph>, ... -->
+        <!-- view content: <form>, <list>, <graph>, ... -->
     </field>
 </record>
 ```
 
 ```{tip}
-Les vistes es guarden en el model '''ir.ui.view'''. Tots els elements de interficie tenen en el seu nom ir.ui (Information Repository, User Interface). Els menús a ir.ui.menu o les accions a '''ir.actions.window'''
+Les vistes es guarden en el model `ir.ui.view`. Tots els elements de interficie tenen en el seu nom ir.ui (Information Repository, User Interface). Els menús a ir.ui.menu o les accions a `ir.actions.window`
 ```
 Exemple de vista form:
 
@@ -39,31 +39,33 @@ Exemple de vista form:
         </record>
 ```
 
-Encara que Odoo ja proporciona un tree i un form per defecte, la vista
+Encara que Odoo ja proporciona un list i un form per defecte, la vista
 cal millorar-la quasi sempre. Totes les vistes tenen fields que poden
 tindre widgets diferents. En les vistes form, podem adaptar molt
 l\'aspecte amb grups de fields, pestanyes, camps ocults
 condicionalment\...
 
-### Les vistes tree
+## Les vistes list
 
-Les vistes *tree* (o vistes de llista) són un dels tipus de vistes més utilitzats en Odoo. Permeten mostrar registres en format de taula, facilitant la visualització i la gestió de grans quantitats de dades.  
+> A partir d'Odoo 18 ja no hi ha vistes `tree` i són totes `list`, els exemples antics funcionaran canviant aquesta paraula. 
+
+Les vistes *list* (o vistes de llista) són un dels tipus de vistes més utilitzats en Odoo. Permeten mostrar registres en format de taula, facilitant la visualització i la gestió de grans quantitats de dades.  
 
 Aquestes vistes són especialment útils per a representar informació resumida d'un conjunt de registres, amb columnes que mostren els camps més rellevants. A més, poden incloure funcionalitats com l’ordenació, els filtres i les accions ràpides.  
 
-Un exemple bàsic d’una vista *tree* per al model de clients (*res.partner*) seria el següent:  
+Un exemple bàsic d’una vista *list* per al model de clients (*res.partner*) seria el següent:  
 
 ```xml
-<record id="view_partner_tree" model="ir.ui.view">
-    <field name="name">res.partner.tree</field>
+<record id="view_partner_list" model="ir.ui.view">
+    <field name="name">res.partner.list</field>
     <field name="model">res.partner</field>
     <field name="arch" type="xml">
-        <tree>
+        <list>
             <field name="name"/>
             <field name="phone"/>
             <field name="email"/>
             <field name="company_id"/>
-        </tree>
+        </list>
     </field>
 </record>
 ```
@@ -74,12 +76,12 @@ Un exemple bàsic d’una vista *tree* per al model de clients (*res.partner*) s
 - `<field name="name">`: Assigna un nom únic a la vista.  
 - `<field name="model">`: Indica el model al qual pertany la vista (`res.partner` en aquest cas).  
 - `<field name="arch" type="xml">`: Conté l'estructura XML de la vista.  
-- `<tree>`: Defineix una vista de tipus *tree*.  
+- `<list>`: Defineix una vista de tipus *list*.  
 - `<field name="name"/>`, `<field name="phone"/>`, etc.: Representen les columnes que es mostraran en la llista.  
 
-#### Colors
+### Colors
 
-En les vistes tree es pot modificar el **color** en funció del contingut
+En les vistes list es pot modificar el **color** en funció del contingut
 d\'un field amb l\'etiqueta **decoration**, que utilitza colors
 contextuals de **Bootstrap**:
 
@@ -93,78 +95,89 @@ contextuals de **Bootstrap**:
 `   decoration-warning - Color LIGHT BROWN`
 
 ``` xml
-<tree  decoration-info="state=='draft'" decoration-danger="state=='trashed'">
+<list  decoration-info="state=='draft'" decoration-danger="state=='trashed'">
     <field name="name"/>
     <field name="state"/>
-</tree>
+</list>
 ```
 
 En el cas de que es vulga comparar un field Date o Datetime es pot fer
 amb la variable global de QWeb **current_date**. Per exemple:
 
 ``` xml
-<tree  decoration-info="start_date==current_date">
+<list  decoration-info="start_date==current_date">
 ...
 ```
 
 També es pot fer **decoration** en els fields individualment.
 
-#### Editable
+### Editable
 
 També es pot fer **editable** per no tindre que obrir un form:
 **editable=\"\[top \| bottom\]\"**. Top o Bottom indica on es crearan
-els nous registres. Els trees editables poden tindre un atribut més
+els nous registres. Els lists editables poden tindre un atribut més
 **on_write** que indica un mètode a executar quan s\'edita o crea un
 element.
 
-#### Camps invisibles 
+### Camps invisibles 
 
 De vegades, un camp pot servir per a alguna cosa, però no cal que
 l\'usuari el veja. El que cal fer és ficar el field , però dir que es
 **invisible=\"1\"**
 
 ``` xml
-<tree  decoration-info="duration==0">
+<list  decoration-info="duration==0">
                     <field name="name"/>
                     <field name="course_id"/>
                     <field name="duration" invisible="1"/>
                     <field name="taken_seats" widget="progressbar"/>
-                </tree>
+                </list>
 ```
 
-#### Botons
+### Botons
 
-Els *trees* poden tindre **buttons** amb els mateixos atributs que els
+Els *lists* poden tindre **buttons** amb els mateixos atributs que els
 buttons dels forms.
 
 ```{tip}
-Cal tindre cura en els trees dins de forms (X2many), ja que el botó s'executa en el model del tree i no del formulari que el conté. Si volem accedir al pare, cal utilitzar l'atribut parent. Mireu en [[Odoo#Context]]
+Cal tindre cura en els lists dins de forms (X2many), ja que el botó s'executa en el model del list i no del formulari que el conté. Si volem accedir al pare, cal utilitzar l'atribut parent.
 ```
-#### Totals
 
-En els trees es pot calcular totals amb aquesta etiqueta:
+### Totals
+
+En els lists es pot calcular totals amb aquesta etiqueta:
 
 ``` xml
 <field name="amount" sum="Total Amount"/>
 ```
 
-#### Ordenar per un field 
-Un tree es pot ordenar per defecte per un field que no siga computat.
+### Ordenar per un field 
+Un list es pot ordenar per defecte per un field que no siga computat.
 Això es fa en **default_order**. Mirem un exemple per ordenar
 descendentment:
 
 ``` xml
-<tree default_order="sequence,name desc">
+<list default_order="sequence,name desc">
 ```
 
-Si volem que sempre s\'ordene per eixe criteri, sense importar la vista,
+> Si volem que sempre s\'ordene per eixe criteri, sense importar la vista,
 cal afegir al model l\'atribut **\_order**.
 
-**header**
+### Agrupar per un field
 
-#### banner_route
+Amb **default_group_by**. Com l'atribut per ordenar, sols funciona amb camps guardats a la base de dades. 
 
-A partir de la versió 12 d\'Odoo, permet afegir als trees, forms, etc
+```xml
+<list default_group_by="born_year">
+    <field name="name"/>
+    <field name="born_year"/>
+    <field name="age"/>
+</list>
+```
+
+### banner_route
+
+A partir de la versió 12 d\'Odoo, permet afegir als lists, forms, etc
 una capçalera obtinguda per una url.
 <https://www.odoo.com/documentation/12.0/reference/views.html#common-structure>
 
@@ -175,10 +188,10 @@ imatges, aquestes estaran en el directori **static** del mòdul.
 
 **Fer un banner route pas a pas**:
 
-El primer és ficar en el tree la referència al **banner_route**:
+El primer és ficar en el list la referència al **banner_route**:
 
 ``` xml
-   <tree banner_route="/negocity/city_banner" >
+   <list banner_route="/negocity/city_banner" >
 ```
 
 Ara cal crear el **web controller** que implementa aquesta ruta (es
@@ -219,7 +232,7 @@ ha de cridar al backend a una funció d\'un model en concret. La resta de
 dades es fan com l\'exemple. La funció que diu **data-method** és una
 funció que ha d\'estar en el model que diu **data-model**.
 
-### Millores en les vistes form 
+## Les vistes form 
 
 Per a que un form quede bé, es pot inclure la etiqueta
 **`<sheet>`**, que fa que no ocupe tota la pantalla encara que
@@ -238,27 +251,34 @@ en **`<notebook>` `<page string="titol">`**
 Es pot separar els grups amb
 **`<separator string="Description for Quotations"/>`**
 
-Alguns **One2Many** donen una vista tree que no es adequada, per això es
-pot modificar el tree per defecte:
+Alguns **One2Many** donen una vista list que no es adequada, per això es
+pot modificar el list per defecte:
 
 ``` xml
 <field name="subscriptions" colspan="4">
-   <tree>...</tree>
+   <list>...</list>
 </field>
 ```
 
-En un One2many es pot especificar també el **form** que en donarà quan
+O especificar la vista que volem:
+``xml
+    <field name="subscriptions" context="{'list_view_ref': 'modul.view_subscriptions_tree'}"/>
+```
+
+En un One2many es pot especificar també el **form** que ens donarà quan
 anem a crear un nou element.
 
 Una altra opció és especificar la vista que insertarà en el field:
 
-``` xml
-<field name="m2o_id" context="{'form_view_ref': 'module_name.form_id'}"/>
+```xml
+    <field name="m2o_id" context="{'form_view_ref': 'module_name.form_id'}"/>
 ```
+
+> Les vistes tree embegudes tenen limitacions respecte a les cridades amb un action. Per exemple, no poden ser agrupades. 
 
 **Valors per defecte en un one2many**
 
-Quant creem un One2many en el mode form (o tree editable) ens permet
+Quant creem un One2many en el mode form (o list editable) ens permet
 crear elements d\'aquesta relació. Per a aconseguir que, al crear-los,
 el camp many2one corresponga al pare des del que es crida, es pot fer
 amb el context: Dins del field one2many que
@@ -283,6 +303,7 @@ Aquesta sintaxi funciona per a passar per context valors per defecte a un form c
 ```{tip}
 En Odoo 14 ja no cal fer-ho, però el manual és vàlid per a altres many2ones o altres valors per defecte
 ```
+
 **Domains en Many2ones**
 
 Els camps Many2one es poden filtrar, per exemple:
@@ -293,7 +314,7 @@ Els camps Many2one es poden filtrar, per exemple:
 
 Funciona tant per a Many2one com per a Many2many.
 
-#### Widgets
+### Widgets
 
 Alguns camps, com ara les imatges, es poden mostrar utilitzant un
 **widget** distint que el per defecte:
@@ -305,52 +326,227 @@ Alguns camps, com ara les imatges, es poden mostrar utilitzant un
 <field name="state" widget="statusbar"/>
 ```
 
-Llista de [widgets d\'Odoo](widgets_d'Odoo "wikilink") disponibles per a
-camps dins de forms:
+Les vistes form, tree o kanban de Odoo mostren els fields en els
+anomenats widgets. Aquests permeten, per exemple, que les dates tinguen
+un calendari o que es mostre una llista en un many2many.
 
-``` javascript
-instance.web.form.widgets = new instance.web.Registry({
-    'char' : 'instance.web.form.FieldChar',
-    'id' : 'instance.web.form.FieldID',
-    'email' : 'instance.web.form.FieldEmail',
-    'url' : 'instance.web.form.FieldUrl',
-    'text' : 'instance.web.form.FieldText',
-    'html' : 'instance.web.form.FieldTextHtml',
-    'char_domain': 'instance.web.form.FieldCharDomain',
-    'date' : 'instance.web.form.FieldDate',
-    'datetime' : 'instance.web.form.FieldDatetime',
-    'selection' : 'instance.web.form.FieldSelection',
-    'radio' : 'instance.web.form.FieldRadio',
-    'many2one' : 'instance.web.form.FieldMany2One',
-    'many2onebutton' : 'instance.web.form.Many2OneButton',
-    'many2many' : 'instance.web.form.FieldMany2Many',
-    'many2many_tags' : 'instance.web.form.FieldMany2ManyTags',
-    'many2many_kanban' : 'instance.web.form.FieldMany2ManyKanban',
-    'one2many' : 'instance.web.form.FieldOne2Many',
-    'one2many_list' : 'instance.web.form.FieldOne2Many',
-    'reference' : 'instance.web.form.FieldReference',
-    'boolean' : 'instance.web.form.FieldBoolean',
-    'float' : 'instance.web.form.FieldFloat',
-    'percentpie': 'instance.web.form.FieldPercentPie',
-    'barchart': 'instance.web.form.FieldBarChart',
-    'integer': 'instance.web.form.FieldFloat',
-    'float_time': 'instance.web.form.FieldFloat',
-    'progressbar': 'instance.web.form.FieldProgressBar',
-    'image': 'instance.web.form.FieldBinaryImage',
-    'binary': 'instance.web.form.FieldBinaryFile',
-    'many2many_binary': 'instance.web.form.FieldMany2ManyBinaryMultiFiles',
-    'statusbar': 'instance.web.form.FieldStatus',
-    'monetary': 'instance.web.form.FieldMonetary',
-    'many2many_checkboxes': 'instance.web.form.FieldMany2ManyCheckBoxes',
-    'x2many_counter': 'instance.web.form.X2ManyCounter',
-    'priority':'instance.web.form.Priority',
-    'kanban_state_selection':'instance.web.form.KanbanSelection',
-    'statinfo': 'instance.web.form.StatInfo',
-});
+Cada field te un widget per defecte, però es poden canviar si volem
+representar la informació de manera distinta. Aquests són els widgets
+disponibles per a cada tipus de field, sobretot per al form, encara que
+alguns funcionen en el tree:
+
+#### Integer i Float
+
+Els camps integer poden ser representats per molts widgets, es a dir, no
+donen error. Encara que no tots tenen sentit, com per exemple el *text*.
+
+-   **widget=\"integer\"**: Tan sols mostra el número sense comes. En
+    cas de no tindre valor, mostra 0.
+-   **widget=\"char\"**: També mostra el número, si no te valor deixa un
+    buit i el camp és més ample.
+-   **widget=\"id\"**: Mostra el número però no es pot editar.
+-   **widget=\"float\"**: Mostra el número en decimals.
+-   **widget=\"percentpie\"**: Mostra un gràfic circular amb el
+    percentatge (no funciona en la vista tree ni en kanban).
+-   **widget=\"float_time\"**: Mostra els float com si representaren el
+    temps.
+-   **widget=\"progressbar\"**: Mostra una barra de progrés (funciona en
+    la vista tree i form, però no en kanban):
+-   **widget=\"monetary\"**: Mostra el número amb 2 decimals.
+-   **widget=\"gauge\"**: Mostra un curiós gràfic de semi-circul. Sols
+    funciona en kanban.
+
+    Observem un ús real del `Gauge` per veure com els widgets poden tenir opcions:
+    
+``` xml
+<field name="current" widget="gauge" options="{'max_field': 'target_goal', 'label_field': 'definition_suffix', 'style': 'width:160px; height: 120px;'}" />
 ```
 
-Tret de:
-<https://github.com/odoo/odoo/blob/8.0/addons/web/static/src/js/view_form.js#L6355>
+##### Char i Text {#char_i_text}
+
+-   **widget=\"char\"**: Mostra un editor d\'un línia.
+-   **widget=\"text\"**: Mostra un camp més alt per fer més d\'una
+    línia.
+-   **widget=\"email\"**: Crea el enllaç per enviar-li un correu.
+-   **widget=\"url\"**: Crea el enllaç amb http.
+-   **widget=\"date\"**: Permet guardar dates com cadenes de text.
+-   **widget=\"html\"**: Permet guardar textos però amb format. Apareix
+    un wysiwyg
+-   **dashboard_graph**:
+
+Mostra un gràfic menut indicant alguna progressió. Necessita tindre
+guardat (o generat) en el char un json determinat, per exemple:
+
+`[{"values":`\
+`        [{"label":"2019-01-31","value": "7"},`\
+`         {"label":"2019-02-01","value": "20"},`\
+`         {"label":"2019-02-02","value": "45"},`\
+`         {"label":"2019-02-03","value": "34"},`\
+`         {"label":"2019-02-04","value": "40"},`\
+`         {"label":"2019-02-05","value": "67"},`\
+`         {"label":"2019-02-06","value": "80"}],`\
+` "area":true, "title": "Next Week", "key": "Ocupation", "color": "#7c7bad"}]`
+
+I aquest seria un exemple del XML per a que funcione:
+
+``` xml
+<field name="week_ocupation" widget="dashboard_graph"  graph_type="bar"/>
+```
+
+En els exemples que es poden veure en Odoo, aquests valors són sempre
+computed, generant un json i invocant la funció de python json.dumps()
+([2](https://docs.python.org/3.7/library/json.html)):
+
+``` python
+           values = []
+           for i in record.sales:
+               reserves = i.quantity
+               values.append({'label':str(i.name),'value':str(reserves)})
+           graph = [{'values': values, 'area': True, 'title': 'Sales', 'key': 'Sales', 'color': '#7c7bad'}]
+           h.graph_data = json.dumps(graph)
+```
+
+Amés, accepta algunes opcions:
+
+-   **type**: Pot ser **bar** o **line**. En el cas de ser line, en
+    compte de \'label\' i \'value\' cal posar \'x\' i \'y\'.
+
+#### Boolean
+
+-   **Ribbon**: (Odoo 13) Mostra com una cinta al costat del formulari
+    per mostrar un boolean important.
+
+``` python
+<widget name="web_ribbon" text="Archived" bg_color="bg-danger" />
+<widget name="web_ribbon" text="Paid"/>
+```
+
+-   **boolean_toggle** per als trees, permet activar un boolean en un
+    tree.
+
+#### Date
+
+-   **Daterange**: Mostra un rang de dates
+
+``` python
+date_begin = fields.Datetime( string='Start Date')
+<field name="date_begin" widget="daterange"/>
+```
+
+#### Many2one
+
+-   **widget=\"many2one\"**: Per defecte, crea un selection amb opció de
+    crear nous. Accepta arguments per evitar les opcions de crear:
+
+``` python
+ <field name="field_name" options="{'no_create': True, 'no_open': True}"/>
+```
+
+-   **widget=\"many2onebutton\"**: Crea un simple botó que indica si
+    està assignat. Si polses s\'obri el formulari.
+
+![](Many2onebutton.png "Many2onebutton.png")
+
+#### Many2Many
+
+-   **widget=\"many2many\"**: Per defecte, crea una llista amb opció de
+    esborrar o afegir nous.
+-   **widget=\"many2many_tags\"**: Llista amb etiquetes com en els
+    filtres
+
+![](Many2many_tags.png "Many2many_tags.png")
+
+-   **widget=\"many2many_checkboxes\"**: Llista de checkboxes.
+
+![](Many2many_checkboxes.png "Many2many_checkboxes.png")
+
+-   **widget=\"many2many_kanban\"**: Mostra un kanban dels que té
+    associats, necessita que la vista kanban estiga definida.
+-   **widget=\"x2many_counter\"**: Mostra sols la quantitat.
+-   **many2many_tags_avatar**:
+
+``` xml
+partner_ids = fields.Many2many('res.partner', 'calendar_event_res_partner_rel', string='Attendees')
+<field name="partner_ids" widget="many2many_tags_avatar" write_model="calendar.contacts" write_field="partner_id" avatar_field="image_128"/>
+```
+
+#### One2many
+
+-   **widget=\"one2many\"**: Per defecte.
+-   **widget=\"one2many_list\"**: Aparentment igual, es manté per
+    retrocompatibilitat
+
+#### Modificar el tree del One2many 
+
+El one2many, al igual que el many2one es poden vorer en format tree. Per
+defecte agafa el tree definit del model, però es pot especificar el tree
+que volem veure:
+
+``` xml
+  <field name="fortress">
+   <tree>
+     <field name="name"/><field name="level"/>
+   </tree>
+  </field>
+```
+
+Inclús es pot forçar a mostrar un kanban:
+
+``` xml
+<field name="gallery" mode="kanban,tree" context="{'default_hotel_id':active_id}">
+                 <kanban>
+                 <!--list of field to be loaded -->
+                 <field name="name" />
+                 <field name="image" />
+
+                 <templates>
+                 <t t-name="kanban-box">
+                     <div class="oe_product_vignette">
+                     <a type="open">
+                        <img class="oe_kanban_image" style="width:300px; height:auto;"
+                        t-att-src="kanban_image('marsans.hotel.galley', 'image', record.id.value)" />
+                    </a>
+                    <div class="oe_product_desc">
+                        <h4>
+                        <a type="edit">
+                            <field name="name"></field>
+                        </a>
+                        </h4>
+
+                    </div>
+                    </div>
+                    </t>
+                    </templates>
+                </kanban>
+                </field>
+```
+
+De vegades, el kanban este no funciona perquè no força a carregar les
+imatges.
+
+#### Binary o Image 
+
+-   **signature**: Permet signar dirènctament en la pantalla
+
+```{=html}
+<!-- -->
+```
+-   **image**: A banda del que es pot ficar en el field de max_width o
+    max_height, al widget es pot afegir opcions com:
+
+```{=html}
+<!-- -->
+```
+    options="{&quot;zoom&quot;: true, &quot;preview_image&quot;: &quot;image_128&quot;}
+
+#### Selection
+
+           <field name="state" decoration-success="state == 'sale' or state == 'done'" decoration-info="state == 'draft' or state == 'sent'" widget="badge" optional="show"/>
+
+#### Fields dels trees 
+
+-   **handle**: Per a ordenar a ma. Cal que aquest camp siga el criteri
+    d\'ordenació.
 
 
 **Reescalar les imatges**
@@ -490,7 +686,7 @@ O mostrar si un camp anomenat **state** té un determinat valor:
 ```
 
 En el següent exemple, introdueix dos conceptes nous: el
-**column_invisible** per ocultar una columna d\'un tree i el **parent**
+**column_invisible** per ocultar una columna d\'un list i el **parent**
 per fer referència al valor d\'un field de la vista pare:
 
 ``` xml
@@ -541,7 +737,7 @@ Les vistes kanban són per a mostrar el model en forma de \'cartes\'. Les
 vistes kanban se declaren amb una mescla de xml, html i plantilles
 **Qweb**.
 
-Un Kanban és una mescla entre tree i form. En Odoo, les vistes tenen una
+Un Kanban és una mescla entre list i form. En Odoo, les vistes tenen una
 estructura jeràrquica. En el cas del Kanban, està la **vista Kanban**,
 que conté molts **Kanban Box**, un per a cada *record* mostrat. Cada
 kanban box té dins un *div* de *class* **vignette** o **card** i, dins,
@@ -567,7 +763,8 @@ clava una caixa que ocupa tota la finestra i va recorreguent els records
 que es tenen que mostrant i dibuixant els widgets de cada record.
 
 ```{tip}
-A diferència en els trees o forms, els kanbans poden ser molt variats i han de deixar llibertat per ser dissenyats. És per això, que els desenvolupadors d'Odoo no han proporcionat unes etiquetes i atributs XML d'alt nivell com passa en els forms o trees, en els que no hem de preocupar-nos de la manera en que serà renderitzar, el CSS o cóm obté els fields de la base de dades. Al fer un Kanban, entrem al nivel de QWeb, per el que controlem plantilles, CSS i indicacions i funcions per al Javascript. Tot això està ocult en la resta de vistes, però en Kanban és impossible ocultar-ho.
+A diferència en els lists o forms, els kanbans poden ser molt variats i han de deixar llibertat per ser dissenyats. És per això, que els desenvolupadors d'Odoo no han proporcionat unes etiquetes i atributs XML d'alt nivell com passa en els forms o lists, en els que no hem de preocupar-nos de la manera en que serà renderitzar, el CSS o cóm obté els fields de la base de dades. Al fer un Kanban, entrem al nivel de QWeb, per el que controlem plantilles, CSS i indicacions i funcions per al Javascript. Tot això està ocult en la resta de vistes, però en Kanban és impossible ocultar-ho.
+Es poden utilitzar certs widgets en els fields com `image` o `progress_bar`, però són molts menys widgets que en els forms o lists.
 ```
 Exemple bàsic:
 
@@ -653,7 +850,7 @@ Si ja volem fer un kanban més avançat, tenim aquestes opcions:
         apareixen opcions per crear nous elements sense necessitat
         d\'entrar al formulari.
     -   **default_order** per ordenar segons algun criteri si no s\'ha
-        ordenat en el tree.
+        ordenat en el list.
     -   **quick_create** a true o false segons vulguem que es puga crear
         elements sobre la marxa sense el form. Per defecte és false si
         no està agrupat i true si està agrupat.
@@ -677,43 +874,6 @@ Si ja volem fer un kanban més avançat, tenim aquestes opcions:
         definir de forma específica el color que necessitem. Aquest
         field tindrà un valor de 0-9.
 
-Un exemple més complet i correcte:
-
-
-``` xml
-      <record model="ir.ui.view" id="music_kanban_view">
-            <field name="name">conservatori.music</field>
-            <field name="model">conservatori.music</field>
-            <field name="arch" type="xml">
-            <kanban default_group_by="instrument" default_order="instrument" quick_create="true">
-                    <field name="numero" sum="numero"/>
-                    <templates>
-                    <t t-name="kanban-box">
-                            <div  t-attf-class="oe_kanban_color_{{kanban_getcolor(record.numero.raw_value)}}
-                                                  oe_kanban_global_click_edit oe_semantic_html_override
-                                                  oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}}">
-                                <a type="open">
-                                    <img class="oe_kanban_image"
-                                        t-att-src="kanban_image('conservatori.music', 'foto', record.id.value)" />
-                                </a>
-                                <div t-attf-class="oe_kanban_content">
-                                    <h4>
-                                        <a type="edit">
-                                            <field name="name"></field>
-                                        </a>
-                                    </h4>
-                                    <ul>
- 
-                                       <li>Group: <field name="grup"></field></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </t>
-                    </templates>
-                </kanban>
-             </field>
-        </record>
-```
 
 **Forms dins de kanbans**:
 
@@ -743,6 +903,12 @@ identificador extern d\'una vista form en **quick_create_view**. Aquest
   </group>
  </form>
 ```
+
+
+#### Imatges en els Kanbans
+
+En molts llocs trobarem la funció `kanban_image`. És la manera correcta de fer-ho en Qweb. Necessita posar el camp `id` el principi. però també es pot utilitzar dirèctament el `widget="image"` com en els forms. 
+
 
 ### Vistes search 
 

@@ -469,7 +469,7 @@ Aquesta ajuda és per que, com a alumnes, vos prepareu correctament per poder pr
     segons els manuals anteriors.
 -   Crear una empresa amb dades de demo en la web d\'Odoo.
 -   Fer que l\'usuari Odoo tinga shell i fer que es puga accedir a ell
-    per [SSH](SSH "wikilink") sense contrasenya des del vostre equip. (
+    per SSH sense contrasenya des del vostre equip. (
     usermod -s /bin/bash odoo )
 -   Fer-se un compte i un projecte en Github.
 -   Crear el directori modules i configurar Odoo per utilitzar aquest

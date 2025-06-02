@@ -16,21 +16,19 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -38,11 +36,10 @@
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
-  <!-- So that users can add custom icons -->
-  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
@@ -67,7 +64,6 @@
     <link rel="prev" title="Introducció a Odoo" href="intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -83,8 +79,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -92,6 +99,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -99,8 +107,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -116,8 +124,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -147,17 +154,21 @@
     
     
     <img src="_static/odoo_logo.svg" class="logo__image only-light" alt="Apunts d'Odoo - Home"/>
-    <img src="_static/odoo_logo.svg" class="logo__image only-dark pst-js-only" alt="Apunts d'Odoo - Home"/>
+    <script>document.write(`<img src="_static/odoo_logo.svg" class="logo__image only-dark" alt="Apunts d'Odoo - Home"/>`);</script>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -179,13 +190,6 @@
 <li class="toctree-l1"><a class="reference internal" href="client_web.html">Client Web</a></li>
 
 
-
-
-
-
-
-
-
 <li class="toctree-l1"><a class="reference internal" href="Jupyter%20y%20Odoo.html">Usar Jupyter en Odoo.</a></li>
 </ul>
 
@@ -195,14 +199,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -346,16 +345,24 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
+  </button>
+`);
+</script>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -430,8 +437,6 @@ una base de dades postgreSQL. Hi ha moltes maneres d’instal·lar Odoo,
 de les més avançades que són descarregar per <em>git</em> el repositori i fer
 que arranque a l’inici a les més simples que són desplegar un
 <strong>docker</strong> amb tot funcionant.</p>
-<p><a class="reference external" href="https://github.com/odoo/technical-training/tree/12.0-99-sysadmin">Manual technical training
-Odoo</a>.</p>
 <section id="installar-amb-docker">
 <h2>Instal·lar Amb Docker<a class="headerlink" href="#installar-amb-docker" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://registry.hub.docker.com/_/odoo/">Documentació oficial</a></p>
@@ -440,10 +445,38 @@ Odoo</a>.</p>
 <p class="admonition-title">Atenció</p>
 <p>En classe treballarem finalment amb Docker Compose, el text següent serveix per entendre la configuració final, però no cal fer-los en el treball diari. La configuració definitiva la farem amb Docker Compose.</p>
 </div>
+<p><a class="reference external" href="https://docs.docker.com/engine/install/ubuntu/">https://docs.docker.com/engine/install/ubuntu/</a></p>
+<blockquote>
+<div><p>Si volem GUI, podem utilitzar Docker Desktop per a contenidors locals o Portainer per a gestionar també contenidors remots.</p>
+</div></blockquote>
+<p>Es pot instal·lar Docker de moltes maneres, però anem a fer-ho de la manera més recomanable per al nostre cas, que és la de la web oficial:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add Docker&#39;s official GPG key:</span>
+sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>ca-certificates<span class="w"> </span>curl
+sudo<span class="w"> </span>install<span class="w"> </span>-m<span class="w"> </span><span class="m">0755</span><span class="w"> </span>-d<span class="w"> </span>/etc/apt/keyrings
+sudo<span class="w"> </span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://download.docker.com/linux/ubuntu/gpg<span class="w"> </span>-o<span class="w"> </span>/etc/apt/keyrings/docker.asc
+sudo<span class="w"> </span>chmod<span class="w"> </span>a+r<span class="w"> </span>/etc/apt/keyrings/docker.asc
+
+<span class="c1"># Add the repository to Apt sources:</span>
+<span class="nb">echo</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s2">&quot;deb [arch=</span><span class="k">$(</span>dpkg<span class="w"> </span>--print-architecture<span class="k">)</span><span class="s2"> signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \</span>
+<span class="s2">  </span><span class="k">$(</span>.<span class="w"> </span>/etc/os-release<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">UBUNTU_CODENAME</span><span class="k">:-</span><span class="nv">$VERSION_CODENAME</span><span class="si">}</span><span class="s2">&quot;</span><span class="k">)</span><span class="s2"> stable&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/docker.list<span class="w"> </span>&gt;<span class="w"> </span>/dev/null
+sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+
+<span class="c1"># Instal·lar</span>
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>docker-ce<span class="w"> </span>docker-ce-cli<span class="w"> </span>containerd.io<span class="w"> </span>docker-buildx-plugin<span class="w"> </span>docker-compose-plugin
+
+<span class="c1"># Provar</span>
+sudo<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>hello-world
+
+<span class="c1"># Gestionar docker sense ser root:</span>
+sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="nv">$USER</span>
+</pre></div>
+</div>
 <p>En Docker és molt sencill desplegar Odoo, tan sols fa falta aquests
 comandaments:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># apt install docker.io
-# docker run -d --restart=&quot;always&quot; -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo --name db postgres:9.4
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># docker run -d --restart=&quot;always&quot; -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo --name db postgres:9.4
 # docker run --restart=&quot;always&quot; -p 8069:8069 --name odoo --link db:db -t odoo
 # docker stop odoo
 # docker start -a odoo
@@ -463,20 +496,20 @@ entrar per veure els errors:</p>
 <p><strong>Creació de mòduls</strong></p>
 <p>Per a fer els nostres mòduls podem crear-los en un directori fora del
 docker i executar-lo d’aquesta manera:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># docker run -v /path/to/addons:/mnt/extra-addons -p 8069:8069 --name odoo --link db:db -t odoo
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ docker run -v /path/to/addons:/mnt/extra-addons -p 8069:8069 --name odoo --link db:db -t odoo
 </pre></div>
 </div>
 <p>Mentre estem fent nous mòduls, necessitem reiniciar el servici i
 arrancar-lo actualitzant un mòdul. Primer deguem parar el docker,
 després iniciar-lo indicant que vols entrar a la consola i finalment
 actualitzar el mòdul.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># docker stop odoo
-# docker start -a odoo
-# docker exec odoo odoo --config /etc/odoo/odoo.conf -u nommodul -d nombasededades -r odoo -w odoo --db_host 172.17.0.2 --db_port 5432
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ docker stop odoo
+$ docker start -a odoo
+$ docker exec odoo odoo --config /etc/odoo/odoo.conf -u nommodul -d nombasededades -r odoo -w odoo --db_host 172.17.0.2 --db_port 5432
 </pre></div>
 </div>
 <p><strong>Creació de mòduls, mètode 1</strong></p>
-<p>Com es veu, el últim comandament és un poc complicat. Per tant, anem a
+<p>Com es veu, l’últim comandament és un poc complicat. Per tant, anem a
 fer les coses totalment bé. Per a aixó necessitem un fitxer propi de
 configuració d’Odoo al que anomenarem <strong>odoo.conf</strong>. Podem utilitzar
 aquesta plantilla:</p>
@@ -551,27 +584,20 @@ cal dir quina xarxa utilitzen i la resta de dades que posem normalment
 en el <strong>run</strong>.</p>
 <p>Això ha d’estar en un directori dins d’un fitxer anomenat
 <strong>docker-compose.yml</strong> i sols cal executar cada vegada:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>docker-compose up -d
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>docker compose up -d
 </pre></div>
 </div>
 <p>Per a que funcione correctament, necessitem un fitxer <code class="docutils literal notranslate"><span class="pre">odoo.conf</span></code> que podem extreure d’un contenidor sense el volumen de <code class="docutils literal notranslate"><span class="pre">./config</span></code>.</p>
-<div class="tip admonition">
-<p class="admonition-title">Permisos</p>
-<p>Si no funciona el comandament pot ser perquè el nostre usuari no està al grup <code class="docutils literal notranslate"><span class="pre">docker</span></code>. ho solucionem amb:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sudo usermod -aG docker $USER
-newgrp docker
-</pre></div>
-</div>
-</div>
 <p>Si volem entrar en la base de dades postgreSQL per a fer coses
 manualment, podem executar:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>docker exec -ti postgresql psql proves -U odoo
 </pre></div>
 </div>
 <p>Executem el comandament psql de forma interactiva a la base de dades proves i amb l’usuari odoo.</p>
+<p>Cal cambé observar que hem associat un volum a les carpetes dels dos contenidors, exepte config i addons. Això permet compartir el codi i la configuració d’Odoo sense compartir massa fitxers o les dades privades de la base de dades. Per compartir sols cal comprimir o posar en Git la carpeta contenidora dels fitxers i carpetes que estem creant.</p>
 <section id="mode-desenvolupador-en-docker">
 <h4>Mode desenvolupador en Docker<a class="headerlink" href="#mode-desenvolupador-en-docker" title="Link to this heading">#</a></h4>
-<p>Com es pot veure, hem configurat un directori per als mòduls. En aquest directori farem els <code class="docutils literal notranslate"><span class="pre">scaffold</span></code>. Amés hem afegit al comandament <code class="docutils literal notranslate"><span class="pre">--dev=all</span></code>. Això simplifica molt el desenvolupament, ja que tots els canvis provoquen un reinici del servidor i actualització d’algunes parts dels mòduls.</p>
+<p>Com es pot veure, hem configurat un directori per als mòduls. En aquest directori farem els <code class="docutils literal notranslate"><span class="pre">scaffold</span></code>. Amés hem afegit al comandament <code class="docutils literal notranslate"><span class="pre">--dev=all</span></code>. Això simplifica molt el desenvolupament, ja que molts dels canvis provoquen un reinici del servidor i actualització d’algunes parts dels mòduls.</p>
 <p>L’opció <code class="docutils literal notranslate"><span class="pre">--dev</span> <span class="pre">&lt;feature,feature,...,feature&gt;</span></code> en Odoo permet activar diverses característiques útils per al desenvolupament. Aquesta opció <strong>no s’ha d’usar en producció</strong>, ja que està pensada exclusivament per a facilitar la tasca dels desenvolupadors. A continuació, s’expliquen les opcions disponibles:</p>
 <ul class="simple">
 <li><p><strong>all</strong>: Activa totes les funcionalitats de desenvolupament descrites a continuació.</p></li>
@@ -583,13 +609,11 @@ manualment, podem executar:</p>
 </ul>
 <p>Aquesta opció és molt útil durant el desenvolupament, ja que facilita la depuració de codi, la càrrega en calent de fitxers i la revisió d’errors de manera més visual. No obstant está limitada en certs aspectes. Per exemple, torna a executar el Python però no crea nous models o fields. Tampoc actualitza tot els XML, sols el contingut de les vistes en <code class="docutils literal notranslate"><span class="pre">ir.ui.view</span></code> que ja s’han enregistrat actualitzant el mòdul. Per tant, no sempre serveix i menys en les etapes inicials de la creació de mòduls.</p>
 <p>Com que el comandament amb <code class="docutils literal notranslate"><span class="pre">--dev=all</span></code> no actualitza la base de dades, la creació de noves vistes, nous models o fields no s’actualitzarà i donarà errades. Una solució és afegir al comandament:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
-<span class="w">      </span><span class="no">-- --dev=all</span>
-<span class="w">      </span><span class="no">-d basededades</span>
-<span class="w">      </span><span class="no">-u modul</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;--dev=all&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;-u&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;modul&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;-d&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;basededades&quot;</span><span class="p p-Indicator">]</span>
 </pre></div>
 </div>
-<p>Però sols quan ja existeix la base de dades i el mòdul està instal·lat. Amés, sols s’executarà quan arranquem el Docker, per tant, cal fer un <code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">down</span></code> i tornar a arrancar els contenidors de nou. Això suposa molta feina, així que ho podem simplificar afegint a <code class="docutils literal notranslate"><span class="pre">Visual</span> <span class="pre">Studio</span> <span class="pre">code</span></code> una extensió com <code class="docutils literal notranslate"><span class="pre">VS</span> <span class="pre">Code</span> <span class="pre">Action</span> <span class="pre">Buttons</span></code> i configurant el seu <code class="docutils literal notranslate"><span class="pre">json</span></code> així:</p>
+<p>Però sols quan ja existeix la base de dades i el mòdul està instal·lat. En cas d’arrancar docker amb aquest comandament per primera vegada, es crearà la base de dades amb una confoguració estàndard que no ens interessa en Anglés, sense dades de demo i amb usuari/password admin/admin.</p>
+<p>Amés, sols s’executarà quan arranquem el Docker, per tant, cal fer un <code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">down</span></code> i tornar a arrancar els contenidors de nou. Això suposa molta feina, així que ho podem simplificar afegint a <code class="docutils literal notranslate"><span class="pre">Visual</span> <span class="pre">Studio</span> <span class="pre">code</span></code> una extensió com <code class="docutils literal notranslate"><span class="pre">VS</span> <span class="pre">Code</span> <span class="pre">Action</span> <span class="pre">Buttons</span></code> i configurant el seu <code class="docutils literal notranslate"><span class="pre">json</span></code> així:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="w">        </span><span class="nt">&quot;commands&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">            </span><span class="p">{</span>
 <span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$(triangle-right) Run Odoo&quot;</span><span class="p">,</span>
@@ -624,7 +648,7 @@ docker exec -ti odoo chmod 777 -R /mnt/extra-addons/proves
 <div class="tip admonition">
 <p class="admonition-title">Shell</p>
 <p>Si volem executar el <code class="docutils literal notranslate"><span class="pre">shell</span></code> de Odoo podem ejecutar el comandament:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>docker-compose exec odoo odoo shell -d proves --db_host db --db_password odoo
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>docker compose exec odoo odoo shell -d proves --db_host db --db_password odoo
 </pre></div>
 </div>
 <p>Ací estem diguen que execute al contenidor odoo el comandament odoo especificant la base de dades i el host i password de postgres. És necessari especificar la base de dades perquè Docker Compose crea múltiples contenidors Docker basant-se en la configuració del fitxer <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code>. En aquest cas, hi ha diversos contenidors en execució, un que corre <strong>Odoo</strong>, un altre que corre <strong>PostgreSQL</strong>, i possiblement altres més.</p>
@@ -763,8 +787,8 @@ depurar.</a></p>
 <p>Per afegir als nostres mètodes una eixida de log i facilitar la
 depuració, es pot utilitzar el api de Odoo:</p>
 <p>Al principi del fitxer .py:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">openerp</span><span class="w"> </span><span class="kn">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">api</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openerp</span> <span class="kn">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">api</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="n">_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 </pre></div>
@@ -850,7 +874,7 @@ programa <strong>PyCharm</strong>.</p></li>
 <p>Odoo permet entrar en mode debug amb <strong>–debug</strong>.</p>
 <p>També es pot importar la bibliteca <strong>pdb</strong> i col·locar un <em>trace</em> en el
 codi que ens interessa:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="kn">import</span><span class="w"> </span><span class="nn">pdb</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="kn">import</span> <span class="nn">pdb</span>
     <span class="o">...</span>
     <span class="n">pdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>
 </pre></div>
@@ -861,7 +885,8 @@ codi que ens interessa:</p>
 </section>
 <section id="posar-en-produccio">
 <h2>Posar en producció<a class="headerlink" href="#posar-en-produccio" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://www.odoo.com/documentation/17.0/administration/install/deploy.html?highlight=workers">https://www.odoo.com/documentation/17.0/administration/install/deploy.html?highlight=workers</a></p>
+<p><a class="reference external" href="https://www.odoo.com/documentation/17.0/administration/install/deploy.html?highlight=workers">https://www.odoo.com/documentation/17.0/administration/install/deploy.html?highlight=workers</a>
+<a class="reference external" href="https://docs.docker.com/engine/install/linux-postinstall/#configure-docker-to-start-on-boot-with-systemd">https://docs.docker.com/engine/install/linux-postinstall/#configure-docker-to-start-on-boot-with-systemd</a></p>
 <section id="odoo-per-https">
 <h3>Odoo per HTTPS<a class="headerlink" href="#odoo-per-https" title="Link to this heading">#</a></h3>
 <p>El servidor Odoo per defecte dona la seua web pel port 8069 i en HTTP
@@ -1100,6 +1125,8 @@ funciona:</p>
 <section id="enllacos">
 <h2>Enllaços<a class="headerlink" href="#enllacos" title="Link to this heading">#</a></h2>
 <ul class="simple">
+<li><p><a class="reference external" href="https://github.com/odoo/technical-training/tree/12.0-99-sysadmin">Manual technical training
+Odoo</a>.</p></li>
 <li><p><a class="reference external" href="https://www.youtube.com/watch?v=IPjqbwA814Q">Video de instalar Odoo
 manualmente</a>.</p></li>
 <li><p><a class="reference external" href="https://www.youtube.com/watch?v=36XolOPbOFI">Video de configurar Odoo como
@@ -1165,8 +1192,7 @@ seguridad</a>.</p></li>
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -1253,8 +1279,8 @@ By Jose Castillo
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

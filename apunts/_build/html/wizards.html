@@ -16,21 +16,19 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -38,11 +36,10 @@
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
-  <!-- So that users can add custom icons -->
-  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
@@ -67,7 +64,6 @@
     <link rel="prev" title="Reports" href="reports.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -83,8 +79,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -92,6 +99,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -99,8 +107,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -116,8 +124,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -147,17 +154,21 @@
     
     
     <img src="_static/odoo_logo.svg" class="logo__image only-light" alt="Apunts d'Odoo - Home"/>
-    <img src="_static/odoo_logo.svg" class="logo__image only-dark pst-js-only" alt="Apunts d'Odoo - Home"/>
+    <script>document.write(`<img src="_static/odoo_logo.svg" class="logo__image only-dark" alt="Apunts d'Odoo - Home"/>`);</script>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -176,13 +187,7 @@
 <li class="toctree-l1"><a class="reference internal" href="reports.html">Reports</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Wizards</a></li>
 <li class="toctree-l1"><a class="reference internal" href="web_controllers.html">Web Controllers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="client_web.html">Arquitectura del client web {#arquitectura_del_client_web}</a></li>
-
-
-
-
-
-
+<li class="toctree-l1"><a class="reference internal" href="client_web.html">Client Web</a></li>
 
 
 <li class="toctree-l1"><a class="reference internal" href="Jupyter%20y%20Odoo.html">Usar Jupyter en Odoo.</a></li>
@@ -194,14 +199,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -345,16 +345,24 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
+  </button>
+`);
+</script>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -403,19 +411,14 @@
   <section class="tex2jax_ignore mathjax_ignore" id="wizards">
 <h1>Wizards<a class="headerlink" href="#wizards" title="Link to this heading">#</a></h1>
 <p>Els wizards d’Odoo permeten fer un asistent
-interactiu per a que l’usuari complete una tasca. Com que no ha
-d’agafar les dades directament en un formulari, si no que el va ajudant
-a completar-ho, no pot ser guardat en la base de dades fins al final.</p>
+interactiu per a que l’usuari complete una tasca. Es tracta simplement d’un formulari emergent que va demanant dades i ajundant a l’usuari i en el que les dades són temporals.</p>
 <p>Els wizards en Odoo se fan a partir de models que estenen la classe
 <strong>TransientModel</strong> en compte de <em>Model</em>. Aquesta classe és molt
 pareguda, però:</p>
 <ul class="simple">
-<li><p>Les dades no són persistents, encara que es guarden temporalment en
-la base de dades.</p></li>
-<li><p>Els records dels wizards poden tindre referències Many2one o
-Many2many amb el records dels models normals, però no al contrari.</p></li>
-<li><p>Els records dels models normals poden tindre One2many a Wizards,
-però cada cert tems s’eliminen.</p></li>
+<li><p>Les dades no són persistents, encara que es guarden temporalment en la base de dades.</p></li>
+<li><p>Els records dels wizards poden tindre referències Many2one o Many2many amb el records dels models normals, però no al contrari.</p></li>
+<li><p>Els records dels models normals poden tindre One2many a Wizards, però cada cert tems s’eliminen.</p></li>
 </ul>
 <p>En realitat, no estem fent res molt diferent al que fem en Odoo a
 exepció del <strong>TransientModel</strong>. Es tracta de crear formularis i accions
@@ -456,8 +459,7 @@ TransientModel.</p></li>
 <li><p>Aquestes funcions canvien el field <strong>state</strong> i retornen un
 action del mateix wizard per refrescar-lo i que no es tanque.</p></li>
 <li><p>El formulari té groups o field que es mostren o s’oculten en
-funció del field <strong>state</strong> amb una etiqueta específica del XML
-anomenada <strong>states=</strong>.</p></li>
+funció del field <strong>state</strong>.</p></li>
 </ul>
 </li>
 <li><p>En cas de tindre un wizard complex en el que omplir Many2many o
@@ -473,16 +475,16 @@ refrescar la vista que l’ha cridat.</p></li>
 <p>A continuació anem a veure un exemple de wizard que sols mostra un
 formulari i crea una instància d’un model a partir de les dades del
 formulari:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">wizard</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TransientModel</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">wizard</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TransientModel</span><span class="p">):</span>
      <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;mmog.wizard&#39;</span>
-     <span class="k">def</span><span class="w"> </span><span class="nf">_default_attacker</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+     <span class="k">def</span> <span class="nf">_default_attacker</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
          <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;mmog.fortress&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">browse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;active_id&#39;</span><span class="p">))</span> <span class="c1"># El context conté, entre altre coses, </span>
                                                                                  <span class="c1">#el active_id del model que està obert.</span>
      <span class="n">fortress_attacker</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Many2one</span><span class="p">(</span><span class="s1">&#39;mmog.fortress&#39;</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="n">_default_attacker</span><span class="p">)</span>
      <span class="n">fortress_target</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Many2one</span><span class="p">(</span><span class="s1">&#39;mmog.fortress&#39;</span><span class="p">)</span>
      <span class="n">soldiers_sent</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-     <span class="k">def</span><span class="w"> </span><span class="nf">launch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+     <span class="k">def</span> <span class="nf">launch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fortress_attacker</span><span class="o">.</span><span class="n">soldiers</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">soldiers_sent</span><span class="p">:</span>
           <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;mmog.attack&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">create</span><span class="p">({</span><span class="s1">&#39;fortress_attacking&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">fortress_attacker</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
                                           <span class="s1">&#39;fortress_defender&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">fortress_target</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
@@ -490,7 +492,7 @@ formulari:</p>
        <span class="k">return</span> <span class="p">{}</span>
 </pre></div>
 </div>
-<p>En el python cal observar la classe de la que hereta, el default, que
+<p>En el python cal observar la classe de la que hereta (<code class="docutils literal notranslate"><span class="pre">TransientModel</span></code>). També el default, que
 extrau el <strong>active_id</strong> del form que a llançat el wizard i el mètode que
 és cridat pel botó de la vista.</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="w">        </span><span class="nt">&lt;record</span><span class="w"> </span><span class="na">model=</span><span class="s">&quot;ir.ui.view&quot;</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;wizard_mmog_fortress_view&quot;</span><span class="nt">&gt;</span>
@@ -530,7 +532,7 @@ el model del wizard que utilitza. Els action que criden a wizard tenen
 l’atribut <strong>target</strong> a <strong>new</strong> per a que llance una finestra emergent.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p><code class="docutils literal notranslate"><span class="pre">binding_model</span></code> és el model on es pot llançar el wizard. Amb això només ja apareix en el menú superior d’accions. Però podem fer un botó que el cride de forma més intuïtiva. En alguns tutorials el trobareu com res_model, però és per a versions anteriors a la 13.</p>
+<p><code class="docutils literal notranslate"><span class="pre">binding_model</span></code> és el model on es pot llançar el wizard. Amb això només ja apareix en el menú superior d’accions. Però podem fer un botó que el cride de forma més intuïtiva.</p>
 </div>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="nt">&lt;button</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;%(launch_mmog_fortress_wizard)d&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;action&quot;</span><span class="w"> </span><span class="na">string=</span><span class="s">&quot;Launch attack&quot;</span><span class="w"> </span><span class="na">class=</span><span class="s">&quot;oe_highlight&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
 </pre></div>
@@ -538,19 +540,33 @@ l’atribut <strong>target</strong> a <strong>new</strong> per a que llance una 
 <p>Si volem, podem ficar un botó que cride al action del wizard. Observem
 la sintaxi del name, que és igual sempre que el button siga de tipus
 action, ja que és l’anomenat <strong>XML id</strong>.</p>
+<p>Una altra opció és fer que el botó siga de tipus <code class="docutils literal notranslate"><span class="pre">object</span></code> i que la funció retorne un action com el creat anteriorment:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">launch_mmog_fortress_wizard</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Launch attack&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;ir.actions.act_window&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;res_model&#39;</span><span class="p">:</span> <span class="s1">&#39;mmog.wizard&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;view_mode&#39;</span><span class="p">:</span> <span class="s1">&#39;form&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="s1">&#39;new&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;context&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
 </section>
 <section id="wizard-amb-assistent">
 <h2>Wizard amb assistent<a class="headerlink" href="#wizard-amb-assistent" title="Link to this heading">#</a></h2>
-<p>En aquest exemple anem a fer un wizard amb assistent. Per començar, cal
-crear un camp <strong>state</strong> amb varis valors possibles:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>      <span class="n">state</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Selection</span><span class="p">([</span>
+<p>En aquest exemple anem a fer un wizard amb assistent. Un assistent va demanant les dades poc a poc i autocompletant o indicant a l’usuari l’ordre en el que ha d’introduir les dades. És útil quan es tracta de formularis complexos amb molts camps que depenen d’altres.</p>
+<p>Per començar, cal
+crear un camp <strong>state</strong> tipus <code class="docutils literal notranslate"><span class="pre">Selection</span></code> amb varis valors possibles i el primer per defecte:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">state</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Selection</span><span class="p">([</span>
         <span class="p">(</span><span class="s1">&#39;pelis&#39;</span><span class="p">,</span> <span class="s2">&quot;Movie Selection&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="s1">&#39;dia&#39;</span><span class="p">,</span> <span class="s2">&quot;Day Selection&quot;</span><span class="p">),</span>                                                                        
       <span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;pelis&#39;</span><span class="p">)</span>
-                    
-      <span class="nd">@api</span><span class="o">.</span><span class="n">multi</span>      
-      <span class="k">def</span><span class="w"> </span><span class="nf">action_pelis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s1">&#39;pelis&#39;</span>
+
+          
+    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;state1&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s1">&#39;state2&#39;</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;ir.actions.act_window&#39;</span><span class="p">,</span>
             <span class="s1">&#39;res_model&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span>
@@ -559,11 +575,9 @@ crear un camp <strong>state</strong> amb varis valors possibles:</p>
             <span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="s1">&#39;new&#39;</span><span class="p">,</span>
         <span class="p">}</span>
 
-                                                      
-                                
-      <span class="nd">@api</span><span class="o">.</span><span class="n">multi</span>                        
-      <span class="k">def</span><span class="w"> </span><span class="nf">action_dia</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>              
-        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s1">&#39;dia&#39;</span>                      
+    <span class="k">def</span> <span class="nf">previous</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;player&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s1">&#39;building&#39;</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;ir.actions.act_window&#39;</span><span class="p">,</span>
             <span class="s1">&#39;res_model&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span>
@@ -599,8 +613,7 @@ valor de <strong>state</strong>.</p>
 <p class="admonition-title">Tip</p>
 <p>En l’anterior exemple els botons per a passar al següent estat s’oculten. Si volem deshabilitar-los podem crear un duplicat amb els states inversos i amb la classe “oe_highlight disabled”</p>
 </div>
-<p>Els wizards poden tornar a recarregar la vista des de la que són
-cridats:</p>
+<p>Els wizards poden tornar a recarregar la vista des de la que són cridats o poden retornar un action per carregar qualsevol vista, per exemple una del registre que s’ha creat:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="p">{</span>
     <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Reserves&#39;</span><span class="p">,</span>
     <span class="s1">&#39;view_type&#39;</span><span class="p">:</span> <span class="s1">&#39;form&#39;</span><span class="p">,</span>
@@ -611,15 +624,6 @@ cridats:</p>
     <span class="s1">&#39;context&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span>   <span class="c1"># El context es pot ampliar per afegir opcions</span>
     <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;ir.actions.act_window&#39;</span><span class="p">,</span>
     <span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="s1">&#39;current&#39;</span><span class="p">,</span>  <span class="c1"># Si ho fem en current, canvia la finestra actual.</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>L’exemple anterior és la manera llarga i completa de cridar a una vista
-en concret, però si sols necessitem refrescar la vista cridada, podem
-afegir:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="p">{</span>
-    <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;ir.actions.client&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="s1">&#39;reload&#39;</span><span class="p">,</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -656,19 +660,21 @@ de dins del wizard cap a un model permanent. El problema està en els
 <strong>One2many</strong> i els <strong>Many2many</strong>. Aquestes relacions impliquen que hi ha
 algun model que apunta al <strong>transientmodel</strong> del wizard. Eixe tipus de
 relacions són impossibles o no recomanables, aleshores cal crear altres
-<em>transientmodels</em> auxiliars que representen als originals per
+<code class="docutils literal notranslate"><span class="pre">transientmodels</span></code> auxiliars que representen als originals per
 implementar les relacions.</p>
+<p>Les relacions <code class="docutils literal notranslate"><span class="pre">Many2many</span></code> entre un TransientModel i un model normal són interessants unidireccionalment, és a dir, al <code class="docutils literal notranslate"><span class="pre">TransientModel</span></code> es pot veure i utilitzar la llista, però no té sentit aquesta llista al model normal si al final es va a esborrar. Odoo manté durant un temps el model per al wizard y al esborrar, també elimina les relacions a la taula intermèdia.</p>
+<p>Per tant, si durant el wizard es va a necessitar manipular llistes, pot ser recomanable fer un model transitori també per a simular el model en el que es fa la relació final.</p>
 <section id="amb-one2many">
 <h3>Amb One2many<a class="headerlink" href="#amb-one2many" title="Link to this heading">#</a></h3>
 <p>En el següent exemple anem a veure cóm implementar un wizard per a un
 viatge en el que tindrem una llista de ciutats disponibles en funció
 d’un origen i unes carreteres. Observem primer el transientModel de
 <strong>travel</strong>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">travel_wizard</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TransientModel</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">travel_wizard</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TransientModel</span><span class="p">):</span>
     <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;negocity.travel_wizard&#39;</span>
     <span class="n">_description</span> <span class="o">=</span> <span class="s1">&#39;Wizard of travels&#39;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_get_origin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_get_origin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">city</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;city_context&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">city</span>
 
@@ -686,7 +692,7 @@ tenim que omplir amb la informació de l’origen.</p>
 <p>En realitat és millor fer-ho en un Many2many, després ho emplicarem</p>
 </div>
 <p>Mirem també el transientModel de les ciutats per a cities_available:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">city_transient</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TransientModel</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">city_transient</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TransientModel</span><span class="p">):</span>
     <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;negocity.city_transient&#39;</span>
 
     <span class="n">city</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Many2one</span><span class="p">(</span><span class="s1">&#39;negocity.city&#39;</span><span class="p">)</span>
@@ -698,7 +704,7 @@ wizard.</p>
 <p>Ara anem a fer que, al canviar la ciutat d’origen, es modifique la
 llista de ciutats disponibles:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@api</span><span class="o">.</span><span class="n">onchange</span><span class="p">(</span><span class="s1">&#39;origin&#39;</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_onchange_origin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_onchange_origin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
             <span class="n">roads_available</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">roads</span>
             <span class="n">cities_available</span> <span class="o">=</span> <span class="n">roads_available</span><span class="o">.</span><span class="n">city_1</span> <span class="o">+</span> <span class="n">roads_available</span><span class="o">.</span><span class="n">city_2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span>
@@ -719,38 +725,6 @@ de les noves.</p>
 <p>Podem aprofitar la llista de ciutats disponibles per fer un filtre en la
 vista en el field <strong>destiny</strong>. Per a fer aixó tenim algunes opcions ja
 tractades:</p>
-<ul class="simple">
-<li><p>En el return de l’Onchange es pot indicar el filtre si el field
-està visible en el estat actual del wizard:</p></li>
-</ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="p">{</span> 
-         <span class="s1">&#39;domain&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;destiny&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cities_available</span><span class="o">.</span><span class="n">city</span><span class="p">)</span><span class="o">.</span><span class="n">ids</span><span class="p">)],</span>
-           <span class="p">}</span>
-       <span class="p">}</span>
-</pre></div>
-</div>
-<ul class="simple">
-<li><p>En cas de que el field de destí estiga en estats posteriors del
-wizard, cal enviar per context el filtre. La raó és que cada vegada
-que es fa click en un botó <strong>next</strong> dins del wizard, el wizard es
-tanca i cal retornar un action que el torne a obrir en un altre
-estat. Això no afecta a les dades temporals ni als models temporals
-auxiliars, però reinicia el formulari i es perden els canvis fets
-per l’Onchange en el model virtual del formulari anterior. Vegen el
-<em>return</em> de la funció del botó <strong>next</strong> del formulari:</p></li>
-</ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="k">return</span> <span class="p">{</span>
-            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Travel Wizard&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;ir.actions.act_window&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;res_model&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span>
-            <span class="s1">&#39;res_id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-            <span class="s1">&#39;view_mode&#39;</span><span class="p">:</span> <span class="s1">&#39;form&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="s1">&#39;new&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;context&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="n">cities_available_context</span><span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cities_available</span><span class="o">.</span><span class="n">city</span><span class="p">)</span><span class="o">.</span><span class="n">ids</span><span class="p">,</span> <span class="n">origin_context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-        <span class="p">}</span>
-</pre></div>
-</div>
 <p>Observem la sintaxi en la que es crea un diccionari amb <strong>dict()</strong>
 concatenant el context amb dos nous atributs, el de les ciutats i
 l’origen. El context enviat tindrà aquestes dades i seran accessibles
@@ -773,7 +747,7 @@ primer lloc, la definició del field:</p>
 </div>
 <p>Aquest field necessita una funció <strong>compute</strong>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="nd">@api</span><span class="o">.</span><span class="n">depends</span><span class="p">(</span><span class="s1">&#39;origin&#39;</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_get_cities_available</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_get_cities_available</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">cities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;negocity.city_transient&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cities_available</span> <span class="o">=</span> <span class="n">cities</span>
 
@@ -795,7 +769,7 @@ ens permet seleccionar. Si fem el botó d’aquesta manera:</p>
 </pre></div>
 </div>
 <p>Podem implementar la funció seüent:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span><span class="w"> </span><span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">road_available</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wizard</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">roads</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">city</span><span class="o">.</span><span class="n">roads</span>
         <span class="n">wizard</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;travel_wizard_context&#39;</span><span class="p">)</span>
         <span class="n">wizard</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;negocity.travel_wizard&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">browse</span><span class="p">(</span><span class="n">wizard</span><span class="p">)</span>
@@ -817,7 +791,7 @@ ens permet seleccionar. Si fem el botó d’aquesta manera:</p>
 <section id="onchange-en-wizards">
 <h2>Onchange en Wizards<a class="headerlink" href="#onchange-en-wizards" title="Link to this heading">#</a></h2>
 <p>En principi els Onchange funcionen igual que sempre. És a dir, poden
-modificar el valor dels fields o retornar un domain o un warning. No
+modificar el valor dels fields o retornar un warning. No
 obstant, cal indicar que Onchange funciona sobre un record virtual còpia
 del record real en el que treballa el wizard. Així, quan fa un canvi,
 sols afecta a la vista. Això no és cap problema quan fem un formulari
@@ -827,7 +801,7 @@ canvis desapareixen. Si volem que Onchange modifique realment el record
 del wizard i eixe canvi es quede, cal utilitzar <strong>self._origin</strong>.
 Observem aquest codi:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="nd">@api</span><span class="o">.</span><span class="n">onchange</span><span class="p">(</span><span class="s1">&#39;destiny&#39;</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_onchange_destiny</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_onchange_destiny</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">destiny</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
             <span class="n">road_available</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">roads</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">destiny</span><span class="o">.</span><span class="n">roads</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_origin</span><span class="o">.</span><span class="n">write</span><span class="p">({</span><span class="s1">&#39;road&#39;</span><span class="p">:</span> <span class="n">road_available</span><span class="o">.</span><span class="n">id</span><span class="p">})</span>
@@ -838,18 +812,6 @@ Observem aquest codi:</p>
 </div>
 <p>El primer write escriu sobre el registre real del wizard i el segon
 sobre el virtual per a veure el canvi.</p>
-<p>Una altra cosa a tindre en compte és que el domain que retornen sols es
-vàlid per a la vista actual. Al ser refrescada, es perd. Per això, cal
-enviar-lo per context en la funció del botó <em>next</em> i aprofitar-ho en la
-vista:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># En el action del return de next:</span>
-    <span class="s1">&#39;context&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">,</span> <span class="n">cities_available_context</span><span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cities_available</span><span class="o">.</span><span class="n">city</span><span class="p">)</span><span class="o">.</span><span class="n">ids</span><span class="p">,</span> <span class="n">origin_context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
-</pre></div>
-</div>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="cm">&lt;!-- En la vista:  --&gt;</span>
-<span class="w">     </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;destiny&quot;</span><span class="w"> </span><span class="na">domain =</span><span class="w"> </span><span class="s">&quot;[(&#39;id&#39;,&#39;in&#39;,context.get(&#39;cities_available_context&#39;,[]))]&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
-</pre></div>
-</div>
 </section>
 <section id="alertes">
 <h2>Alertes<a class="headerlink" href="#alertes" title="Link to this heading">#</a></h2>
@@ -867,7 +829,7 @@ s’equivoque en un field, podem afegir un label amb vista condicional:</p>
 </div>
 <p>També es pot mostrar un error en una finestra emergent. La manera més
 senzilla és:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">odoo.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserError</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">odoo.exceptions</span> <span class="kn">import</span> <span class="n">UserError</span>
 <span class="o">....</span>
      <span class="k">raise</span> <span class="n">UserError</span><span class="p">(</span><span class="s1">&#39;Not Sufficient Oil for the travel&#39;</span><span class="p">)</span>
 </pre></div>
@@ -940,10 +902,10 @@ vista form i cridar a un action que la mostre.</p>
 assistent.</p>
 <p>Per a que funcione la vista, és necessari el model i el codi del
 controlador del wizard:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">w_reserves</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TransientModel</span><span class="p">):</span>   <span class="c1"># La classe és transientModel</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">w_reserves</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TransientModel</span><span class="p">):</span>   <span class="c1"># La classe és transientModel</span>
      <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;wizards.w_reserves&#39;</span>
  
-     <span class="k">def</span><span class="w"> </span><span class="nf">_default_teatre</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>                    
+     <span class="k">def</span> <span class="nf">_default_teatre</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>                    
          <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;wizards.teatres&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">browse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;active_id&#39;</span><span class="p">))</span> 
          <span class="c1"># El context conté, entre altre coses, el active_id del model que està obert.</span>
  
@@ -963,7 +925,7 @@ controlador del wizard:</p>
      <span class="nd">@api</span><span class="o">.</span><span class="n">onchange</span><span class="p">(</span><span class="s1">&#39;teatre&#39;</span><span class="p">)</span>   
      <span class="c1"># Tots aquests onchange serveixen per ajudar a </span>
      <span class="c1"># seleccionar les coses a l&#39;usuari amb filtres</span>
-     <span class="k">def</span><span class="w"> </span><span class="nf">_oc_teatre</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+     <span class="k">def</span> <span class="nf">_oc_teatre</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">teatre</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
          <span class="n">actuacions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;wizards.actuacions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s1">&#39;teatre&#39;</span><span class="p">,</span><span class="s1">&#39;=&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">teatre</span><span class="o">.</span><span class="n">id</span><span class="p">)])</span>
          <span class="nb">print</span><span class="p">(</span><span class="n">actuacions</span><span class="p">)</span>
@@ -975,7 +937,7 @@ controlador del wizard:</p>
          <span class="c1"># Modifiquem el filtre del següent field.</span>
 
      <span class="nd">@api</span><span class="o">.</span><span class="n">onchange</span><span class="p">(</span><span class="s1">&#39;obra&#39;</span><span class="p">)</span>
-     <span class="k">def</span><span class="w"> </span><span class="nf">_oc_obra</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+     <span class="k">def</span> <span class="nf">_oc_obra</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obra</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
           <span class="n">actuacions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;wizards.actuacions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s1">&#39;teatre&#39;</span><span class="p">,</span><span class="s1">&#39;=&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">teatre</span><span class="o">.</span><span class="n">id</span><span class="p">),(</span><span class="s1">&#39;obra&#39;</span><span class="p">,</span><span class="s1">&#39;=&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">obra</span><span class="o">.</span><span class="n">id</span><span class="p">)])</span>
 
@@ -984,7 +946,7 @@ controlador del wizard:</p>
 
 
      <span class="nd">@api</span><span class="o">.</span><span class="n">onchange</span><span class="p">(</span><span class="s1">&#39;actuacio&#39;</span><span class="p">)</span>
-     <span class="k">def</span><span class="w"> </span><span class="nf">_oc_actuacio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+     <span class="k">def</span> <span class="nf">_oc_actuacio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actuacio</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
           <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;butaques ******************************************&#39;</span><span class="p">)</span>
           <span class="n">butaques</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;wizards.butaques&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">search</span><span class="p">([(</span><span class="s1">&#39;teatre&#39;</span><span class="p">,</span><span class="s1">&#39;=&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">actuacio</span><span class="o">.</span><span class="n">teatre</span><span class="o">.</span><span class="n">id</span><span class="p">)])</span>
@@ -998,12 +960,12 @@ controlador del wizard:</p>
           <span class="k">return</span> <span class="p">{</span> <span class="s1">&#39;domain&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;butaca&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="n">b_disponibles</span><span class="o">.</span><span class="n">ids</span><span class="p">)]},}</span>
 
      <span class="nd">@api</span><span class="o">.</span><span class="n">onchange</span><span class="p">(</span><span class="s1">&#39;butaca&#39;</span><span class="p">)</span>
-     <span class="k">def</span><span class="w"> </span><span class="nf">_oc_butaca</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+     <span class="k">def</span> <span class="nf">_oc_butaca</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">butaca</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">=</span><span class="s1">&#39;fin&#39;</span>
 
      <span class="nd">@api</span><span class="o">.</span><span class="n">multi</span>
-     <span class="k">def</span><span class="w"> </span><span class="nf">reserva</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+     <span class="k">def</span> <span class="nf">reserva</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
          <span class="n">reserva</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;wizards.reserves&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">create</span><span class="p">({</span>
               <span class="s1">&#39;actuacio&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">actuacio</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
                <span class="s1">&#39;butaca&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">butaca</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
@@ -1044,15 +1006,15 @@ dalt)</strong>:</p>
 </div>
 <p>El codi python és molt simple, en aquest cas, sols canvia que atén a la
 variable de context <strong>active_ids</strong> en compte de <strong>active_id</strong>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">w_pagar_reserves</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TransientModel</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">w_pagar_reserves</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TransientModel</span><span class="p">):</span>
     <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;wizards.w_pagar_reserves&#39;</span>
  
-    <span class="k">def</span><span class="w"> </span><span class="nf">_default_reserves</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_default_reserves</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
          <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;wizards.reserves&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">browse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;active_ids&#39;</span><span class="p">))</span> <span class="c1"># El context conté, entre altre coses, els active_ids dels models que es seleccionen en un tree.</span>
  
     <span class="n">reserves</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Many2many</span><span class="p">(</span><span class="s1">&#39;wizards.reserves&#39;</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="n">_default_reserves</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">pagar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">pagar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reserves</span><span class="p">:</span>
             <span class="n">r</span><span class="o">.</span><span class="n">write</span><span class="p">({</span><span class="s1">&#39;pagada&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">})</span>
 </pre></div>
@@ -1136,8 +1098,7 @@ variable de context <strong>active_ids</strong> en compte de <strong>active_id</
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -1205,8 +1166,8 @@ By Jose Castillo
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>
