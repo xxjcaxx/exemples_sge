@@ -279,9 +279,137 @@ Si podem deixar correguent un Docker a un servidor amb connexió a Internet amb 
 
 Podem afegir al fitxer del Docker Compose la configuració d'un contenidor Nginx. Aquest implementarà HTTPS i farà de proxy a Odoo.
 
+Farem servir un fitxer Dockerfile basat en la imatge oficial de Nginx, però adaptada a les nostres necessitats. Els certificats es generen de manera automàtica i estan autofirmats.
+
+Encara que els navegadors mostren un avís d’error, la informació continua viatjant de forma segura. El que passa és que no hi ha cap autoritat certificadora que haja validat el certificat. (no és el mateix un certificat autofirmat que cap protecció).
+
+Es podria fer un script amb CertBot per a utilitzar Let's Encrypt i renovar el certificat cada tres mesos.
+
+En Nginx, definim la mateixa carpeta per a HTTP i HTTPS, intentant simplificar al màxim la configuració i automatitzar la creació tant de la imatge com del contenidor amb scripts.
+
+El primer pas és crear la nostra clau i certificat autofirmat dins d'un directori nginx junt a la resta de fitxers dels dockers:
+
+```bash
+mkdir nginx
+cd nginx
+openssl req -x509 -sha256 -nodes -newkey rsa:2048 -keyout ser.key -out ser.pem
+```
+
+Després creem un `Dockerfile` dins de la mateixa carpeta. Aquest fixter servirà per executar certs comandaments cada vegada que es llance el docker:
+
+```bash
+FROM nginx
+
+RUN rm -f /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/
+COPY ser.key /etc/nginx/
+COPY ser.pem /etc/nginx/
+
+EXPOSE 80 443
+
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+Afegirem al `docker-compose.yml`:
+
+```yaml
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile  # este campo es opcional si el archivo se llama así
+    container_name: nginx
+    depends_on:
+      - odoo
+    ports:
+      - "80:80"
+      - "443:443"
+```
+Falta crear el `nginx.conf` que serà la configuració:
+
+```nginx
+ #odoo server
+    upstream odoo {
+     server odoo:8069;
+    }
+    upstream odoochat {
+     server odoo:8072;
+    }
+    # S'han definit els upstream a localhost i als port determinats
+
+    # http -> https (totes les peticions per HTTP se reformulen a HTTPS)
+    server {
+       listen 80;
+       server_name _;                            
+       # Si tinguerem nom de domini el ficariem, en altre cas: _
+       rewrite ^(.*) https://$host$1 permanent;
+    }
+
+    server {
+     listen 443 ssl;
+     server_name _;
+     # La _ perquè en l'exemple no tenim domini, com dalt
+     proxy_read_timeout 720s;
+     proxy_connect_timeout 720s;
+     proxy_send_timeout 720s;
+
+     # Add Headers for odoo proxy mode
+     proxy_set_header X-Forwarded-Host $host;
+     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+     proxy_set_header X-Forwarded-Proto $scheme;
+     proxy_set_header X-Real-IP $remote_addr;
+
+     # SSL parameters
+     ssl_certificate /etc/nginx/ser.pem;
+     ssl_certificate_key /etc/nginx/ser.key;
+     # IMPORTANT: ficar bé les rutes dels certificats
+     ssl_session_timeout 30m;
+     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+     ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA';
+     ssl_prefer_server_ciphers on;
+
+     # log
+     access_log /var/log/nginx/odoo.access.log;
+     error_log /var/log/nginx/odoo.error.log;
+
+     # Redirect requests to odoo backend server
+     location / {
+       proxy_redirect off;
+       proxy_pass http://odoo;
+     }
+     location /longpolling {
+         proxy_pass http://odoochat;
+     }
+
+     # common gzip
+     gzip_types text/css text/less text/plain text/xml application/xml application/json application/javascript;
+     gzip on;
+    }
+```
+
 ### Workers
 
-### Posar en producció quan es reinicia el servidor
+Per defecte Odoo és `multithread`. Això vol dir que pot mantenir varis fils d'execució. No obstant això és un poc ineficient en producció si tens molts usuaris. És millor, amés, que siga `multi-processing` per poder distribuir la tasca millor entre distints processadors o nuclis. (no disponible en Windows)
+
+Per aconseguir-ho, sols hem de ficar al fitxer de configuració la quantitat de `workers` que volem, amés d'altres coses:
+
+```yaml
+[options]
+limit_memory_hard = 1677721600
+limit_memory_soft = 629145600
+limit_request = 8192
+limit_time_cpu = 600
+limit_time_real = 1200
+max_cron_threads = 1
+workers = 8
+```
+
+Com a regla aproximada podem calcular els workers òptims com 1 Worker per cada 6 usuaris simultanis i El doble + 1 de workers per CPU. Així, si tenim un servidor amb 4 nuclis 8 Threads i uns 60 usuaris simultanis:
+
+* 60/6 ~= 10 workers
+* 4*2+1 = 9 workers que suporta la màquina. 
+* En aquest cas es poden utilitzar 8 workers + 1 per al cron. 
+* La RAM a nivell simple podem pensar en 1GB per worker. No obstant, hi ha peticions que no necessiten més de 150MB. Per tant, segon la documentació d'Odoo, per a 9 workers: 9 * ((0.8*150) + (0.2*1024)) ~= 3GB RAM mínim.
+
     
 
 ## Instal·lar en Debian i Ubuntu
@@ -444,7 +572,7 @@ Per dins de les funcions:
     _logger.critical("The name '" + str(record.get('name')) + "' is not okay for us!")
 ```
 
-### Opcions de log {#opcions_de_log}
+### Opcions de log
 
 Per defecte, Odoo llança el seu log a un fitxer a **/var/log/odoo/**,
 però es pot fer que envía a un altre fitxer amb **\--log-file=LOGFILE**.
@@ -463,49 +591,11 @@ comandament les següents opcions:
     Aquesta opció ens ajuda a entendre cóm funciona el ORM.
 -   **\--log-level=LOG_LEVEL**
 
-`                       specify the level of the logging. Accepted values:`\
-`                       ['info', 'debug_rpc', 'warn', 'test', 'critical',`\
-`                       'debug_sql', 'error', 'debug', 'debug_rpc_answer',`\
-`                       'notset'].`
-
-### Preparar l\'entorn de treball per a SGE 
-
-```{admonition} Nota
-:class: tip
- 
-Aquesta ajuda és per que, com a alumnes, vos prepareu correctament per poder programar de manera cómoda en Odoo. No obstant, es poden traure idees per al treball professional o en altres entorns
+```python
+  ['info', 'debug_rpc', 'warn', 'test', 'critical',
+  'debug_sql', 'error', 'debug', 'debug_rpc_answer',
+ 'notset'].
 ```
--   Instal·lar el contenidor o la màquina virtual Ubuntu Server
--   Crear un usuari per poder accedir fàcilment per SSH les primeres
-    vegades i que no siga Odoo.
--   Accedir amb eixe usuari per SSH, fer-se root i instal·lar Odoo
-    segons els manuals anteriors.
--   Crear una empresa amb dades de demo en la web d\'Odoo.
--   Fer que l\'usuari Odoo tinga shell i fer que es puga accedir a ell
-    per SSH sense contrasenya des del vostre equip. (
-    usermod -s /bin/bash odoo )
--   Fer-se un compte i un projecte en Github.
--   Crear el directori modules i configurar Odoo per utilitzar aquest
-    quant s\'inicie en \'mode depuració\'.
--   Sincronitzar el directori modules en el Github personal.
--   Instal·lar ngrok per poder accedir des de remot al contenidor.
--   Configurar el navegador d\'arxius per accedir per SSH i editar amb
-    el teu editor preferit.
--   Entrar en el navegador d\'arxius a *altres ubicacions* i escriure
-    <ssh://odoo@>`<ip>`{=html}
-    -   Ens mostrarà un directori que podem afegir com a favorit del
-        navegador d\'arxius.
-    -   El directori real on l\'ha muntat
-        **[gvfs](https://es.wikipedia.org/wiki/GVFS)** és
-        **/run/user/`<usuari>`{=html}/gvfs/sftp:host=`<ip>`{=html},user=odoo/var/lib/odoo**
-        o **\~/.gvfs/**
-    -   Podem afegir aquest directori real com a lloc de projecte per al
-        programa **PyCharm**.
-    -   PyCharm també té una terminal que pot entrar per SSH.
--   Una alternativa al navegador d\'arxius és connectar per sshfs:
-     
-     sshfs odoo@10.100.23.100:/var/lib/odoo ./odoo/
-
 
 ### Debug mode
 
