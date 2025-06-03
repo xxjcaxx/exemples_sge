@@ -29,7 +29,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
@@ -843,7 +843,6 @@ crear nous. Accepta arguments per evitar les opcions de crear:</p></li>
 <li><p><strong>widget=”many2onebutton”</strong>: Crea un simple botó que indica si
 està assignat. Si polses s’obri el formulari.</p></li>
 </ul>
-<p><img alt="" src="Many2onebutton.png" /></p>
 </section>
 <section id="many2many">
 <h4>Many2Many<a class="headerlink" href="#many2many" title="Link to this heading">#</a></h4>
@@ -852,13 +851,7 @@ està assignat. Si polses s’obri el formulari.</p></li>
 esborrar o afegir nous.</p></li>
 <li><p><strong>widget=”many2many_tags”</strong>: Llista amb etiquetes com en els
 filtres</p></li>
-</ul>
-<p><img alt="" src="Many2many_tags.png" /></p>
-<ul class="simple">
 <li><p><strong>widget=”many2many_checkboxes”</strong>: Llista de checkboxes.</p></li>
-</ul>
-<p><img alt="" src="Many2many_checkboxes.png" /></p>
-<ul class="simple">
 <li><p><strong>widget=”many2many_kanban”</strong>: Mostra un kanban dels que té
 associats, necessita que la vista kanban estiga definida.</p></li>
 <li><p><strong>widget=”x2many_counter”</strong>: Mostra sols la quantitat.</p></li>
@@ -925,18 +918,16 @@ imatges.</p>
 <h4>Binary o Image<a class="headerlink" href="#binary-o-image" title="Link to this heading">#</a></h4>
 <ul class="simple">
 <li><p><strong>signature</strong>: Permet signar dirènctament en la pantalla</p></li>
-</ul>
-<ul class="simple">
 <li><p><strong>image</strong>: A banda del que es pot ficar en el field de max_width o
 max_height, al widget es pot afegir opcions com:</p></li>
 </ul>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>options=&quot;{&amp;quot;zoom&amp;quot;: true, &amp;quot;preview_image&amp;quot;: &amp;quot;image_128&amp;quot;}
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">options</span><span class="o">=</span><span class="s2">&quot;{&amp;quot;zoom&amp;quot;: true, &amp;quot;preview_image&amp;quot;: &amp;quot;image_128&amp;quot;}</span>
 </pre></div>
 </div>
 </section>
 <section id="selection">
 <h4>Selection<a class="headerlink" href="#selection" title="Link to this heading">#</a></h4>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>       &lt;field name=&quot;state&quot; decoration-success=&quot;state == &#39;sale&#39; or state == &#39;done&#39;&quot; decoration-info=&quot;state == &#39;draft&#39; or state == &#39;sent&#39;&quot; widget=&quot;badge&quot; optional=&quot;show&quot;/&gt;
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="w">           </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;state&quot;</span><span class="w"> </span><span class="na">decoration-success=</span><span class="s">&quot;state == &#39;sale&#39; or state == &#39;done&#39;&quot;</span><span class="w"> </span><span class="na">decoration-info=</span><span class="s">&quot;state == &#39;draft&#39; or state == &#39;sent&#39;&quot;</span><span class="w"> </span><span class="na">widget=</span><span class="s">&quot;badge&quot;</span><span class="w"> </span><span class="na">optional=</span><span class="s">&quot;show&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
 </section>
@@ -1008,8 +999,7 @@ Els buttons poden tindre també <a class="reference internal" href="#Odoo#Contex
 per enviar alguna cosa extra al servidor.</p>
 <p><strong>Smart Buttons</strong>
 <a class="reference external" href="https://www.slideshare.net/openobject/odoo-smart-buttons">2</a></p>
-<p>En el formulari dels client, podem veure aquests botons:</p>
-<p><img alt="" src="Smartbutton.png" /></p>
+<p>En el formulari dels client, podem veure aquests botons.</p>
 <p>Es tracta de botons que, amés d’executar-se, mostren una informació
 resumida i una icona. El text i la forma del botó es modifica
 dinàmicament en funció d’alguns criteris i això li dona més comoditat a
