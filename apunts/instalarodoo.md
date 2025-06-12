@@ -613,7 +613,7 @@ codi que ens interessa:
 Una vegada dins, es poden utilitzar els comandaments de pdb:
 <https://docs.python.org/3/library/pdb.html>
 
-## Posar en producció
+### Posar en producció en Ubuntu
 
 <https://www.odoo.com/documentation/17.0/administration/install/deploy.html?highlight=workers>
 https://docs.docker.com/engine/install/linux-postinstall/#configure-docker-to-start-on-boot-with-systemd
@@ -750,7 +750,78 @@ modificar-lo per a que no afecte al port 80 d\'Odoo.
 
 Ara es reinicien tanmt Odoo com nginx
 
+## Seguretat en Odoo
 
+Quan parlem de seguretat en Odoo estem parlant de temes generals que totes les aplicacions web tenen i de temes específics d’Odoo. En general, qualsevol aplicació web té uns mínims de seguretat que passen per donar servici sols en HTTPS, controlar els ports, evitar atacs DDOS, tenir bones contrasenyes… 
+
+En quant al HTTPS, en els apartats corresponents està explicat, a falta de contractar un certificat real. La seguretat i alta disponibilitat del servidor és una qüestió massa complexa per a aquest mòdul i pot ser tasca del cicle d’ASIX. Però podem fer coses específiques d’Odoo per evitar els problemes o per a recuperar-se ràpidament d’ells. 
+
+### Persistència de les dades
+
+Una empresa no es pot permetre perdre dades. Les formes d’evitar perdre dades en Odoo són múltiples. Si tenim una instal·lació on-premise hem de controlar tots els factors: físics i lògics. Això passa per varies tasques ineludibles:
+
+#### Còpies de seguretat
+
+Odoo, en la seua interfície gràfica, permet exportar taules i un cert control de les còpies de seguretat manuals per taules individuals. Això, per suposat, sols és recomanable per a exportacions/importacions puntuals. 
+En l’interfície gràfica també es pot anar al gestor de bases de dades i exportar i importar el backup. Seria recomanable fer-ho cada cert temps. Si volem que siga automàtic, es pot programar externament un servici que, cada cert temps, es connecte de forma remota per XML-RCP:
+```python
+import requests
+
+# Datos de conexión
+odoo_host = 'https://tuservidorodoo.com'  # o http://localhost:8069 si es local
+database = 'tu_basededatos'
+admin_password = 'tu_contraseña_admin'
+
+# URL para hacer backup
+url = f'{odoo_host}/web/database/backup'
+
+# Datos para la solicitud POST
+payload = {
+	'master_pwd': admin_password,
+	'name': database,
+	'backup_format': 'zip'  # o 'dump'
+}
+
+# Realizar la solicitud POST
+response = requests.post(url, data=payload)
+
+# Verificar la respuesta y guardar el archivo si es válida
+if response.status_code == 200:
+	filename = f"{database}_backup.zip"
+	with open(filename, 'wb') as f:
+    	f.write(response.content)
+	print(f"Backup guardado como {filename}")
+else:
+	print(f"Error al hacer backup: {response.status_code} - {response.text}")
+```
+
+També podem fer-ho a nivel del CLI de la base de dades:
+
+```bash
+pg_dump db_name
+```
+
+La copia de seguretat de la base de dades no inclou els fitxers i fotos. Necessitarem copiar el directori filestore si ho fem a nivell de base de dades. 
+
+A més baix nivell, es pot fer una copia de seguretat del sistema d’arxius o inclús de les particions. 
+
+No cal dir que eixa copia de seguretat no estarà finalment en el mateix disc dur que la base de dades original ni en la mateixa ubicació física. 
+
+### Alta disponibilitat
+
+Un sistema empresarial ha d’estar sobre un servidor segur a nivell físic. Això implica SAIs i RAIDs o similars. Si estem utilitzant un VPS en el núvol, no ens preocuparem d’això. Si no, necessitarem un CPD encara que siga discret, amb seguretat física, sistemes d’alimentació ininterrompuda i discs redundants. Amés de sistemes de còpies de seguretat remotes. El sistema es deuria poder recuperar d’un trencament sense interrompre el servici. 
+
+### Usuaris i permisos
+
+Odoo té un complex sistema d’usuaris, grups, rols i permisos. Un/a administrador d’Odoo ha de portar al dia la gestió granular d’aquests permisos. Amés, deguem distingir els disitints usuaris que tenim que gestionar, de més poderos a menys:
+
+- Root del sistema operatiu: Usuari amb poder total en aquest sistema operatiu, deuria ser un administrador de sistemes.
+- Administrador de PostgreSQL: té molt de poder amb les dades de tota l’empresa i possiblement de varies empreses. Si PostgreSQL està utilitzant-se per a altres coses que no són Odoo també té poder sobre elles. 
+- Administrador de bases de dades d’Odoo: La seua contrasenya està en odoo.conf i té poder de crear, esborrar i fer còpies de totes les bases de dades. Accedeix típicament via web. És possible que els programadors no necessiten aquest poder.
+- Administrador técnic d’una base de dades: Té poder per administrar mòduls i per canviar l’interfície. Els programadors necessiten eixe poder.
+- Administrador de l’empresa: Pot administrar tot el que és relatiu al negoci. No pot instal·lar mòduls ni programar. Típicament són els propietaris, jefes… de l’empresa. No és convenient que una persona no experimentada en programació tinga més poder.
+- Usuaris normals: Venedors, administratius… Poden accedir a certes parts de backend. Els seus permisos depenen del grup o rols al que estiguen associats.
+- Clients i proveidors: Normalment tenen accés a la pàgina web, que pot estar feta amb Odoo. Poden tenir cert accés a una API feta per nosaltres si volem automatizar les relacions comercials amb ells.
 
 
 ## Creació de una base de dades
