@@ -8,7 +8,7 @@ Odoo, en esencia, és un servidor web fet en python que es connecta amb
 una base de dades postgreSQL. Hi ha moltes maneres d\'instal·lar Odoo,
 de les més avançades que són descarregar per *git* el repositori i fer
 que arranque a l\'inici a les més simples que són desplegar un
-**docker** amb tot funcionant. 
+**docker** amb tot funcionant.
 
 ## Instal·lar Amb Docker
 
@@ -23,9 +23,9 @@ En classe treballarem finalment amb Docker Compose, el text següent serveix per
 ```
 https://docs.docker.com/engine/install/ubuntu/
 
-> Si volem GUI, podem utilitzar Docker Desktop per a contenidors locals o Portainer per a gestionar també contenidors remots. 
+> Si volem GUI, podem utilitzar Docker Desktop per a contenidors locals o Portainer per a gestionar també contenidors remots.
 
-Es pot instal·lar Docker de moltes maneres, però anem a fer-ho de la manera més recomanable per al nostre cas, que és la de la web oficial: 
+Es pot instal·lar Docker de moltes maneres, però anem a fer-ho de la manera més recomanable per al nostre cas, que és la de la web oficial:
 
 ```bash
 # Add Docker's official GPG key:
@@ -53,7 +53,7 @@ sudo usermod -aG docker $USER
 
 ```
 
-En Docker és molt sencill desplegar Odoo, tan sols fa falta aquests
+En Docker és molt senzill desplegar Odoo, tan sols fa falta aquests
 comandaments:
 
     # docker run -d --restart="always" -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo --name db postgres:9.4
@@ -89,8 +89,6 @@ actualitzar el mòdul.
     $ docker stop odoo
     $ docker start -a odoo
     $ docker exec odoo odoo --config /etc/odoo/odoo.conf -u nommodul -d nombasededades -r odoo -w odoo --db_host 172.17.0.2 --db_port 5432
-
-**Creació de mòduls, mètode 1**
 
 Com es veu, l'últim comandament és un poc complicat. Per tant, anem a
 fer les coses totalment bé. Per a aixó necessitem un fitxer propi de
@@ -165,7 +163,7 @@ volumes:
   odoo-db-data:
 ```
 
-Observem que declarem dos servicis i el **odoo** depen del **db**. També
+Observem que declarem dos servicis i el **odoo** depèn del **db**. També
 cal dir quina xarxa utilitzen i la resta de dades que posem normalment
 en el **run**.
 
@@ -411,6 +409,22 @@ Com a regla aproximada podem calcular els workers òptims com 1 Worker per cada 
 * La RAM a nivell simple podem pensar en 1GB per worker. No obstant, hi ha peticions que no necessiten més de 150MB. Per tant, segon la documentació d'Odoo, per a 9 workers: 9 * ((0.8*150) + (0.2*1024)) ~= 3GB RAM mínim.
 
     
+### On instal·lar Odoo?
+
+Cada empresa té unes necessitats i aquesta pregunta pot tenir moltes respostes. Anem a fer una comparativa no rigorosa de les distintes opcions:
+
+| **Lloc**           | **Tecnologia**                         | **Propòsit**                                                                                                                                                                                                                                                                                                                                                         |
+| ------------------ | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Servidor local** | Directament instal·lat a Ubuntu Server | En funció de la potència, capacitat i seguretat del servidor, pot servir per a qualsevol empresa. Instal·lar directament dona menys flexibilitat, però aprofita tota la potència de la màquina i la compatibilitat amb tot. L'empresa té control total de les dades i és responsable de la seguretat. També té control de les despeses. És poc escalable i migrable. |
+| **Servidor local** | En Docker, Proxmox o VirtualBox        | Igual que l'opció anterior, però amb més possibilitats de ser escalable i migrable. Permet compartir millor els recursos de la màquina amb altres serveis.                                                                                                                                                                                                           |
+| **Al núvol**       | VPS                                    | No és necessari pensar en la seguretat física, però sí en la lògica. És escalable si el proveïdor permet ampliar la màquina. El preu sol estar predeterminat, però és més car a la llarga que els servidors propis. En el cas de proveïdors primaris com AWS, Azure, Google Cloud... el preu és per ús i és perillós no controlar-ho.                                |
+| **Al núvol**       | SAAS (Odoo.sh)                         | Ja no cal tanta cura en la seguretat lògica, només pels usuaris d'Odoo. És escalable, però molt més car. No és personalitzable.                                                                                                                                                                                                                                      |
+| **Al núvol**       | PAAS (Render, Railway, Fly.io...)             | Cada servei té les seues característiques, però combinen els avantatges de Docker pel que fa a la personalització amb una interfície molt còmoda per al DevOps i CI/CD. Es tracta el desplegament com si fos codi.                                                                                                                                                   |
+
+
+
+La resposta continúa sense ser clara. Cada empresa té unes posibilitats i necessitats. Una micro-empresa amb pocs ordinadors i sols necessitar de intranet pot instal·lar en un Docker en un servidor de baix consum amb copies de seguretat periòdiques. Una empresa menuda pot desplegar en VPS o PAAS amb preus predefinits i controlats i anar augmentant conforme ho necessiten. Una empresa més gran pot decidir-se per núvols més de baix nivell (IAAS) o per una instal·lació on-premise més seria amb alta disponibilitat a la propia empresa. Un SAAS pot ser útil per a empreses que no necessiten cap personalització. Si el negoci és donar el propi servei d'Odoo, es pot optar per contractar un IAAS i a sobre, donar un servei SAAS amb personalitzacions a mida i cobrar pel servei i per les personalitzacions.
+
 
 ## Instal·lar en Debian i Ubuntu
 
@@ -763,29 +777,27 @@ Una empresa no es pot permetre perdre dades. Les formes d’evitar perdre dades 
 #### Còpies de seguretat
 
 Odoo, en la seua interfície gràfica, permet exportar taules i un cert control de les còpies de seguretat manuals per taules individuals. Això, per suposat, sols és recomanable per a exportacions/importacions puntuals. 
-En l’interfície gràfica també es pot anar al gestor de bases de dades i exportar i importar el backup. Seria recomanable fer-ho cada cert temps. Si volem que siga automàtic, es pot programar externament un servici que, cada cert temps, es connecte de forma remota per XML-RCP:
+
+En l’interfície gràfica també es pot anar al gestor de bases de dades i exportar i importar el backup. Seria recomanable fer-ho cada cert temps. 
+
+Si volem que siga automàtic, es pot programar externament un servici que, cada cert temps, es connecte de forma remota per XML-RCP:
 ```python
 import requests
 
-# Datos de conexión
-odoo_host = 'https://tuservidorodoo.com'  # o http://localhost:8069 si es local
+odoo_host = 'http://localhost:8069'
 database = 'tu_basededatos'
 admin_password = 'tu_contraseña_admin'
 
-# URL para hacer backup
 url = f'{odoo_host}/web/database/backup'
 
-# Datos para la solicitud POST
 payload = {
 	'master_pwd': admin_password,
 	'name': database,
 	'backup_format': 'zip'  # o 'dump'
 }
 
-# Realizar la solicitud POST
 response = requests.post(url, data=payload)
 
-# Verificar la respuesta y guardar el archivo si es válida
 if response.status_code == 200:
 	filename = f"{database}_backup.zip"
 	with open(filename, 'wb') as f:
@@ -809,7 +821,7 @@ No cal dir que eixa copia de seguretat no estarà finalment en el mateix disc du
 
 ### Alta disponibilitat
 
-Un sistema empresarial ha d’estar sobre un servidor segur a nivell físic. Això implica SAIs i RAIDs o similars. Si estem utilitzant un VPS en el núvol, no ens preocuparem d’això. Si no, necessitarem un CPD encara que siga discret, amb seguretat física, sistemes d’alimentació ininterrompuda i discs redundants. Amés de sistemes de còpies de seguretat remotes. El sistema es deuria poder recuperar d’un trencament sense interrompre el servici. 
+Un sistema empresarial ha d’estar sobre un servidor segur a nivell físic. Això implica SAIs i RAIDs o similars. Si estem utilitzant un VPS en el núvol, no ens preocuparem d’això. Si no, necessitarem un CPD encara que siga discret, amb seguretat física, sistemes d’alimentació ininterrompuda i discs redundants. Amés de sistemes de còpies de seguretat remotes. El sistema es deuria poder recuperar d’un trencament sense interrompre el servici.
 
 ### Usuaris i permisos
 
