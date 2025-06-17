@@ -715,7 +715,7 @@ cal afegir:
 ```
 
 
-### Vistes Kanban
+## Vistes Kanban
 
 Les vistes kanban són per a mostrar el model en forma de \'cartes\'. Les
 vistes kanban se declaren amb una mescla de xml, html i plantilles
@@ -894,7 +894,7 @@ identificador extern d\'una vista form en **quick_create_view**. Aquest
 En molts llocs trobarem la funció `kanban_image`. És la manera correcta de fer-ho en Qweb. Necessita posar el camp `id` el principi. però també es pot utilitzar dirèctament el `widget="image"` com en els forms. 
 
 
-### Vistes search 
+## Vistes search 
 
 Les vistes search tenen 3 tipus:
 
@@ -1048,7 +1048,7 @@ En aquest exemple, filtra amb en **search_default_XXXX** que activa el
 filtre XXXX i, amés, fa que en els formularis tiguen un camp boolean a
 true.
 
-### Vistes Calendar
+## Vistes Calendar
 
 Si el recurs té un camp date o datetime. Permet editar els recursos
 ordenats per temps. L'exemple són els esdeveniments del mòdul de ventes.
@@ -1082,7 +1082,7 @@ ordenats per temps. L'exemple són els esdeveniments del mòdul de ventes.
         </record>
 ```
 
-### Vistes Graph
+## Vistes Graph
 
 En general s\'utilitza per a veure agregacions sobre les dades a
 mostrar. Accepta els següents atributs:
